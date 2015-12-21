@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="menu_about">About…</string>
+    <string name="about_message">ConvertMe — An easy-to-use unit conversion utility.\n\nCopyright © 2010–2016 Defiant Technologies, LLC.\n\nWritten by Dmitry Brant.</string>
+
+</resources>

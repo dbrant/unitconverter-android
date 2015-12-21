@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="list_item_highlight">#6080c0ff</color>
+    <color name="list_item_selected">#d033b5e5</color>
+    <color name="toolbar">#ff4050a0</color>
+    <color name="window_background">#fff8f8f8</color>
+    <color name="name_text">#666</color>
+    <color name="value_text">#000</color>
+    <color name="list_divider">#ccc</color>
+</resources>

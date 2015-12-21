@@ -1,0 +1,19 @@
+<resources>
+    <style name="MyTheme.Light" parent="Theme.AppCompat">
+        <item name="windowActionModeOverlay">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme" parent="MyTheme.Light">
+        <item name="toolbarStyle">@style/Toolbar.ConvertMe</item>
+    </style>
+
+    <style name="Toolbar.ConvertMe" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/toolbar</item>
+        <item name="android:navigationIcon">?attr/homeAsUpIndicator</item>
+        <item name="navigationIcon">?attr/homeAsUpIndicator</item>
+    </style>
+
+
+</resources>

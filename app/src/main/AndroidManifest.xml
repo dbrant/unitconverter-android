@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.defianttech.convertme">
+    <application
+        android:allowBackup="true"
+        android:label="ConvertMe"
+        android:icon="@drawable/icon">
+
+        <uses-library android:required="false" android:name="com.sec.android.app.multiwindow"/>
+        <meta-data android:name="com.sec.android.support.multiwindow" android:value="true" />
+
+        <activity android:name="ConvertMe"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
