@@ -2,6 +2,8 @@
 <resources>
     <string name="ok">OK</string>
     <string name="menu_about">About…</string>
+    <string name="menu_clipboard_copied">Copied to clipboard.</string>
+
     <string name="about_message">ConvertMe — An easy-to-use unit conversion utility.\n\nCopyright © 2010–2016 Defiant Technologies, LLC.\n\nWritten by Dmitry Brant.</string>
 
 </resources>

@@ -1,15 +1,6 @@
 <resources>
-
-<dimen name="button_size">72dp</dimen>
-<dimen name="small_text_size">24sp</dimen>
-<dimen name="info_text_size">30sp</dimen>
-<dimen name="control_text_size">36sp</dimen>
-<dimen name="big_text_size">48sp</dimen>
-<dimen name="disk_text_size">36sp</dimen>
-<dimen name="button_padding">16dp</dimen>
-<dimen name="max_icon_size">92dp</dimen>
-<dimen name="filelist_width">360dp</dimen>
-<dimen name="activity_horizontal_margin">16dp</dimen>
-<dimen name="activity_vertical_margin">16dp</dimen>
-
+    <dimen name="quantity_text_size">36sp</dimen>
+    <dimen name="units_text_size">24sp</dimen>
+    <dimen name="activity_horizontal_margin">128dp</dimen>
+    <dimen name="activity_vertical_margin">128dp</dimen>
 </resources>

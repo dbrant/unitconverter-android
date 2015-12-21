@@ -365,6 +365,7 @@ public class UnitCollection {
             new UnitCollection("Volume",
                     new SingleUnit[]{
                             new SingleUnit("centimeter³", 1000.0, 0.0),
+                            new SingleUnit("meter³", 0.001, 0.0),
                             new SingleUnit("cup", 4.22675283773037465, 0.0),
                             new SingleUnit("dram", 270.51218161474397756, 0.0),
                             new SingleUnit("foot³", 0.0353146667214886, 0.0),

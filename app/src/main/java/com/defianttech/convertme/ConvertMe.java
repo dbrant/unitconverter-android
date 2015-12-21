@@ -2,8 +2,11 @@ package com.defianttech.convertme;
 
 import java.text.DecimalFormat;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -27,6 +30,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /*
  * Copyright (C) 2014-2016 Defiant Technologies, LLC
@@ -88,23 +92,24 @@ public class ConvertMe extends AppCompatActivity {
                 listAdapter.notifyDataSetChanged();
             }
         });
+        unitsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String resultStr = String.format("%1$s", getConvertedResult(position));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                    clipboard.setPrimaryClip(ClipData.newPlainText("", resultStr));
+                } else {
+                    android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    clipboard.setText(resultStr);
+                }
+                Toast.makeText(ConvertMe.this, R.string.menu_clipboard_copied, Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
 
-        //restore settings...
-        try {
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-            currentCategory = settings.getInt("currentCategory", DEFAULT_CATEGORY);
-            if (currentCategory >= unitCategories.length) {
-                currentCategory = DEFAULT_CATEGORY;
-            }
-            getSupportActionBar().setSelectedNavigationItem(currentCategory);
-            currentUnitIndex = settings.getInt("currentUnitIndex", DEFAULT_INDEX);
-            if (currentUnitIndex >= collection[currentCategory].getItems().length) {
-                currentUnitIndex = 0;
-            }
-            lastValue = settings.getFloat("lastValue", (float) DEFAULT_VALUE);
-        } catch(Exception ex) {
-            //ehh...
-        }
+        restoreSettings();
+        getSupportActionBar().setSelectedNavigationItem(currentCategory);
 
         EditText unitValueText = (EditText) findViewById(R.id.unitValueText);
         unitValueText.addTextChangedListener(new TextWatcher() {
@@ -162,15 +167,27 @@ public class ConvertMe extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.menu_about:
-                new AlertDialog.Builder(this)
-                        .setTitle(getString(R.string.menu_about))
-                        .setMessage(getString(R.string.about_message))
-                        .setPositiveButton(R.string.ok, null)
-                        .create()
-                        .show();
+                showAboutDialog();
                 return true;
         }
         return false;
+    }
+
+    private void restoreSettings() {
+        try {
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            currentCategory = settings.getInt("currentCategory", DEFAULT_CATEGORY);
+            if (currentCategory >= collection.length) {
+                currentCategory = DEFAULT_CATEGORY;
+            }
+            currentUnitIndex = settings.getInt("currentUnitIndex", DEFAULT_INDEX);
+            if (currentUnitIndex >= collection[currentCategory].getItems().length) {
+                currentUnitIndex = 0;
+            }
+            lastValue = settings.getFloat("lastValue", (float) DEFAULT_VALUE);
+        } catch(Exception ex) {
+            //ehh...
+        }
     }
 
     private final class UnitListAdapter extends BaseAdapter {
@@ -206,11 +223,7 @@ public class ConvertMe extends AppCompatActivity {
                 unitsList.setItemChecked(position, true);
             }
 
-            double p = (lastValue - collection[currentCategory].getItems()[currentUnitIndex].getOffset())
-                    / collection[currentCategory].getItems()[currentUnitIndex].getMultiplier();
-            p *= collection[currentCategory].getItems()[position].getMultiplier();
-            p += collection[currentCategory].getItems()[position].getOffset();
-
+            double p = getConvertedResult(position);
             String strValue;
             try{
                 if((Math.abs(p) > 1e6) || (Math.abs(p) < 1e-6 && Math.abs(p) > 0.0)){
@@ -230,9 +243,26 @@ public class ConvertMe extends AppCompatActivity {
         }
     }
 
+    private double getConvertedResult(int targetUnitIndex) {
+        double result = (lastValue - collection[currentCategory].getItems()[currentUnitIndex].getOffset())
+                / collection[currentCategory].getItems()[currentUnitIndex].getMultiplier();
+        result *= collection[currentCategory].getItems()[targetUnitIndex].getMultiplier();
+        result += collection[currentCategory].getItems()[targetUnitIndex].getOffset();
+        return result;
+    }
+
     private void hideSoftKeyboard() {
         InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         keyboard.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+    }
+
+    private void showAboutDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.menu_about))
+                .setMessage(getString(R.string.about_message))
+                .setPositiveButton(R.string.ok, null)
+                .create()
+                .show();
     }
 }
 
