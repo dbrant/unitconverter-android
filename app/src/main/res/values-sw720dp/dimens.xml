@@ -1,6 +1,10 @@
 <resources>
-    <dimen name="quantity_text_size">36sp</dimen>
     <dimen name="units_text_size">24sp</dimen>
+    <dimen name="button_text_size">30sp</dimen>
+
     <dimen name="activity_horizontal_margin">128dp</dimen>
     <dimen name="activity_vertical_margin">128dp</dimen>
+
+    <dimen name="button_width">96dp</dimen>
+    <dimen name="button_height">72dp</dimen>
 </resources>
