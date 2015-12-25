@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-def versionStart = '0.996'
+def versionStart = '1.0'
 
 def getDate() {
     def date = new Date()
@@ -16,11 +16,15 @@ android {
         applicationId "com.defianttech.convertme"
         minSdkVersion 8
         targetSdkVersion 23
-        versionCode 21
+        versionCode 22
         versionName "${versionStart}-${date}"
     }
 
     buildTypes {
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+        }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt')

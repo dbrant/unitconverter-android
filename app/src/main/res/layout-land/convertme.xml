@@ -8,28 +8,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingTop="?attr/actionBarSize">
-
-        <EditText
-            android:id="@+id/unitValueText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:gravity="center"
-            android:inputType="numberDecimal"
-            android:imeOptions="actionDone"
-            android:fontFamily="monospace"
-            android:textColor="@color/value_text"
-            android:textSize="@dimen/quantity_text_size"/>
 
         <ListView
             android:id="@+id/unitsList"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:choiceMode="singleChoice"
             android:fadeScrollbars="false"/>
+
+        <com.defianttech.convertme.NumberPadView
+            android:id="@+id/numberPad"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 

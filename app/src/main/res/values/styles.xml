@@ -7,6 +7,8 @@
 
     <style name="AppTheme" parent="MyTheme.Light">
         <item name="toolbarStyle">@style/Toolbar.ConvertMe</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
     <style name="Toolbar.ConvertMe" parent="@style/Widget.AppCompat.Toolbar">
@@ -15,5 +17,14 @@
         <item name="navigationIcon">?attr/homeAsUpIndicator</item>
     </style>
 
+    <style name="ButtonTextView">
+        <item name="android:background">@drawable/button_selector</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:layout_margin">@dimen/button_margin</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+    </style>
 
 </resources>

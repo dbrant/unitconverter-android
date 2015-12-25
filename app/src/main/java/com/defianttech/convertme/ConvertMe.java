@@ -12,21 +12,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.Html;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -47,7 +41,8 @@ public class ConvertMe extends AppCompatActivity {
     private int currentCategory = DEFAULT_CATEGORY;
     private int currentUnitIndex = DEFAULT_INDEX;
 
-    private double lastValue = DEFAULT_VALUE;
+    private double currentValue = DEFAULT_VALUE;
+    private NumberPadView numberPadView;
     private UnitListAdapter listAdapter;
     private ListView unitsList;
 
@@ -108,38 +103,17 @@ public class ConvertMe extends AppCompatActivity {
             }
         });
 
-        restoreSettings();
-        getSupportActionBar().setSelectedNavigationItem(currentCategory);
-
-        EditText unitValueText = (EditText) findViewById(R.id.unitValueText);
-        unitValueText.addTextChangedListener(new TextWatcher() {
+        numberPadView = (NumberPadView) findViewById(R.id.numberPad);
+        numberPadView.setOnValueChangedListener(new NumberPadView.OnValueChangedListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {
-                try {
-                    lastValue = Double.parseDouble(editable.toString());
-                } catch (NumberFormatException e) {
-                    lastValue = 0.0;
-                }
+            public void onValueChanged(String value) {
+                setValueFromNumberPad(value);
                 listAdapter.notifyDataSetChanged();
             }
         });
-        unitValueText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    hideSoftKeyboard();
-                    return true;
-                }
-                return false;
-            }
-        });
-        unitValueText.setText(Double.toString(lastValue));
+
+        restoreSettings();
+        getSupportActionBar().setSelectedNavigationItem(currentCategory);
     }
 
     @Override
@@ -149,7 +123,7 @@ public class ConvertMe extends AppCompatActivity {
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("currentCategory", currentCategory);
         editor.putInt("currentUnitIndex", currentUnitIndex);
-        editor.putFloat("lastValue", (float) lastValue);
+        editor.putString("currentValue", numberPadView.getCurrentValue());
         editor.commit();
     }
 
@@ -184,9 +158,18 @@ public class ConvertMe extends AppCompatActivity {
             if (currentUnitIndex >= collection[currentCategory].getItems().length) {
                 currentUnitIndex = 0;
             }
-            lastValue = settings.getFloat("lastValue", (float) DEFAULT_VALUE);
+            numberPadView.setCurrentValue(settings.getString("currentValue", "1"));
+            setValueFromNumberPad(numberPadView.getCurrentValue());
         } catch(Exception ex) {
             //ehh...
+        }
+    }
+
+    private void setValueFromNumberPad(String value) {
+        try {
+            currentValue = Double.parseDouble(value);
+        } catch (NumberFormatException e) {
+            currentValue = 0.0;
         }
     }
 
@@ -244,16 +227,11 @@ public class ConvertMe extends AppCompatActivity {
     }
 
     private double getConvertedResult(int targetUnitIndex) {
-        double result = (lastValue - collection[currentCategory].getItems()[currentUnitIndex].getOffset())
+        double result = (currentValue - collection[currentCategory].getItems()[currentUnitIndex].getOffset())
                 / collection[currentCategory].getItems()[currentUnitIndex].getMultiplier();
         result *= collection[currentCategory].getItems()[targetUnitIndex].getMultiplier();
         result += collection[currentCategory].getItems()[targetUnitIndex].getOffset();
         return result;
-    }
-
-    private void hideSoftKeyboard() {
-        InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        keyboard.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
     }
 
     private void showAboutDialog() {
