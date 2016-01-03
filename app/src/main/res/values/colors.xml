@@ -3,11 +3,11 @@
     <color name="list_item_highlight">#6080c0ff</color>
     <color name="list_item_selected">#d033b5e5</color>
     <color name="toolbar">#ff4050a0</color>
-    <color name="window_background">#fff8f8f8</color>
-    <color name="number_pad_background">#ccc</color>
+    <color name="window_background">#444</color>
+    <color name="number_pad_background">#333</color>
     <color name="number_pad_button">#46a</color>
     <color name="number_pad_button_pressed">#348</color>
-    <color name="name_text">#666</color>
-    <color name="value_text">#000</color>
-    <color name="list_divider">#ccc</color>
+    <color name="name_text">#ddd</color>
+    <color name="value_text">#f0f0f0</color>
+    <color name="list_divider">#555</color>
 </resources>

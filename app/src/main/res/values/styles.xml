@@ -1,11 +1,11 @@
 <resources>
-    <style name="MyTheme.Light" parent="Theme.AppCompat">
+    <style name="MyTheme" parent="Theme.AppCompat">
         <item name="windowActionModeOverlay">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme" parent="MyTheme.Light">
+    <style name="AppTheme" parent="MyTheme">
         <item name="toolbarStyle">@style/Toolbar.ConvertMe</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
