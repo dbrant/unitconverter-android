@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="?attr/actionBarSize">
+        android:paddingTop="?attr/actionBarSize"
+        android:animateLayoutChanges="true">
 
         <ListView
             android:id="@+id/unitsList"
@@ -19,6 +20,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:choiceMode="singleChoice"
+            android:divider="@null"
             android:fadeScrollbars="false"/>
 
         <com.defianttech.convertme.NumberPadView

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.Space;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -259,50 +260,84 @@ public class ConvertMe extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.unit_listitem, parent, false);
-            }
-            View itemContainer = convertView.findViewById(R.id.unitItemContainer);
-            TextView unitName = (TextView) convertView.findViewById(R.id.unitName);
-            TextView unitValue = (TextView) convertView.findViewById(R.id.unitValue);
-            ImageView chkEnable = (ImageView) convertView.findViewById(R.id.chkSelected);
-            unitName.setText(Html.fromHtml(collection[currentCategory].get(position).getName()));
-
-
-            AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, collection[currentCategory].get(position).isEnabled() ? ViewGroup.LayoutParams.WRAP_CONTENT : 0);
-            convertView.setLayoutParams(params);
-            //convertView.setVisibility(collection[currentCategory].get(position).isEnabled() ? View.VISIBLE : View.GONE);
-
-
-
-            if (position == currentUnitIndex) {
-                unitsList.setItemChecked(position, true);
-            }
-
+        public int getItemViewType(int position) {
             if (editModeEnabled) {
+                return 0;
+            } else {
+                return collection[currentCategory].get(position).isEnabled() ? 0 : 1;
+            }
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 2;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (editModeEnabled) {
+
+                if (convertView == null) {
+                    convertView = getLayoutInflater().inflate(R.layout.unit_listitem, parent, false);
+                }
+                View itemContainer = convertView.findViewById(R.id.unitItemContainer);
+                TextView unitName = (TextView) convertView.findViewById(R.id.unitName);
+                TextView unitValue = (TextView) convertView.findViewById(R.id.unitValue);
+                unitValue.setVisibility(View.GONE);
+                ImageView chkEnable = (ImageView) convertView.findViewById(R.id.chkSelected);
+                chkEnable.setVisibility(View.VISIBLE);
+                unitName.setText(Html.fromHtml(collection[currentCategory].get(position).getName()));
+
+                if (position == currentUnitIndex) {
+                    unitsList.setItemChecked(position, true);
+                }
+
                 itemContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                 chkEnable.setImageDrawable(getResources().getDrawable(collection[currentCategory].get(position).isEnabled() ? R.drawable.ic_check_box_black : R.drawable.ic_check_box_outline_blank_black));
-            } else {
-                itemContainer.setBackgroundDrawable(getResources().getDrawable(R.drawable.selectable_item_background));
-            }
-            chkEnable.setVisibility(editModeEnabled ? View.VISIBLE : View.GONE);
 
-            double p = getConvertedResult(position);
-            String strValue;
-            try{
-                if((Math.abs(p) > 1e6) || (Math.abs(p) < 1e-6 && Math.abs(p) > 0.0)){
-                    strValue = dfExp.format(p);
-                }else{
-                    strValue = dfNoexp.format(p);
+            } else {
+
+                if (collection[currentCategory].get(position).isEnabled()) {
+                    if (convertView == null) {
+                        convertView = getLayoutInflater().inflate(R.layout.unit_listitem, parent, false);
+                    }
+                    View itemContainer = convertView.findViewById(R.id.unitItemContainer);
+                    TextView unitName = (TextView) convertView.findViewById(R.id.unitName);
+                    TextView unitValue = (TextView) convertView.findViewById(R.id.unitValue);
+                    unitValue.setVisibility(View.VISIBLE);
+                    ImageView chkEnable = (ImageView) convertView.findViewById(R.id.chkSelected);
+                    chkEnable.setVisibility(View.GONE);
+                    unitName.setText(Html.fromHtml(collection[currentCategory].get(position).getName()));
+
+                    if (position == currentUnitIndex) {
+                        unitsList.setItemChecked(position, true);
+                    }
+
+                    itemContainer.setBackgroundDrawable(getResources().getDrawable(R.drawable.selectable_item_background));
+
+                    double p = getConvertedResult(position);
+                    String strValue;
+                    try{
+                        if((Math.abs(p) > 1e6) || (Math.abs(p) < 1e-6 && Math.abs(p) > 0.0)){
+                            strValue = dfExp.format(p);
+                        }else{
+                            strValue = dfNoexp.format(p);
+                        }
+                        if(strValue.contains("E")){
+                            strValue = strValue.replace("E", " × 10<sup><small>");
+                            strValue += "</small></sup>";
+                        }
+                        unitValue.setText(Html.fromHtml(strValue));
+                    }catch(Exception e){
+                        Log.d(TAG, "Error while rendering unit.", e);
+                    }
+                } else {
+                    if (convertView == null) {
+                        AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+                        convertView = new Space(ConvertMe.this);
+                        convertView.setLayoutParams(params);
+                    }
                 }
-                if(strValue.contains("E")){
-                    strValue = strValue.replace("E", " × 10<sup><small>");
-                    strValue += "</small></sup>";
-                }
-                unitValue.setText(Html.fromHtml(strValue));
-            }catch(Exception e){
-                Log.d(TAG, "Error while rendering unit.", e);
             }
             return convertView;
         }
