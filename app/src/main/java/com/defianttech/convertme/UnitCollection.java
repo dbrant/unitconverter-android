@@ -5,16 +5,19 @@ package com.defianttech.convertme;
  */
 public class UnitCollection {
 
-    private String name;
-
+    private final String name;
     public String getName() {
         return name;
     }
 
-    private SingleUnit[] items;
+    private final SingleUnit[] items;
 
-    public SingleUnit[] getItems() {
-        return items;
+    public SingleUnit get(int index) {
+        return items[index];
+    }
+
+    public int length() {
+        return items.length;
     }
 
     public UnitCollection(String collectionName, SingleUnit[] collectionItems) {

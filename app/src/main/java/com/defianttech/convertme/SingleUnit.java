@@ -5,18 +5,27 @@ package com.defianttech.convertme;
  */
 public class SingleUnit {
 
-    private String name;
+    private final String name;
     public String getName() { return name; }
     
-    private double multiplier;
+    private final double multiplier;
     public double getMultiplier() { return multiplier; }
     
-    private double offset;
+    private final double offset;
     public double getOffset() { return offset; }
 
+    private boolean enabled;
+    public boolean isEnabled() { return enabled; }
+    public void setEnabled(boolean enabled) { this.enabled = enabled; }
+
     public SingleUnit(String unitName, double unitMultiplier, double unitOffset) {
+        this(unitName, unitMultiplier, unitOffset, true);
+    }
+
+    public SingleUnit(String unitName, double unitMultiplier, double unitOffset, boolean enabled) {
         name = unitName;
         multiplier = unitMultiplier;
         offset = unitOffset;
+        this.enabled = enabled;
     }
 }

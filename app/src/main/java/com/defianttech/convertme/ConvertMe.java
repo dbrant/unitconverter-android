@@ -8,9 +8,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
@@ -18,9 +20,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -45,6 +51,9 @@ public class ConvertMe extends AppCompatActivity {
     private NumberPadView numberPadView;
     private UnitListAdapter listAdapter;
     private ListView unitsList;
+    private FloatingActionButton fabEdit;
+    private ActionMode actionMode;
+    private boolean editModeEnabled;
 
     private DecimalFormat dfExp = new DecimalFormat("#.#######E0");
     private DecimalFormat dfNoexp = new DecimalFormat("#.#######");
@@ -68,7 +77,7 @@ public class ConvertMe extends AppCompatActivity {
                 @Override
                 public boolean onNavigationItemSelected(int i, long l) {
                     currentCategory = i;
-                    if (currentUnitIndex >= collection[currentCategory].getItems().length) {
+                    if (currentUnitIndex >= collection[currentCategory].length()) {
                         currentUnitIndex = 0;
                     }
                     listAdapter.notifyDataSetInvalidated();
@@ -83,13 +92,20 @@ public class ConvertMe extends AppCompatActivity {
         unitsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                currentUnitIndex = position;
+                if (editModeEnabled) {
+                    collection[currentCategory].get(position).setEnabled(!collection[currentCategory].get(position).isEnabled());
+                } else {
+                    currentUnitIndex = position;
+                }
                 listAdapter.notifyDataSetChanged();
             }
         });
         unitsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                if (editModeEnabled) {
+                    return false;
+                }
                 String resultStr = String.format("%1$s", getConvertedResult(position));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
@@ -114,6 +130,45 @@ public class ConvertMe extends AppCompatActivity {
 
         restoreSettings();
         getSupportActionBar().setSelectedNavigationItem(currentCategory);
+
+        fabEdit = (FloatingActionButton) findViewById(R.id.fabEdit);
+        fabEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startSupportActionMode(new ActionMode.Callback() {
+                    @Override
+                    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                        actionMode = mode;
+                        actionMode.setTitle("Show/hide units");
+                        editModeEnabled = true;
+                        updateActionModeState();
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                        if (item.getItemId() == android.R.id.home) {
+                            mode.finish();
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public void onDestroyActionMode(ActionMode mode) {
+                        actionMode = null;
+                        editModeEnabled = false;
+                        updateActionModeState();
+                    }
+                });
+            }
+        });
+
     }
 
     @Override
@@ -155,7 +210,7 @@ public class ConvertMe extends AppCompatActivity {
                 currentCategory = DEFAULT_CATEGORY;
             }
             currentUnitIndex = settings.getInt("currentUnitIndex", DEFAULT_INDEX);
-            if (currentUnitIndex >= collection[currentCategory].getItems().length) {
+            if (currentUnitIndex >= collection[currentCategory].length()) {
                 currentUnitIndex = 0;
             }
             numberPadView.setCurrentValue(settings.getString("currentValue", "1"));
@@ -163,6 +218,17 @@ public class ConvertMe extends AppCompatActivity {
         } catch(Exception ex) {
             //ehh...
         }
+    }
+
+    private void updateActionModeState() {
+        numberPadView.setVisibility(editModeEnabled ? View.GONE : View.VISIBLE);
+        if (editModeEnabled) {
+            fabEdit.hide();
+        } else {
+            fabEdit.show();
+        }
+        unitsList.setChoiceMode(editModeEnabled ? AbsListView.CHOICE_MODE_NONE : AbsListView.CHOICE_MODE_SINGLE);
+        listAdapter.notifyDataSetChanged();
     }
 
     private void setValueFromNumberPad(String value) {
@@ -179,12 +245,12 @@ public class ConvertMe extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return collection[currentCategory].getItems().length;
+            return collection[currentCategory].length();
         }
 
         @Override
         public Object getItem(int position) {
-            return collection[currentCategory].getItems()[position];
+            return collection[currentCategory].get(position);
         }
 
         @Override
@@ -200,11 +266,27 @@ public class ConvertMe extends AppCompatActivity {
             View itemContainer = convertView.findViewById(R.id.unitItemContainer);
             TextView unitName = (TextView) convertView.findViewById(R.id.unitName);
             TextView unitValue = (TextView) convertView.findViewById(R.id.unitValue);
-            unitName.setText(Html.fromHtml(collection[currentCategory].getItems()[position].getName()));
+            ImageView chkEnable = (ImageView) convertView.findViewById(R.id.chkSelected);
+            unitName.setText(Html.fromHtml(collection[currentCategory].get(position).getName()));
+
+
+            AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, collection[currentCategory].get(position).isEnabled() ? ViewGroup.LayoutParams.WRAP_CONTENT : 0);
+            convertView.setLayoutParams(params);
+            //convertView.setVisibility(collection[currentCategory].get(position).isEnabled() ? View.VISIBLE : View.GONE);
+
+
 
             if (position == currentUnitIndex) {
                 unitsList.setItemChecked(position, true);
             }
+
+            if (editModeEnabled) {
+                itemContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                chkEnable.setImageDrawable(getResources().getDrawable(collection[currentCategory].get(position).isEnabled() ? R.drawable.ic_check_box_black : R.drawable.ic_check_box_outline_blank_black));
+            } else {
+                itemContainer.setBackgroundDrawable(getResources().getDrawable(R.drawable.selectable_item_background));
+            }
+            chkEnable.setVisibility(editModeEnabled ? View.VISIBLE : View.GONE);
 
             double p = getConvertedResult(position);
             String strValue;
@@ -227,10 +309,10 @@ public class ConvertMe extends AppCompatActivity {
     }
 
     private double getConvertedResult(int targetUnitIndex) {
-        double result = (currentValue - collection[currentCategory].getItems()[currentUnitIndex].getOffset())
-                / collection[currentCategory].getItems()[currentUnitIndex].getMultiplier();
-        result *= collection[currentCategory].getItems()[targetUnitIndex].getMultiplier();
-        result += collection[currentCategory].getItems()[targetUnitIndex].getOffset();
+        double result = (currentValue - collection[currentCategory].get(currentUnitIndex).getOffset())
+                / collection[currentCategory].get(currentUnitIndex).getMultiplier();
+        result *= collection[currentCategory].get(targetUnitIndex).getMultiplier();
+        result += collection[currentCategory].get(targetUnitIndex).getOffset();
         return result;
     }
 
