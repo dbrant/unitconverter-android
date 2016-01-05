@@ -25,9 +25,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -241,8 +239,7 @@ public class ConvertMe extends AppCompatActivity {
         } else {
             fabEdit.show();
         }
-        unitsList.setChoiceMode(editModeEnabled ? AbsListView.CHOICE_MODE_NONE : AbsListView.CHOICE_MODE_SINGLE);
-        listAdapter.notifyDataSetChanged();
+        listAdapter.notifyDataSetInvalidated();
     }
 
     private void setValueFromNumberPad(String value) {
