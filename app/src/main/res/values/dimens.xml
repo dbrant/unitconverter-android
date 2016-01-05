@@ -1,9 +1,9 @@
 <resources>
     <dimen name="units_text_size">16sp</dimen>
     <dimen name="button_text_size">20sp</dimen>
+    <dimen name="check_box_size">20dp</dimen>
 
     <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="corner_radius">3dp</dimen>
     <dimen name="button_margin">1dp</dimen>

@@ -21,19 +21,19 @@
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 style="@style/ButtonTextView"
-                android:text="1"/>
+                android:text="@string/str_1"/>
             <TextView
                 android:id="@+id/btn2"
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 style="@style/ButtonTextView"
-                android:text="2"/>
+                android:text="@string/str_2"/>
             <TextView
                 android:id="@+id/btn3"
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 style="@style/ButtonTextView"
-                android:text="3"/>
+                android:text="@string/str_3"/>
         </LinearLayout>
 
         <LinearLayout
@@ -45,19 +45,19 @@
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 style="@style/ButtonTextView"
-                android:text="4"/>
+                android:text="@string/str_4"/>
             <TextView
                 android:id="@+id/btn5"
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 style="@style/ButtonTextView"
-                android:text="5"/>
+                android:text="@string/str_5"/>
             <TextView
                 android:id="@+id/btn6"
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 style="@style/ButtonTextView"
-                android:text="6"/>
+                android:text="@string/str_6"/>
         </LinearLayout>
 
         <LinearLayout
@@ -69,19 +69,19 @@
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 style="@style/ButtonTextView"
-                android:text="7"/>
+                android:text="@string/str_7"/>
             <TextView
                 android:id="@+id/btn8"
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 style="@style/ButtonTextView"
-                android:text="8"/>
+                android:text="@string/str_8"/>
             <TextView
                 android:id="@+id/btn9"
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 style="@style/ButtonTextView"
-                android:text="9"/>
+                android:text="@string/str_9"/>
         </LinearLayout>
 
         <LinearLayout
@@ -93,19 +93,19 @@
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 style="@style/ButtonTextView"
-                android:text="±"/>
+                android:text="@string/str_pad_negate"/>
             <TextView
                 android:id="@+id/btn0"
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 style="@style/ButtonTextView"
-                android:text="0"/>
+                android:text="@string/str_0"/>
             <TextView
                 android:id="@+id/btnDecimal"
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_height"
                 style="@style/ButtonTextView"
-                android:text="."/>
+                android:text="@string/str_pad_point"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -122,14 +122,14 @@
             android:layout_width="@dimen/button_width"
             android:layout_height="@dimen/button_height"
             style="@style/ButtonTextView"
-            android:text="←"/>
+            android:text="@string/str_pad_back"/>
 
         <TextView
             android:id="@+id/btnClear"
             android:layout_width="@dimen/button_width"
             android:layout_height="@dimen/button_height"
             style="@style/ButtonTextView"
-            android:text="C"/>
+            android:text="@string/str_pad_clear"/>
 
     </LinearLayout>
 

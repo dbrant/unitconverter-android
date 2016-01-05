@@ -20,12 +20,13 @@
             android:animateLayoutChanges="true">
             <ImageView
                 android:id="@+id/chkSelected"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/check_box_size"
+                android:layout_height="@dimen/check_box_size"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_check_box_white_24dp"/>
+                android:src="@drawable/ic_check_box_white_24dp"
+                android:contentDescription="@null"/>
             <TextView
                 android:id="@+id/unitName"
                 android:layout_width="wrap_content"
