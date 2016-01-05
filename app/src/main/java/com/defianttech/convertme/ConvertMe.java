@@ -43,7 +43,7 @@ public class ConvertMe extends AppCompatActivity {
     private static final int DEFAULT_INDEX = 2; //default to "centimeter"
     private static final double DEFAULT_VALUE = 1.0;
 
-    private final UnitCollection[] collection = UnitCollection.COLLECTION;
+    private final UnitCollection[] collections = UnitCollection.COLLECTION;
 
     private int currentCategory = DEFAULT_CATEGORY;
     private int currentUnitIndex = DEFAULT_INDEX;
@@ -64,9 +64,9 @@ public class ConvertMe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.convertme);
 
-        String[] unitCategories = new String[collection.length];
-        for(int i=0; i<collection.length; i++){
-        	unitCategories[i] = collection[i].getName();
+        String[] unitCategories = new String[collections.length];
+        for(int i=0; i<collections.length; i++){
+        	unitCategories[i] = collections[i].getName();
         }
         SpinnerAdapter categoryAdapter = new ArrayAdapter(this, R.layout.unit_categoryitem, unitCategories);
 
@@ -78,7 +78,7 @@ public class ConvertMe extends AppCompatActivity {
                 @Override
                 public boolean onNavigationItemSelected(int i, long l) {
                     currentCategory = i;
-                    if (currentUnitIndex >= collection[currentCategory].length()) {
+                    if (currentUnitIndex >= collections[currentCategory].length()) {
                         currentUnitIndex = 0;
                     }
                     listAdapter.notifyDataSetInvalidated();
@@ -94,7 +94,7 @@ public class ConvertMe extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (editModeEnabled) {
-                    collection[currentCategory].get(position).setEnabled(!collection[currentCategory].get(position).isEnabled());
+                    collections[currentCategory].get(position).setEnabled(!collections[currentCategory].get(position).isEnabled());
                 } else {
                     currentUnitIndex = position;
                 }
@@ -175,12 +175,7 @@ public class ConvertMe extends AppCompatActivity {
     @Override
     public void onStop(){
         super.onStop();
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putInt("currentCategory", currentCategory);
-        editor.putInt("currentUnitIndex", currentUnitIndex);
-        editor.putString("currentValue", numberPadView.getCurrentValue());
-        editor.commit();
+        saveSettings();
     }
 
     @Override
@@ -203,19 +198,37 @@ public class ConvertMe extends AppCompatActivity {
         return false;
     }
 
+    private void saveSettings() {
+        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, 0).edit();
+        editor.putInt("currentCategory", currentCategory);
+        editor.putInt("currentUnitIndex", currentUnitIndex);
+        editor.putString("currentValue", numberPadView.getCurrentValue());
+        for (UnitCollection col : collections) {
+            for (SingleUnit unit : col.getItems()) {
+                editor.putBoolean(unit.getName(), unit.isEnabled());
+            }
+        }
+        editor.commit();
+    }
+
     private void restoreSettings() {
         try {
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-            currentCategory = settings.getInt("currentCategory", DEFAULT_CATEGORY);
-            if (currentCategory >= collection.length) {
+            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
+            currentCategory = prefs.getInt("currentCategory", DEFAULT_CATEGORY);
+            if (currentCategory >= collections.length) {
                 currentCategory = DEFAULT_CATEGORY;
             }
-            currentUnitIndex = settings.getInt("currentUnitIndex", DEFAULT_INDEX);
-            if (currentUnitIndex >= collection[currentCategory].length()) {
+            currentUnitIndex = prefs.getInt("currentUnitIndex", DEFAULT_INDEX);
+            if (currentUnitIndex >= collections[currentCategory].length()) {
                 currentUnitIndex = 0;
             }
-            numberPadView.setCurrentValue(settings.getString("currentValue", "1"));
+            numberPadView.setCurrentValue(prefs.getString("currentValue", "1"));
             setValueFromNumberPad(numberPadView.getCurrentValue());
+            for (UnitCollection col : collections) {
+                for (SingleUnit unit : col.getItems()) {
+                    unit.setEnabled(prefs.getBoolean(unit.getName(), true));
+                }
+            }
         } catch(Exception ex) {
             //ehh...
         }
@@ -246,12 +259,12 @@ public class ConvertMe extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return collection[currentCategory].length();
+            return collections[currentCategory].length();
         }
 
         @Override
         public Object getItem(int position) {
-            return collection[currentCategory].get(position);
+            return collections[currentCategory].get(position);
         }
 
         @Override
@@ -264,7 +277,7 @@ public class ConvertMe extends AppCompatActivity {
             if (editModeEnabled) {
                 return 0;
             } else {
-                return collection[currentCategory].get(position).isEnabled() ? 0 : 1;
+                return collections[currentCategory].get(position).isEnabled() ? 0 : 1;
             }
         }
 
@@ -286,18 +299,18 @@ public class ConvertMe extends AppCompatActivity {
                 unitValue.setVisibility(View.GONE);
                 ImageView chkEnable = (ImageView) convertView.findViewById(R.id.chkSelected);
                 chkEnable.setVisibility(View.VISIBLE);
-                unitName.setText(Html.fromHtml(collection[currentCategory].get(position).getName()));
+                unitName.setText(Html.fromHtml(collections[currentCategory].get(position).getName()));
 
                 if (position == currentUnitIndex) {
                     unitsList.setItemChecked(position, true);
                 }
 
                 itemContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                chkEnable.setImageDrawable(getResources().getDrawable(collection[currentCategory].get(position).isEnabled() ? R.drawable.ic_check_box_black : R.drawable.ic_check_box_outline_blank_black));
+                chkEnable.setImageDrawable(getResources().getDrawable(collections[currentCategory].get(position).isEnabled() ? R.drawable.ic_check_box_black : R.drawable.ic_check_box_outline_blank_black));
 
             } else {
 
-                if (collection[currentCategory].get(position).isEnabled()) {
+                if (collections[currentCategory].get(position).isEnabled()) {
                     if (convertView == null) {
                         convertView = getLayoutInflater().inflate(R.layout.unit_listitem, parent, false);
                     }
@@ -307,7 +320,7 @@ public class ConvertMe extends AppCompatActivity {
                     unitValue.setVisibility(View.VISIBLE);
                     ImageView chkEnable = (ImageView) convertView.findViewById(R.id.chkSelected);
                     chkEnable.setVisibility(View.GONE);
-                    unitName.setText(Html.fromHtml(collection[currentCategory].get(position).getName()));
+                    unitName.setText(Html.fromHtml(collections[currentCategory].get(position).getName()));
 
                     if (position == currentUnitIndex) {
                         unitsList.setItemChecked(position, true);
@@ -344,10 +357,10 @@ public class ConvertMe extends AppCompatActivity {
     }
 
     private double getConvertedResult(int targetUnitIndex) {
-        double result = (currentValue - collection[currentCategory].get(currentUnitIndex).getOffset())
-                / collection[currentCategory].get(currentUnitIndex).getMultiplier();
-        result *= collection[currentCategory].get(targetUnitIndex).getMultiplier();
-        result += collection[currentCategory].get(targetUnitIndex).getOffset();
+        double result = (currentValue - collections[currentCategory].get(currentUnitIndex).getOffset())
+                / collections[currentCategory].get(currentUnitIndex).getMultiplier();
+        result *= collections[currentCategory].get(targetUnitIndex).getMultiplier();
+        result += collections[currentCategory].get(targetUnitIndex).getOffset();
         return result;
     }
 

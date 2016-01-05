@@ -11,6 +11,9 @@ public class UnitCollection {
     }
 
     private final SingleUnit[] items;
+    public SingleUnit[] getItems() {
+        return items;
+    }
 
     public SingleUnit get(int index) {
         return items[index];
