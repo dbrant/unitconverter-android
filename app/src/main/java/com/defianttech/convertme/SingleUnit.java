@@ -1,7 +1,7 @@
 package com.defianttech.convertme;
 
-/**
- * @author Dmitry Brant
+/*
+ * Copyright (c) 2014-2016 Dmitry Brant
  */
 public class SingleUnit {
 

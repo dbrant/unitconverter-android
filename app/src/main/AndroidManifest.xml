@@ -10,7 +10,7 @@
         <uses-library android:required="false" android:name="com.sec.android.app.multiwindow"/>
         <meta-data android:name="com.sec.android.support.multiwindow" android:value="true" />
 
-        <activity android:name="ConvertMe"
+        <activity android:name="ConvertActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>

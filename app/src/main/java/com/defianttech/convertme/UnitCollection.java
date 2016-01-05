@@ -1,7 +1,7 @@
 package com.defianttech.convertme;
 
 /*
- * Copyright (C) 2014-2016 Defiant Technologies, LLC
+ * Copyright (c) 2014-2016 Dmitry Brant
  */
 public class UnitCollection {
 

@@ -32,11 +32,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /*
- * Copyright (C) 2014-2016 Defiant Technologies, LLC
+ * Copyright (c) 2014-2016 Dmitry Brant
  */
-public class ConvertMe extends AppCompatActivity {
+public class ConvertActivity extends AppCompatActivity {
     private static final String TAG = "ConvertMe";
     private static final String PREFS_NAME = "ConvertMePrefs";
+    private static final String KEY_CURRENT_CATEGORY = "currentCategory";
+    private static final String KEY_CURRENT_UNIT = "currentUnitIndex";
+    private static final String KEY_CURRENT_VALUE = "currentValue";
+
     private static final int DEFAULT_CATEGORY = 5; //default to "distance"
     private static final int DEFAULT_INDEX = 2; //default to "centimeter"
     private static final double DEFAULT_VALUE = 1.0;
@@ -113,7 +117,7 @@ public class ConvertMe extends AppCompatActivity {
                     android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     clipboard.setText(resultStr);
                 }
-                Toast.makeText(ConvertMe.this, R.string.menu_clipboard_copied, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ConvertActivity.this, R.string.menu_clipboard_copied, Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -134,40 +138,9 @@ public class ConvertMe extends AppCompatActivity {
         fabEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startSupportActionMode(new ActionMode.Callback() {
-                    @Override
-                    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                        actionMode = mode;
-                        actionMode.setTitle("Show/hide units");
-                        editModeEnabled = true;
-                        updateActionModeState();
-                        return true;
-                    }
-
-                    @Override
-                    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                        if (item.getItemId() == android.R.id.home) {
-                            mode.finish();
-                            return true;
-                        }
-                        return false;
-                    }
-
-                    @Override
-                    public void onDestroyActionMode(ActionMode mode) {
-                        actionMode = null;
-                        editModeEnabled = false;
-                        updateActionModeState();
-                    }
-                });
+                startSupportActionMode(new EditUnitsActionModeCallback());
             }
         });
-
     }
 
     @Override
@@ -198,9 +171,9 @@ public class ConvertMe extends AppCompatActivity {
 
     private void saveSettings() {
         SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, 0).edit();
-        editor.putInt("currentCategory", currentCategory);
-        editor.putInt("currentUnitIndex", currentUnitIndex);
-        editor.putString("currentValue", numberPadView.getCurrentValue());
+        editor.putInt(KEY_CURRENT_CATEGORY, currentCategory);
+        editor.putInt(KEY_CURRENT_UNIT, currentUnitIndex);
+        editor.putString(KEY_CURRENT_VALUE, numberPadView.getCurrentValue());
         for (UnitCollection col : collections) {
             for (SingleUnit unit : col.getItems()) {
                 editor.putBoolean(unit.getName(), unit.isEnabled());
@@ -212,15 +185,15 @@ public class ConvertMe extends AppCompatActivity {
     private void restoreSettings() {
         try {
             SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
-            currentCategory = prefs.getInt("currentCategory", DEFAULT_CATEGORY);
+            currentCategory = prefs.getInt(KEY_CURRENT_CATEGORY, DEFAULT_CATEGORY);
             if (currentCategory >= collections.length) {
                 currentCategory = DEFAULT_CATEGORY;
             }
-            currentUnitIndex = prefs.getInt("currentUnitIndex", DEFAULT_INDEX);
+            currentUnitIndex = prefs.getInt(KEY_CURRENT_UNIT, DEFAULT_INDEX);
             if (currentUnitIndex >= collections[currentCategory].length()) {
                 currentUnitIndex = 0;
             }
-            numberPadView.setCurrentValue(prefs.getString("currentValue", "1"));
+            numberPadView.setCurrentValue(prefs.getString(KEY_CURRENT_VALUE, "1"));
             setValueFromNumberPad(numberPadView.getCurrentValue());
             for (UnitCollection col : collections) {
                 for (SingleUnit unit : col.getItems()) {
@@ -247,6 +220,38 @@ public class ConvertMe extends AppCompatActivity {
             currentValue = Double.parseDouble(value);
         } catch (NumberFormatException e) {
             currentValue = 0.0;
+        }
+    }
+
+    private final class EditUnitsActionModeCallback implements ActionMode.Callback {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            actionMode = mode;
+            actionMode.setTitle(getString(R.string.show_hide_units));
+            editModeEnabled = true;
+            updateActionModeState();
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            if (item.getItemId() == android.R.id.home) {
+                mode.finish();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode = null;
+            editModeEnabled = false;
+            updateActionModeState();
         }
     }
 
@@ -344,7 +349,7 @@ public class ConvertMe extends AppCompatActivity {
                 } else {
                     if (convertView == null) {
                         AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-                        convertView = new Space(ConvertMe.this);
+                        convertView = new Space(ConvertActivity.this);
                         convertView.setLayoutParams(params);
                     }
                 }
