@@ -35,9 +35,8 @@
         android:layout_height="wrap_content"
         style="@style/FloatingActionButton"
         android:layout_gravity="bottom|end"
-        android:src="@drawable/ic_settings_black_24dp"
+        android:src="@drawable/ic_settings_white_24dp"
         app:backgroundTint="@color/fab_color"
-        android:tint="@android:color/white"
         app:elevation="4sp"
         app:borderWidth="0dp" />
 

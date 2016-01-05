@@ -25,8 +25,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_check_box_black"
-                android:tint="@android:color/white"/>
+                android:src="@drawable/ic_check_box_white_24dp"/>
             <TextView
                 android:id="@+id/unitName"
                 android:layout_width="wrap_content"

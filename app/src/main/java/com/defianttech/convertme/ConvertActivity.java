@@ -308,7 +308,7 @@ public class ConvertActivity extends AppCompatActivity {
                 }
 
                 itemContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                chkEnable.setImageDrawable(getResources().getDrawable(collections[currentCategory].get(position).isEnabled() ? R.drawable.ic_check_box_black : R.drawable.ic_check_box_outline_blank_black));
+                chkEnable.setImageDrawable(getResources().getDrawable(collections[currentCategory].get(position).isEnabled() ? R.drawable.ic_check_box_white_24dp : R.drawable.ic_check_box_outline_blank_white_24dp));
 
             } else {
 
