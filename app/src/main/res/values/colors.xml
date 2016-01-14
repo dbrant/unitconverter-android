@@ -6,6 +6,7 @@
     <color name="number_pad_background">#333</color>
     <color name="number_pad_button">#46a</color>
     <color name="number_pad_button_pressed">#348</color>
+    <color name="category_text_background">#2fff</color>
     <color name="name_text">#ddd</color>
     <color name="value_text">#f0f0f0</color>
     <color name="list_divider">#555</color>

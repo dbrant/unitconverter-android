@@ -6,6 +6,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
-    android:textAppearance="?android:attr/textAppearanceMedium"
-    android:background="@drawable/selectable_item_background">
+    android:textSize="@dimen/units_text_size"
+    android:textColor="@android:color/white">
 </TextView>

@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/*
+ * Copyright (c) 2014-2016 Dmitry Brant
+ */
 public class NumberPadView extends LinearLayout {
 
     public interface OnValueChangedListener {

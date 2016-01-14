@@ -14,9 +14,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +54,7 @@ public class ConvertActivity extends AppCompatActivity {
     private int currentUnitIndex = DEFAULT_INDEX;
 
     private double currentValue = DEFAULT_VALUE;
+    private Toolbar toolbar;
     private NumberPadView numberPadView;
     private UnitListAdapter listAdapter;
     private ListView unitsList;
@@ -72,7 +76,8 @@ public class ConvertActivity extends AppCompatActivity {
         }
         SpinnerAdapter categoryAdapter = new ArrayAdapter(this, R.layout.unit_categoryitem, unitCategories);
 
-        setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -84,6 +89,7 @@ public class ConvertActivity extends AppCompatActivity {
                         currentUnitIndex = 0;
                     }
                     listAdapter.notifyDataSetInvalidated();
+                    setCategoryBackground();
                     return true;
                 }
             });
@@ -109,15 +115,7 @@ public class ConvertActivity extends AppCompatActivity {
                 if (editModeEnabled) {
                     return false;
                 }
-                String resultStr = String.format("%1$s", getConvertedResult(position));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                    clipboard.setPrimaryClip(ClipData.newPlainText("", resultStr));
-                } else {
-                    android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    clipboard.setText(resultStr);
-                }
-                Toast.makeText(ConvertActivity.this, R.string.menu_clipboard_copied, Toast.LENGTH_SHORT).show();
+                doLongPressMenu(view.findViewById(R.id.unitValue), position);
                 return true;
             }
         });
@@ -213,6 +211,15 @@ public class ConvertActivity extends AppCompatActivity {
             fabEdit.show();
         }
         listAdapter.notifyDataSetInvalidated();
+    }
+
+    private void setCategoryBackground() {
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            View v = toolbar.getChildAt(i);
+            if (v instanceof Spinner) {
+                ((Spinner) v).getChildAt(0).setBackgroundDrawable(getResources().getDrawable(R.drawable.category_shape));
+            }
+        }
     }
 
     private void setValueFromNumberPad(String value) {
@@ -333,11 +340,7 @@ public class ConvertActivity extends AppCompatActivity {
                     double p = getConvertedResult(position);
                     String strValue;
                     try{
-                        if((Math.abs(p) > 1e6) || (Math.abs(p) < 1e-6 && Math.abs(p) > 0.0)){
-                            strValue = dfExp.format(p);
-                        }else{
-                            strValue = dfNoexp.format(p);
-                        }
+                        strValue = getValueStr(p);
                         if(strValue.contains("E")){
                             strValue = strValue.replace("E", " × 10<sup><small>");
                             strValue += "</small></sup>";
@@ -364,6 +367,53 @@ public class ConvertActivity extends AppCompatActivity {
         result *= collections[currentCategory].get(targetUnitIndex).getMultiplier();
         result += collections[currentCategory].get(targetUnitIndex).getOffset();
         return result;
+    }
+
+    private String getValueStr(double val) {
+        if((Math.abs(val) > 1e6) || (Math.abs(val) < 1e-6 && Math.abs(val) > 0.0)){
+            return dfExp.format(val);
+        } else {
+            return dfNoexp.format(val);
+        }
+    }
+
+    private void doLongPressMenu(View parentView, final int position) {
+        PopupMenu menu = new PopupMenu(this, parentView, Gravity.END | Gravity.CENTER_HORIZONTAL);
+        menu.getMenuInflater().inflate(R.menu.menu_long_press, menu.getMenu());
+        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                String resultStr;
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_copy_value:
+                        resultStr = String.format("%1$s", getValueStr(getConvertedResult(position)));
+                        setClipboardText(resultStr);
+                        return true;
+                    case R.id.menu_copy_row:
+                        resultStr = String.format("%1$s %2$s = %3$s %4$s", getValueStr(currentValue),
+                                collections[currentCategory].get(currentUnitIndex).getName(),
+                                getValueStr(getConvertedResult(position)),
+                                collections[currentCategory].get(position).getName());
+                        setClipboardText(resultStr);
+                        return true;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
+        menu.show();
+    }
+
+    private void setClipboardText(String text) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            clipboard.setPrimaryClip(ClipData.newPlainText("", text));
+        } else {
+            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setText(text);
+        }
+        Toast.makeText(ConvertActivity.this, R.string.menu_clipboard_copied, Toast.LENGTH_SHORT).show();
     }
 
     private void showAboutDialog() {
