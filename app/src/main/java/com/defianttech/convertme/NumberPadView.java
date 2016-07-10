@@ -3,6 +3,8 @@ package com.defianttech.convertme;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,7 +20,7 @@ public class NumberPadView extends LinearLayout {
     }
 
     private String currentValue = "0";
-    private OnValueChangedListener valueChangedListener;
+    @Nullable private OnValueChangedListener valueChangedListener;
 
     private OnClickListener numberClickListener = new OnClickListener() {
         @Override
@@ -47,7 +49,7 @@ public class NumberPadView extends LinearLayout {
         init(context);
     }
 
-    public void setOnValueChangedListener(OnValueChangedListener listener) {
+    public void setOnValueChangedListener(@Nullable OnValueChangedListener listener) {
         valueChangedListener = listener;
     }
 
@@ -59,7 +61,7 @@ public class NumberPadView extends LinearLayout {
         currentValue = value;
     }
 
-    private void init(Context context) {
+    private void init(@NonNull Context context) {
         inflate(context, R.layout.number_pad_view, this);
 
         findViewById(R.id.btn0).setOnClickListener(numberClickListener);
@@ -100,7 +102,7 @@ public class NumberPadView extends LinearLayout {
         });
     }
 
-    private void appendDigit(String str) {
+    private void appendDigit(@NonNull String str) {
         String curVal = currentValue;
         if (str.equals(".")) {
             if (!curVal.contains(str)) {
