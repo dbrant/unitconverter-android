@@ -1,6 +1,10 @@
 package com.defianttech.convertme;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -48,6 +52,7 @@ public class ConvertActivity extends AppCompatActivity {
     private static final int DEFAULT_INDEX = 2; //default to "centimeter"
     private static final double DEFAULT_VALUE = 1.0;
 
+    private String[] categoryNames;
     private final UnitCollection[] collections = UnitCollection.COLLECTION;
 
     private int currentCategory = DEFAULT_CATEGORY;
@@ -70,11 +75,18 @@ public class ConvertActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.convertme);
 
-        String[] unitCategories = new String[collections.length];
-        for(int i=0; i<collections.length; i++){
-        	unitCategories[i] = collections[i].getName();
+        List<String> unitCategories = new ArrayList<>();
+        for (UnitCollection collection : collections) {
+        	unitCategories.addAll(Arrays.asList(collection.getNames()));
         }
-        SpinnerAdapter categoryAdapter = new ArrayAdapter(this, R.layout.unit_categoryitem, unitCategories);
+        categoryNames = unitCategories.toArray(new String[unitCategories.size()]);
+        Arrays.sort(categoryNames, new Comparator<String>() {
+            @Override
+            public int compare(String left, String right) {
+                return left.compareTo(right);
+            }
+        });
+        SpinnerAdapter categoryAdapter = new ArrayAdapter(this, R.layout.unit_categoryitem, categoryNames);
 
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
@@ -84,7 +96,7 @@ public class ConvertActivity extends AppCompatActivity {
             getSupportActionBar().setListNavigationCallbacks(categoryAdapter, new ActionBar.OnNavigationListener() {
                 @Override
                 public boolean onNavigationItemSelected(int i, long l) {
-                    currentCategory = i;
+                    currentCategory = UnitCollection.collectionIndexByName(categoryNames[i]);
                     if (currentUnitIndex >= collections[currentCategory].length()) {
                         currentUnitIndex = 0;
                     }
@@ -130,7 +142,12 @@ public class ConvertActivity extends AppCompatActivity {
         });
 
         restoreSettings();
-        getSupportActionBar().setSelectedNavigationItem(currentCategory);
+
+        for (int i = 0; i < categoryNames.length; i++) {
+            if (categoryNames[i].equals(collections[currentCategory].getNames()[0])) {
+                getSupportActionBar().setSelectedNavigationItem(i);
+            }
+        }
 
         fabEdit = (FloatingActionButton) findViewById(R.id.fabEdit);
         fabEdit.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +194,7 @@ public class ConvertActivity extends AppCompatActivity {
                 editor.putBoolean(unit.getName(), unit.isEnabled());
             }
         }
-        editor.commit();
+        editor.apply();
     }
 
     private void restoreSettings() {

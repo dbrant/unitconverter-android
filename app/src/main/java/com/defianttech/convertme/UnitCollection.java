@@ -5,9 +5,9 @@ package com.defianttech.convertme;
  */
 public class UnitCollection {
 
-    private final String name;
-    public String getName() {
-        return name;
+    private final String[] names;
+    public String[] getNames() {
+        return names;
     }
 
     private final SingleUnit[] items;
@@ -24,8 +24,23 @@ public class UnitCollection {
     }
 
     public UnitCollection(String collectionName, SingleUnit[] collectionItems) {
-        name = collectionName;
+        this(new String[] { collectionName }, collectionItems);
+    }
+
+    public UnitCollection(String[] collectionNames, SingleUnit[] collectionItems) {
+        names = collectionNames;
         items = collectionItems;
+    }
+
+    public static int collectionIndexByName(String name) {
+        for (int i = 0; i < COLLECTION.length; i++) {
+            for (String cName : COLLECTION[i].getNames()) {
+                if (cName.equals(name)) {
+                    return i;
+                }
+            }
+        }
+        return 0;
     }
 
     public final static UnitCollection[] COLLECTION = new UnitCollection[]{
@@ -65,6 +80,8 @@ public class UnitCollection {
                             new SingleUnit("mile²", 3.86102158542445847e-7, 0.0),
                             new SingleUnit("millimeter²", 1.0e+6, 0.0),
                             new SingleUnit("yard²", 1.19599004630108026, 0.0),
+                            new SingleUnit("rood", 9.88421525868661369e-4, 0.0),
+                            new SingleUnit("perch", 0.039536861034746455, 0.0),
 
                     }),
 
@@ -73,17 +90,25 @@ public class UnitCollection {
                             new SingleUnit("bit", 8192.0, 0.0),
                             new SingleUnit("byte", 1024.0, 0.0),
                             new SingleUnit("nibble", 2048.0, 0.0),
-                            new SingleUnit("kilobyte (KB)", 1.0, 0.0),
-                            new SingleUnit("megabyte (MB)", 9.765625e-4, 0.0),
-                            new SingleUnit("gigabyte (GB)", 9.5367431640625e-7, 0.0),
-                            new SingleUnit("terabyte (TB)", 9.313225746154785e-10, 0.0),
-                            new SingleUnit("petabyte (PB)", 9.09494701772928238e-13, 0.0),
-                            new SingleUnit("exabyte (EB)", 8.88178419700125232e-16, 0.0),
-                            new SingleUnit("zettabyte (ZB)", 8.67361737988403547e-19, 0.0),
-                            new SingleUnit("yottabyte (YB)", 8.47032947254300339e-22, 0.0),
                             new SingleUnit("kilobit", 8.0, 0.0),
                             new SingleUnit("megabit", 0.0078125, 0.0),
                             new SingleUnit("gigabit", 7.62939453125e-6, 0.0),
+                            new SingleUnit("kilobyte (KB)", 1.024, 0.0),
+                            new SingleUnit("kibibyte (KiB)", 1.0, 0.0),
+                            new SingleUnit("megabyte (MB)", 1.024e-3, 0.0),
+                            new SingleUnit("mebibyte (MiB)", 9.765625e-4, 0.0),
+                            new SingleUnit("gigabyte (GB)", 1.024e-6, 0.0),
+                            new SingleUnit("gibibyte (GiB)", 9.5367431640625e-7, 0.0),
+                            new SingleUnit("terabyte (TB)", 1.024e-9, 0.0),
+                            new SingleUnit("tebibyte (TiB)", 9.31322574615478515625e-10, 0.0),
+                            new SingleUnit("petabyte (PB)", 1.024e-12, 0.0),
+                            new SingleUnit("pebibyte (PiB)", 9.094947017729282379e-13, 0.0),
+                            new SingleUnit("exabyte (EB)", 1.024e-15, 0.0),
+                            new SingleUnit("exbibyte (EiB)", 8.881784197001252323e-16, 0.0),
+                            new SingleUnit("zettabyte (ZB)", 1.024e-18, 0.0),
+                            new SingleUnit("zebibyte (ZiB)", 8.673617379884035472e-19, 0.0),
+                            new SingleUnit("yottabyte (YB)", 1.024e-21, 0.0),
+                            new SingleUnit("yobibyte (YiB)", 8.47032947254300339e-22, 0.0),
 
                     }),
 
@@ -101,7 +126,7 @@ public class UnitCollection {
 
                     }),
 
-            new UnitCollection("Distance",
+            new UnitCollection(new String[] { "Distance", "Length" },
                     new SingleUnit[]{
                             new SingleUnit("angstrom (Å)", 1.0e+10, 0.0),
                             new SingleUnit("astr. unit (AU)", 6.6844919786e-12, 0.0),
@@ -125,6 +150,11 @@ public class UnitCollection {
                             new SingleUnit("parsec (pc)", 3.2407786545502059e-17, 0.0),
                             new SingleUnit("span", 4.374453193350831, 0.0),
                             new SingleUnit("yard (yd)", 1.0936132983377078, 0.0),
+                            new SingleUnit("chain", 0.0497096953789867, 0.0),
+                            new SingleUnit("link", 4.97096953789867, 0.0),
+                            new SingleUnit("rod", 0.198838781515947, 0.0),
+                            new SingleUnit("league", 2.07123730745778e-4, 0.0),
+                            new SingleUnit("cable", 0.0053961182483769, 0.0),
 
                     }),
 
@@ -165,12 +195,12 @@ public class UnitCollection {
                             new SingleUnit("liter/sec", 1000.0, 0.0),
                             new SingleUnit("liter/min", 60000.0, 0.0),
                             new SingleUnit("liter/hr", 3600000.0, 0.0),
-                            new SingleUnit("US gallon/day", 22820000.0, 0.0),
-                            new SingleUnit("US gallon/hr (gph)", 951000.0, 0.0),
-                            new SingleUnit("US gallon/min (gpm)", 15850.0, 0.0),
-                            new SingleUnit("Imp. gallon/day", 19010000.0, 0.0),
-                            new SingleUnit("Imp. gallon/hr", 791900.0, 0.0),
-                            new SingleUnit("Imp. gallon/min", 13200.0, 0.0),
+                            new SingleUnit("gallon/day (US)", 22820000.0, 0.0),
+                            new SingleUnit("gallon/hr (US) (gph)", 951000.0, 0.0),
+                            new SingleUnit("gallon/min (US) (gpm)", 15850.0, 0.0),
+                            new SingleUnit("gallon/day (Imp)", 19010000.0, 0.0),
+                            new SingleUnit("gallon/hr (Imp)", 791900.0, 0.0),
+                            new SingleUnit("gallon/min (Imp)", 13200.0, 0.0),
                     }),
 
             new UnitCollection("Force",
@@ -202,13 +232,15 @@ public class UnitCollection {
                             new SingleUnit("watt/cm²", 0.00146412884334, 0.0),
                     }),
 
-            new UnitCollection("Mass",
+            new UnitCollection(new String[] { "Mass", "Weight" },
                     new SingleUnit[]{
                             new SingleUnit("carat", 5000.0, 0.0),
+                            new SingleUnit("drachm", 564.3833911932866, 0.0),
                             new SingleUnit("earth mass (M<sub><small>⊕</small></sub>)", 1.67400398206061581e-25, 0.0),
                             new SingleUnit("grain (gr)", 15432.35835294143065, 0.0),
                             new SingleUnit("gram (g)", 1000.0, 0.0),
                             new SingleUnit("jupiter mass (M<sub><small><small>Ј</small></small></sub>)", 5.266979064014641e-28, 0.0),
+                            new SingleUnit("hundredweight (cwt)", 0.0196841305522212, 0.0),
                             new SingleUnit("kilogram (kg)", 1.0, 0.0),
                             new SingleUnit("megagram (Mg)", 0.001, 0.0),
                             new SingleUnit("metric ton (t)", 0.001, 0.0),
@@ -217,6 +249,7 @@ public class UnitCollection {
                             new SingleUnit("ounce (oz)", 35.2739619806867227, 0.0),
                             new SingleUnit("pennyweight (dwt)", 643.01493137255961, 0.0),
                             new SingleUnit("pound (lb)", 2.20462262379292017, 0.0),
+                            new SingleUnit("slug", 0.068521765843675, 0.0),
                             new SingleUnit("solar mass (M<sub><small>☉</small></sub>)", 5.0278543128934296e-31, 0.0),
                             new SingleUnit("stone", 0.157473044556637155, 0.0),
                             new SingleUnit("ton (tn)", 0.00110231131189646, 0.0),
@@ -372,19 +405,27 @@ public class UnitCollection {
                     new SingleUnit[]{
                             new SingleUnit("centimeter³", 1000.0, 0.0),
                             new SingleUnit("meter³", 0.001, 0.0),
-                            new SingleUnit("cup", 4.22675283773037465, 0.0),
                             new SingleUnit("dram", 270.51218161474397756, 0.0),
+                            new SingleUnit("yard³", 0.0013079506193144, 0.0),
                             new SingleUnit("foot³", 0.0353146667214886, 0.0),
-                            new SingleUnit("gallon", 0.264172052358148416, 0.0),
                             new SingleUnit("inch³", 61.023744094732284, 0.0),
                             new SingleUnit("liter", 1.0, 0.0),
                             new SingleUnit("milliliter", 1000.0, 0.0),
-                            new SingleUnit("ounce", 33.81402270184299719, 0.0),
-                            new SingleUnit("pint", 2.11337641886518732, 0.0),
-                            new SingleUnit("quart", 1.05668820943259366, 0.0),
+                            new SingleUnit("gallon (US)", 0.264172052358148416, 0.0),
+                            new SingleUnit("quart (US)", 1.05668820943259366, 0.0),
+                            new SingleUnit("pint (US)", 2.11337641886518732, 0.0),
+                            new SingleUnit("ounce (US)", 33.81402270184299719, 0.0),
+                            new SingleUnit("gallon (Imp)", 0.21996924829908779, 0.0),
+                            new SingleUnit("quart (Imp)", 0.87987699319635115, 0.0),
+                            new SingleUnit("pint (Imp)", 1.7597539863927023, 0.0),
+                            new SingleUnit("ounce (Imp)", 35.195079727854046, 0.0),
+                            new SingleUnit("gill (Imp)", 7.0390159455708092, 0.0),
+                            new SingleUnit("cup", 4.22675283773037465, 0.0),
                             new SingleUnit("tablespoon", 67.62804540368599439, 0.0),
                             new SingleUnit("teaspoon", 202.88413621105798317, 0.0),
-                            new SingleUnit("yard³", 0.0013079506193144, 0.0),
+                            new SingleUnit("scruple (℈)", 844.681913473253688, 0.0),
+                            new SingleUnit("drachm (ʒ)", 281.560637822832368, 0.0),
+                            new SingleUnit("minim (♏)", 16893.63826937945525, 0.0),
                     }),
 
     };
