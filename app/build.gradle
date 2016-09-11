@@ -16,7 +16,7 @@ android {
         applicationId "com.defianttech.convertme"
         minSdkVersion 9
         targetSdkVersion 24
-        versionCode 27
+        versionCode 28
         versionName "${versionStart}-${date}"
     }
 
