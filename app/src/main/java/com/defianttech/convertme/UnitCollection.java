@@ -254,6 +254,8 @@ public class UnitCollection {
                             new SingleUnit("stone", 0.157473044556637155, 0.0),
                             new SingleUnit("ton (tn)", 0.00110231131189646, 0.0),
                             new SingleUnit("troy ounce (oz)", 32.15074656862798, 0.0),
+                            new SingleUnit("assload", 0.333333333333333333, 0.0),
+                            new SingleUnit("shit-ton", 0.00000055115565594823, 0.0),
                     }),
 
             new UnitCollection("Power",
