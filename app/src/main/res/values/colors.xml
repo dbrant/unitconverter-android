@@ -2,6 +2,7 @@
 <resources>
     <color name="list_item_highlight">#6080c0ff</color>
     <color name="toolbar">#ff4050a0</color>
+    <color name="statusBar">#ff203080</color>
     <color name="window_background">#444</color>
     <color name="number_pad_background">#333</color>
     <color name="number_pad_button">#46a</color>

@@ -14,15 +14,11 @@ public class SingleUnit {
     private final double offset;
     public double getOffset() { return offset; }
 
-    private boolean enabled;
+    private boolean enabled = true;
     public boolean isEnabled() { return enabled; }
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
     public SingleUnit(String unitName, double unitMultiplier, double unitOffset) {
-        this(unitName, unitMultiplier, unitOffset, true);
-    }
-
-    public SingleUnit(String unitName, double unitMultiplier, double unitOffset, boolean enabled) {
         name = unitName;
         multiplier = unitMultiplier;
         offset = unitOffset;

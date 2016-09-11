@@ -10,9 +10,13 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.Space;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -53,7 +57,7 @@ public class ConvertActivity extends AppCompatActivity {
     private static final double DEFAULT_VALUE = 1.0;
 
     private String[] categoryNames;
-    private final UnitCollection[] collections = UnitCollection.COLLECTION;
+    private UnitCollection[] collections;
 
     private int currentCategory = DEFAULT_CATEGORY;
     private int currentUnitIndex = DEFAULT_INDEX;
@@ -75,6 +79,7 @@ public class ConvertActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.convertme);
 
+        collections = UnitCollection.getAllUnits(this);
         List<String> unitCategories = new ArrayList<>();
         for (UnitCollection collection : collections) {
         	unitCategories.addAll(Arrays.asList(collection.getNames()));
@@ -91,12 +96,13 @@ public class ConvertActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
+            // TODO: move away from this deprecated implementation:
             getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setListNavigationCallbacks(categoryAdapter, new ActionBar.OnNavigationListener() {
                 @Override
                 public boolean onNavigationItemSelected(int i, long l) {
-                    currentCategory = UnitCollection.collectionIndexByName(categoryNames[i]);
+                    currentCategory = UnitCollection.collectionIndexByName(collections, categoryNames[i]);
                     if (currentUnitIndex >= collections[currentCategory].length()) {
                         currentUnitIndex = 0;
                     }
@@ -114,7 +120,8 @@ public class ConvertActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (editModeEnabled) {
-                    collections[currentCategory].get(position).setEnabled(!collections[currentCategory].get(position).isEnabled());
+                    collections[currentCategory].get(position)
+                            .setEnabled(!collections[currentCategory].get(position).isEnabled());
                 } else {
                     currentUnitIndex = position;
                 }
@@ -234,7 +241,7 @@ public class ConvertActivity extends AppCompatActivity {
         for (int i = 0; i < toolbar.getChildCount(); i++) {
             View v = toolbar.getChildAt(i);
             if (v instanceof Spinner) {
-                ((Spinner) v).getChildAt(0).setBackgroundDrawable(getResources().getDrawable(R.drawable.category_shape));
+                ((Spinner) v).getChildAt(0).setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.category_shape));
             }
         }
     }
@@ -248,6 +255,8 @@ public class ConvertActivity extends AppCompatActivity {
     }
 
     private final class EditUnitsActionModeCallback implements ActionMode.Callback {
+        @ColorInt int statusBarColor;
+
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             actionMode = mode;
@@ -259,6 +268,10 @@ public class ConvertActivity extends AppCompatActivity {
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                statusBarColor = getWindow().getStatusBarColor();
+                getWindow().setStatusBarColor(Color.BLACK);
+            }
             return false;
         }
 
@@ -273,6 +286,9 @@ public class ConvertActivity extends AppCompatActivity {
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(statusBarColor);
+            }
             actionMode = null;
             editModeEnabled = false;
             updateActionModeState();
@@ -331,8 +347,12 @@ public class ConvertActivity extends AppCompatActivity {
                     unitsList.setItemChecked(position, true);
                 }
 
-                itemContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                chkEnable.setImageDrawable(getResources().getDrawable(collections[currentCategory].get(position).isEnabled() ? R.drawable.ic_check_box_white_24dp : R.drawable.ic_check_box_outline_blank_white_24dp));
+                itemContainer.setBackgroundColor(ContextCompat.getColor(ConvertActivity.this,
+                        android.R.color.transparent));
+                chkEnable.setImageDrawable(ContextCompat.getDrawable(ConvertActivity.this,
+                        collections[currentCategory].get(position).isEnabled()
+                                ? R.drawable.ic_check_box_white_24dp
+                                : R.drawable.ic_check_box_outline_blank_white_24dp));
 
             } else {
 
@@ -352,7 +372,7 @@ public class ConvertActivity extends AppCompatActivity {
                         unitsList.setItemChecked(position, true);
                     }
 
-                    itemContainer.setBackgroundDrawable(getResources().getDrawable(R.drawable.selectable_item_background));
+                    itemContainer.setBackgroundDrawable(ContextCompat.getDrawable(ConvertActivity.this, R.drawable.selectable_item_background));
 
                     double p = getConvertedResult(position);
                     String strValue;
