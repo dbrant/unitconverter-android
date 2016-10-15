@@ -10,7 +10,7 @@ def getDate() {
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "24.0.3"
 
     defaultConfig {
         applicationId "com.defianttech.convertme"
@@ -37,6 +37,6 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile "com.android.support:design:24.2.0"
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile "com.android.support:design:24.2.1"
 }

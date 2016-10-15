@@ -1,10 +1,6 @@
 package com.defianttech.convertme;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -14,6 +10,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.Space;
@@ -24,6 +21,7 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -45,21 +43,25 @@ import android.widget.Toast;
  * Copyright (c) 2014-2016 Dmitry Brant
  */
 public class ConvertActivity extends AppCompatActivity {
-    private static final String TAG = "ConvertMe";
+    private static final String TAG = "ConvertActivity";
     private static final String PREFS_NAME = "ConvertMePrefs";
     private static final String KEY_CURRENT_CATEGORY = "currentCategory";
     private static final String KEY_CURRENT_UNIT = "currentUnitIndex";
     private static final String KEY_CURRENT_VALUE = "currentValue";
 
-    private static final int DEFAULT_CATEGORY = 5; //default to "distance"
-    private static final int DEFAULT_INDEX = 2; //default to "centimeter"
-    private static final double DEFAULT_VALUE = 1.0;
+    public static final int DEFAULT_CATEGORY = 5; //default to "distance"
+    public static final int DEFAULT_FROM_INDEX = 10; //default to "inch"
+    public static final int DEFAULT_TO_INDEX = 2; //default to "centimeter"
+    public static final double DEFAULT_VALUE = 1.0;
 
-    private String[] categoryNames;
+    private static DecimalFormat dfExp = new DecimalFormat("#.#######E0");
+    private static DecimalFormat dfNoexp = new DecimalFormat("#.#######");
+
     private UnitCollection[] collections;
+    private String[] allCategoryNames;
 
     private int currentCategory = DEFAULT_CATEGORY;
-    private int currentUnitIndex = DEFAULT_INDEX;
+    private int currentUnitIndex = DEFAULT_FROM_INDEX;
 
     private double currentValue = DEFAULT_VALUE;
     private Toolbar toolbar;
@@ -70,27 +72,14 @@ public class ConvertActivity extends AppCompatActivity {
     private ActionMode actionMode;
     private boolean editModeEnabled;
 
-    private DecimalFormat dfExp = new DecimalFormat("#.#######E0");
-    private DecimalFormat dfNoexp = new DecimalFormat("#.#######");
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.convertme);
 
-        collections = UnitCollection.getAllUnits(this);
-        List<String> unitCategories = new ArrayList<>();
-        for (UnitCollection collection : collections) {
-        	unitCategories.addAll(Arrays.asList(collection.getNames()));
-        }
-        categoryNames = unitCategories.toArray(new String[unitCategories.size()]);
-        Arrays.sort(categoryNames, new Comparator<String>() {
-            @Override
-            public int compare(String left, String right) {
-                return left.compareTo(right);
-            }
-        });
-        SpinnerAdapter categoryAdapter = new ArrayAdapter(this, R.layout.unit_categoryitem, categoryNames);
+        collections = UnitCollection.getInstance(this);
+        allCategoryNames = UnitCollection.getAllCategoryNames(this);
+        SpinnerAdapter categoryAdapter = new ArrayAdapter(this, R.layout.unit_categoryitem, allCategoryNames);
 
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
@@ -101,7 +90,7 @@ public class ConvertActivity extends AppCompatActivity {
             getSupportActionBar().setListNavigationCallbacks(categoryAdapter, new ActionBar.OnNavigationListener() {
                 @Override
                 public boolean onNavigationItemSelected(int i, long l) {
-                    currentCategory = UnitCollection.collectionIndexByName(collections, categoryNames[i]);
+                    currentCategory = UnitCollection.collectionIndexByName(collections, allCategoryNames[i]);
                     if (currentUnitIndex >= collections[currentCategory].length()) {
                         currentUnitIndex = 0;
                     }
@@ -149,8 +138,8 @@ public class ConvertActivity extends AppCompatActivity {
 
         restoreSettings();
 
-        for (int i = 0; i < categoryNames.length; i++) {
-            if (categoryNames[i].equals(collections[currentCategory].getNames()[0])) {
+        for (int i = 0; i < allCategoryNames.length; i++) {
+            if (allCategoryNames[i].equals(collections[currentCategory].getNames()[0])) {
                 getSupportActionBar().setSelectedNavigationItem(i);
             }
         }
@@ -190,8 +179,13 @@ public class ConvertActivity extends AppCompatActivity {
         return false;
     }
 
+    @NonNull
+    public static SharedPreferences getPrefs(@NonNull Context context) {
+        return context.getSharedPreferences(ConvertActivity.PREFS_NAME, 0);
+    }
+
     private void saveSettings() {
-        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, 0).edit();
+        SharedPreferences.Editor editor = getPrefs(this).edit();
         editor.putInt(KEY_CURRENT_CATEGORY, currentCategory);
         editor.putInt(KEY_CURRENT_UNIT, currentUnitIndex);
         editor.putString(KEY_CURRENT_VALUE, numberPadView.getCurrentValue());
@@ -205,12 +199,12 @@ public class ConvertActivity extends AppCompatActivity {
 
     private void restoreSettings() {
         try {
-            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences prefs = getPrefs(this);
             currentCategory = prefs.getInt(KEY_CURRENT_CATEGORY, DEFAULT_CATEGORY);
             if (currentCategory >= collections.length) {
                 currentCategory = DEFAULT_CATEGORY;
             }
-            currentUnitIndex = prefs.getInt(KEY_CURRENT_UNIT, DEFAULT_INDEX);
+            currentUnitIndex = prefs.getInt(KEY_CURRENT_UNIT, DEFAULT_FROM_INDEX);
             if (currentUnitIndex >= collections[currentCategory].length()) {
                 currentUnitIndex = 0;
             }
@@ -373,18 +367,8 @@ public class ConvertActivity extends AppCompatActivity {
 
                     itemContainer.setBackgroundDrawable(ContextCompat.getDrawable(ConvertActivity.this, R.drawable.selectable_item_background));
 
-                    double p = getConvertedResult(position);
-                    String strValue;
-                    try{
-                        strValue = getValueStr(p);
-                        if(strValue.contains("E")){
-                            strValue = strValue.replace("E", " × 10<sup><small>");
-                            strValue += "</small></sup>";
-                        }
-                        unitValue.setText(Html.fromHtml(strValue));
-                    }catch(Exception e){
-                        Log.d(TAG, "Error while rendering unit.", e);
-                    }
+                    double p = UnitCollection.convert(ConvertActivity.this, currentCategory, currentUnitIndex, position, currentValue);
+                    unitValue.setText(getFormattedValueStr(p));
                 } else {
                     if (convertView == null) {
                         AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
@@ -397,15 +381,20 @@ public class ConvertActivity extends AppCompatActivity {
         }
     }
 
-    private double getConvertedResult(int targetUnitIndex) {
-        double result = (currentValue - collections[currentCategory].get(currentUnitIndex).getOffset())
-                / collections[currentCategory].get(currentUnitIndex).getMultiplier();
-        result *= collections[currentCategory].get(targetUnitIndex).getMultiplier();
-        result += collections[currentCategory].get(targetUnitIndex).getOffset();
-        return result;
+    public static Spanned getFormattedValueStr(double value) {
+        String strValue = getValueStr(value);
+        try{
+            if(strValue.contains("E")){
+                strValue = strValue.replace("E", " × 10<sup><small>");
+                strValue += "</small></sup>";
+            }
+        }catch(Exception e){
+            Log.d(TAG, "Error while rendering unit.", e);
+        }
+        return Html.fromHtml(strValue);
     }
 
-    private String getValueStr(double val) {
+    private static String getValueStr(double val) {
         if((Math.abs(val) > 1e6) || (Math.abs(val) < 1e-6 && Math.abs(val) > 0.0)){
             return dfExp.format(val);
         } else {
@@ -422,13 +411,13 @@ public class ConvertActivity extends AppCompatActivity {
                 String resultStr;
                 switch (menuItem.getItemId()) {
                     case R.id.menu_copy_value:
-                        resultStr = String.format("%1$s", getValueStr(getConvertedResult(position)));
+                        resultStr = String.format("%1$s", getValueStr(UnitCollection.convert(ConvertActivity.this, currentCategory, currentUnitIndex, position, currentValue)));
                         setClipboardText(resultStr);
                         return true;
                     case R.id.menu_copy_row:
                         resultStr = String.format("%1$s %2$s = %3$s %4$s", getValueStr(currentValue),
                                 collections[currentCategory].get(currentUnitIndex).getName(),
-                                getValueStr(getConvertedResult(position)),
+                                getValueStr(UnitCollection.convert(ConvertActivity.this, currentCategory, currentUnitIndex, position, currentValue)),
                                 collections[currentCategory].get(position).getName());
                         setClipboardText(resultStr);
                         return true;

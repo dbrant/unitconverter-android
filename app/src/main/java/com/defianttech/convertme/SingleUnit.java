@@ -22,6 +22,10 @@ public class SingleUnit {
         name = unitName;
         multiplier = unitMultiplier;
         offset = unitOffset;
-        this.enabled = enabled;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

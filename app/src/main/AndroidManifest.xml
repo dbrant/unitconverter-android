@@ -3,14 +3,14 @@
     package="com.defianttech.convertme">
     <application
         android:allowBackup="true"
-        android:label="ConvertMe"
+        android:label="@string/launcher_title"
         android:icon="@drawable/ic_launcher"
         android:supportsRtl="true">
 
         <uses-library android:required="false" android:name="com.sec.android.app.multiwindow"/>
         <meta-data android:name="com.sec.android.support.multiwindow" android:value="true" />
 
-        <activity android:name="ConvertActivity"
+        <activity android:name=".ConvertActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
@@ -19,5 +19,24 @@
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".WidgetSetupActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+
+        <receiver
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/widget_title"
+            android:name=".WidgetProvider" >
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_convert_units" />
+        </receiver>
+
     </application>
 </manifest>
