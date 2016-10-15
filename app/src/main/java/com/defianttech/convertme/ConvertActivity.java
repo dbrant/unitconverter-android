@@ -49,21 +49,16 @@ public class ConvertActivity extends AppCompatActivity {
     private static final String KEY_CURRENT_UNIT = "currentUnitIndex";
     private static final String KEY_CURRENT_VALUE = "currentValue";
 
-    public static final int DEFAULT_CATEGORY = 5; //default to "distance"
-    public static final int DEFAULT_FROM_INDEX = 10; //default to "inch"
-    public static final int DEFAULT_TO_INDEX = 2; //default to "centimeter"
-    public static final double DEFAULT_VALUE = 1.0;
-
     private static DecimalFormat dfExp = new DecimalFormat("#.#######E0");
     private static DecimalFormat dfNoexp = new DecimalFormat("#.#######");
 
     private UnitCollection[] collections;
     private String[] allCategoryNames;
 
-    private int currentCategory = DEFAULT_CATEGORY;
-    private int currentUnitIndex = DEFAULT_FROM_INDEX;
+    private int currentCategory = UnitCollection.DEFAULT_CATEGORY;
+    private int currentUnitIndex = UnitCollection.DEFAULT_FROM_INDEX;
 
-    private double currentValue = DEFAULT_VALUE;
+    private double currentValue = UnitCollection.DEFAULT_VALUE;
     private Toolbar toolbar;
     private NumberPadView numberPadView;
     private UnitListAdapter listAdapter;
@@ -200,11 +195,11 @@ public class ConvertActivity extends AppCompatActivity {
     private void restoreSettings() {
         try {
             SharedPreferences prefs = getPrefs(this);
-            currentCategory = prefs.getInt(KEY_CURRENT_CATEGORY, DEFAULT_CATEGORY);
+            currentCategory = prefs.getInt(KEY_CURRENT_CATEGORY, UnitCollection.DEFAULT_CATEGORY);
             if (currentCategory >= collections.length) {
-                currentCategory = DEFAULT_CATEGORY;
+                currentCategory = UnitCollection.DEFAULT_CATEGORY;
             }
-            currentUnitIndex = prefs.getInt(KEY_CURRENT_UNIT, DEFAULT_FROM_INDEX);
+            currentUnitIndex = prefs.getInt(KEY_CURRENT_UNIT, UnitCollection.DEFAULT_FROM_INDEX);
             if (currentUnitIndex >= collections[currentCategory].length()) {
                 currentUnitIndex = 0;
             }

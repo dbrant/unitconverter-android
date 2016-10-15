@@ -43,13 +43,13 @@ public class WidgetProvider extends AppWidgetProvider {
             WidgetPrefs prefs = new WidgetPrefs(context, widgetId);
 
             if (prefs.currentCategory < 0 || prefs.currentCategory > collections.length) {
-                prefs.currentCategory = ConvertActivity.DEFAULT_CATEGORY;
+                prefs.currentCategory = UnitCollection.DEFAULT_CATEGORY;
             }
             if (prefs.currentFromIndex < 0 || prefs.currentFromIndex > collections[prefs.currentCategory].length()) {
-                prefs.currentFromIndex = ConvertActivity.DEFAULT_FROM_INDEX;
+                prefs.currentFromIndex = UnitCollection.DEFAULT_FROM_INDEX;
             }
             if (prefs.currentToIndex < 0 || prefs.currentToIndex > collections[prefs.currentCategory].length()) {
-                prefs.currentToIndex = ConvertActivity.DEFAULT_TO_INDEX;
+                prefs.currentToIndex = UnitCollection.DEFAULT_TO_INDEX;
             }
 
             remoteViews.setTextViewText(R.id.widget_unit_from,

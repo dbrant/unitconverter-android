@@ -19,6 +19,11 @@ import java.util.List;
 public class UnitCollection {
     private static final String TAG = "UnitCollection";
 
+    public static final int DEFAULT_CATEGORY = 5; //default to "distance"
+    public static final int DEFAULT_FROM_INDEX = 10; //default to "inch"
+    public static final int DEFAULT_TO_INDEX = 2; //default to "centimeter"
+    public static final double DEFAULT_VALUE = 1.0;
+
     private static UnitCollection[] INSTANCE;
     private static String[] allCategoryNames;
 

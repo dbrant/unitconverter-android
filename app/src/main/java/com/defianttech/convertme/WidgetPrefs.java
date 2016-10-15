@@ -17,9 +17,9 @@ public class WidgetPrefs  {
     public WidgetPrefs(@NonNull Context context, int widgetId) {
         this.widgetId = widgetId;
         SharedPreferences prefs = ConvertActivity.getPrefs(context);
-        currentCategory = prefs.getInt("widget_category_" + widgetId, ConvertActivity.DEFAULT_CATEGORY);
-        currentFromIndex = prefs.getInt("widget_from_" + widgetId, ConvertActivity.DEFAULT_FROM_INDEX);
-        currentToIndex = prefs.getInt("widget_to_" + widgetId, ConvertActivity.DEFAULT_TO_INDEX);
+        currentCategory = prefs.getInt("widget_category_" + widgetId, UnitCollection.DEFAULT_CATEGORY);
+        currentFromIndex = prefs.getInt("widget_from_" + widgetId, UnitCollection.DEFAULT_FROM_INDEX);
+        currentToIndex = prefs.getInt("widget_to_" + widgetId, UnitCollection.DEFAULT_TO_INDEX);
         currentValue = prefs.getFloat("widget_from_value_" + widgetId, 1f);
     }
 
