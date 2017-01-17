@@ -196,6 +196,7 @@ watt, 1000.0, 0.0
 
 == Pressure
 atmosphere (atm), 0.0680459639, 0.0
+bar, 0.06894757, 0.0
 centimeter mercury, 5.171493, 0.0
 dyne/cm², 68947.57, 0.0
 inch mercury, 2.036021, 0.0
