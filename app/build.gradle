@@ -10,13 +10,13 @@ def getDate() {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.defianttech.convertme"
         minSdkVersion 9
         targetSdkVersion 25
-        versionCode 29
+        versionCode 30
         versionName "${versionStart}-${date}"
     }
 
