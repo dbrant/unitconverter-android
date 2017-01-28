@@ -72,12 +72,12 @@ public class WidgetProvider extends AppWidgetProvider {
         if (intent.getAction().contains(CLICK_ACTION_PLUS)) {
             int widgetId = getWidgetId(intent.getAction());
             WidgetPrefs prefs = new WidgetPrefs(context, widgetId);
-            prefs.currentValue += 1f;
+            prefs.currentValue += prefs.increment;
             prefs.save(context);
         } else if (intent.getAction().contains(CLICK_ACTION_MINUS)) {
             int widgetId = getWidgetId(intent.getAction());
             WidgetPrefs prefs = new WidgetPrefs(context, widgetId);
-            prefs.currentValue -= 1f;
+            prefs.currentValue -= prefs.increment;
             prefs.save(context);
         } else if (intent.getAction().contains(CLICK_ACTION_EXCHANGE)) {
             int widgetId = getWidgetId(intent.getAction());

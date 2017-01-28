@@ -24,12 +24,12 @@
 
     <string name="launcher_title">Convert Units</string>
     <string name="widget_title">Convert Units</string>
-    <string name="about_message">ConvertMe — An easy-to-use unit conversion utility.\n\nCopyright © 2010–2016 Defiant Technologies, LLC.\n\nWritten by Dmitry Brant.</string>
+    <string name="about_message">ConvertMe — An easy-to-use unit conversion utility.\n\nCopyright © 2010–2017 Defiant Technologies, LLC.\n\nWritten by Dmitry Brant.</string>
 
     <string name="configure_widget">Configure widget</string>
     <string name="unit_category">Unit category:</string>
     <string name="unit_from">Unit to convert from:</string>
     <string name="unit_to">Unit to convert to:</string>
-    <string name="increment">Increment:</string>
+    <string name="unit_increment">Increment amount:</string>
 
 </resources>

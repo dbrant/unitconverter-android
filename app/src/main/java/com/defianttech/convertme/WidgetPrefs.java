@@ -13,6 +13,7 @@ public class WidgetPrefs  {
     public int currentFromIndex;
     public int currentToIndex;
     public float currentValue;
+    public float increment;
 
     public WidgetPrefs(@NonNull Context context, int widgetId) {
         this.widgetId = widgetId;
@@ -20,6 +21,7 @@ public class WidgetPrefs  {
         currentCategory = prefs.getInt("widget_category_" + widgetId, UnitCollection.DEFAULT_CATEGORY);
         currentFromIndex = prefs.getInt("widget_from_" + widgetId, UnitCollection.DEFAULT_FROM_INDEX);
         currentToIndex = prefs.getInt("widget_to_" + widgetId, UnitCollection.DEFAULT_TO_INDEX);
+        increment = prefs.getFloat("widget_increment_" + widgetId, 1f);
         currentValue = prefs.getFloat("widget_from_value_" + widgetId, 1f);
     }
 
@@ -28,6 +30,7 @@ public class WidgetPrefs  {
         editor.putInt("widget_category_" + widgetId, currentCategory);
         editor.putInt("widget_from_" + widgetId, currentFromIndex);
         editor.putInt("widget_to_" + widgetId, currentToIndex);
+        editor.putFloat("widget_increment_" + widgetId, increment);
         editor.putFloat("widget_from_value_" + widgetId, currentValue);
         editor.apply();
 

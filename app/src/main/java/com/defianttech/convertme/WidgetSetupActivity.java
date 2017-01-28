@@ -9,11 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
 /*
- * Copyright (c) 2014-2016 Dmitry Brant
+ * Copyright (c) 2014-2017 Dmitry Brant
  */
 public class WidgetSetupActivity extends AppCompatActivity {
     private static final String TAG = "WidgetSetupActivity";
@@ -25,6 +26,7 @@ public class WidgetSetupActivity extends AppCompatActivity {
     private Spinner unitCategorySpinner;
     private Spinner unitFromSpinner;
     private Spinner unitToSpinner;
+    private EditText incrementEditText;
 
     private WidgetPrefs prefs;
 
@@ -104,6 +106,9 @@ public class WidgetSetupActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+
+        incrementEditText = (EditText) findViewById(R.id.unit_increment_text);
+        incrementEditText.setText(Float.toString(prefs.increment));
     }
 
     @Override
@@ -112,6 +117,17 @@ public class WidgetSetupActivity extends AppCompatActivity {
         if (widgetId == -1) {
             finish();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            prefs.increment = Float.parseFloat(incrementEditText.getText().toString());
+        } catch (NumberFormatException e) {
+            prefs.increment = 1f;
+        }
+        prefs.save(this);
     }
 
     @Override
