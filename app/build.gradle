@@ -18,6 +18,8 @@ android {
         targetSdkVersion 25
         versionCode 32
         versionName "${versionStart}-${date}"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -37,6 +39,16 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support:design:25.1.1'
+
+    String supportVersion = '25.2.0'
+    String testSupportVersion = '0.5'
+
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
+
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile "com.android.support:support-annotations:$supportVersion"
+    androidTestCompile "com.android.support.test:rules:$testSupportVersion"
+    androidTestCompile "com.android.support.test:runner:$testSupportVersion"
+    androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
 }
