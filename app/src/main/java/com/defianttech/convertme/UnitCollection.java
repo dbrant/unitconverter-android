@@ -92,13 +92,13 @@ public class UnitCollection {
         return result;
     }
 
-    private UnitCollection(String[] collectionNames, List<SingleUnit> collectionItems) {
+    UnitCollection(String[] collectionNames, List<SingleUnit> collectionItems) {
         names = collectionNames;
         items = collectionItems;
     }
 
     @NonNull
-    private static UnitCollection[] getAllUnits(@NonNull Context context) {
+    static UnitCollection[] getAllUnits(@NonNull Context context) {
         List<UnitCollection> collections = new ArrayList<>();
         InputStream inStream = null;
         try {
