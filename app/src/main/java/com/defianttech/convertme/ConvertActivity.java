@@ -337,10 +337,9 @@ public class ConvertActivity extends AppCompatActivity {
 
                 itemContainer.setBackgroundColor(ContextCompat.getColor(ConvertActivity.this,
                         android.R.color.transparent));
-                chkEnable.setImageDrawable(ContextCompat.getDrawable(ConvertActivity.this,
-                        collections[currentCategory].get(position).isEnabled()
-                                ? R.drawable.ic_check_box_white_24dp
-                                : R.drawable.ic_check_box_outline_blank_white_24dp));
+                chkEnable.setImageResource(collections[currentCategory].get(position).isEnabled()
+                        ? R.drawable.ic_check_box_white_24dp
+                        : R.drawable.ic_check_box_outline_blank_white_24dp);
 
             } else {
 
@@ -361,13 +360,16 @@ public class ConvertActivity extends AppCompatActivity {
                     }
 
                     ViewCompat.setBackground(itemContainer,
-                            ContextCompat.getDrawable(ConvertActivity.this, R.drawable.selectable_item_background));
+                            ContextCompat.getDrawable(ConvertActivity.this,
+                                    R.drawable.selectable_item_background));
 
-                    double p = UnitCollection.convert(ConvertActivity.this, currentCategory, currentUnitIndex, position, currentValue);
+                    double p = UnitCollection.convert(ConvertActivity.this, currentCategory,
+                            currentUnitIndex, position, currentValue);
                     unitValue.setText(getFormattedValueStr(p));
                 } else {
                     if (convertView == null) {
-                        AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+                        AbsListView.LayoutParams params
+                                = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
                         convertView = new Space(ConvertActivity.this);
                         convertView.setLayoutParams(params);
                     }

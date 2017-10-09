@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/unitItemContainer"
     android:layout_width="match_parent"
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="4dp"
         android:paddingBottom="4dp">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +27,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_check_box_white_24dp"
+                app:srcCompat="@drawable/ic_check_box_white_24dp"
                 android:contentDescription="@null"/>
             <TextView
                 android:id="@+id/unitName"
@@ -38,6 +40,7 @@
                 tools:text="Lorem ipsum">
             </TextView>
         </LinearLayout>
+
         <TextView
             android:id="@+id/unitValue"
             android:layout_width="wrap_content"
