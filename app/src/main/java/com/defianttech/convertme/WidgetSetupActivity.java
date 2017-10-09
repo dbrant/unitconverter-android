@@ -35,7 +35,7 @@ public class WidgetSetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_setup_activity);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.configure_widget);
 
@@ -54,7 +54,7 @@ public class WidgetSetupActivity extends AppCompatActivity {
         allCategoryNames = UnitCollection.getAllCategoryNames(this);
         SpinnerAdapter categoryAdapter = new ArrayAdapter(this, R.layout.unit_categoryitem, allCategoryNames);
 
-        unitCategorySpinner = (Spinner) findViewById(R.id.unit_category_spinner);
+        unitCategorySpinner = findViewById(R.id.unit_category_spinner);
         unitCategorySpinner.setAdapter(categoryAdapter);
         unitCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -81,7 +81,7 @@ public class WidgetSetupActivity extends AppCompatActivity {
             }
         }
 
-        unitFromSpinner = (Spinner) findViewById(R.id.unit_from_spinner);
+        unitFromSpinner = findViewById(R.id.unit_from_spinner);
         unitFromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -94,7 +94,7 @@ public class WidgetSetupActivity extends AppCompatActivity {
             }
         });
 
-        unitToSpinner = (Spinner) findViewById(R.id.unit_to_spinner);
+        unitToSpinner = findViewById(R.id.unit_to_spinner);
         unitToSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -107,7 +107,7 @@ public class WidgetSetupActivity extends AppCompatActivity {
             }
         });
 
-        incrementEditText = (EditText) findViewById(R.id.unit_increment_text);
+        incrementEditText = findViewById(R.id.unit_increment_text);
         incrementEditText.setText(Float.toString(prefs.increment));
     }
 

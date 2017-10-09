@@ -40,7 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /*
- * Copyright (c) 2014-2016 Dmitry Brant
+ * Copyright (c) 2014-2017 Dmitry Brant
  */
 public class ConvertActivity extends AppCompatActivity {
     private static final String TAG = "ConvertActivity";
@@ -76,7 +76,7 @@ public class ConvertActivity extends AppCompatActivity {
         allCategoryNames = UnitCollection.getAllCategoryNames(this);
         SpinnerAdapter categoryAdapter = new ArrayAdapter(this, R.layout.unit_categoryitem, allCategoryNames);
 
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             // TODO: move away from this deprecated implementation:
@@ -96,7 +96,7 @@ public class ConvertActivity extends AppCompatActivity {
             });
         }
 
-        unitsList = (ListView) findViewById(R.id.unitsList);
+        unitsList = findViewById(R.id.unitsList);
         listAdapter = new UnitListAdapter();
         unitsList.setAdapter(listAdapter);
         unitsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -122,7 +122,7 @@ public class ConvertActivity extends AppCompatActivity {
             }
         });
 
-        numberPadView = (NumberPadView) findViewById(R.id.numberPad);
+        numberPadView = findViewById(R.id.numberPad);
         numberPadView.setOnValueChangedListener(new NumberPadView.OnValueChangedListener() {
             @Override
             public void onValueChanged(String value) {
@@ -139,7 +139,7 @@ public class ConvertActivity extends AppCompatActivity {
             }
         }
 
-        fabEdit = (FloatingActionButton) findViewById(R.id.fabEdit);
+        fabEdit = findViewById(R.id.fabEdit);
         fabEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -284,9 +284,6 @@ public class ConvertActivity extends AppCompatActivity {
     }
 
     private final class UnitListAdapter extends BaseAdapter {
-        public UnitListAdapter() {
-        }
-
         @Override
         public int getCount() {
             return collections[currentCategory].length();
@@ -324,10 +321,10 @@ public class ConvertActivity extends AppCompatActivity {
                     convertView = getLayoutInflater().inflate(R.layout.unit_listitem, parent, false);
                 }
                 View itemContainer = convertView.findViewById(R.id.unitItemContainer);
-                TextView unitName = (TextView) convertView.findViewById(R.id.unitName);
-                TextView unitValue = (TextView) convertView.findViewById(R.id.unitValue);
+                TextView unitName = convertView.findViewById(R.id.unitName);
+                TextView unitValue = convertView.findViewById(R.id.unitValue);
                 unitValue.setVisibility(View.GONE);
-                ImageView chkEnable = (ImageView) convertView.findViewById(R.id.chkSelected);
+                ImageView chkEnable = convertView.findViewById(R.id.chkSelected);
                 chkEnable.setVisibility(View.VISIBLE);
                 unitName.setText(Html.fromHtml(collections[currentCategory].get(position).getName()));
 
@@ -349,10 +346,10 @@ public class ConvertActivity extends AppCompatActivity {
                         convertView = getLayoutInflater().inflate(R.layout.unit_listitem, parent, false);
                     }
                     View itemContainer = convertView.findViewById(R.id.unitItemContainer);
-                    TextView unitName = (TextView) convertView.findViewById(R.id.unitName);
-                    TextView unitValue = (TextView) convertView.findViewById(R.id.unitValue);
+                    TextView unitName = convertView.findViewById(R.id.unitName);
+                    TextView unitValue = convertView.findViewById(R.id.unitValue);
                     unitValue.setVisibility(View.VISIBLE);
-                    ImageView chkEnable = (ImageView) convertView.findViewById(R.id.chkSelected);
+                    ImageView chkEnable = convertView.findViewById(R.id.chkSelected);
                     chkEnable.setVisibility(View.GONE);
                     unitName.setText(Html.fromHtml(collections[currentCategory].get(position).getName()));
 
@@ -426,13 +423,8 @@ public class ConvertActivity extends AppCompatActivity {
     }
 
     private void setClipboardText(String text) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-            clipboard.setPrimaryClip(ClipData.newPlainText("", text));
-        } else {
-            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            clipboard.setText(text);
-        }
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        clipboard.setPrimaryClip(ClipData.newPlainText("", text));
         Toast.makeText(ConvertActivity.this, R.string.menu_clipboard_copied, Toast.LENGTH_SHORT).show();
     }
 

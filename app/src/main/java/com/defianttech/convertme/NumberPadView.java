@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /*
- * Copyright (c) 2014-2016 Dmitry Brant
+ * Copyright (c) 2014-2017 Dmitry Brant
  */
 public class NumberPadView extends LinearLayout {
 

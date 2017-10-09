@@ -14,7 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /*
- * Copyright (c) 2014-2016 Dmitry Brant
+ * Copyright (c) 2014-2017 Dmitry Brant
  */
 public class UnitCollection {
     private static final String TAG = "UnitCollection";
