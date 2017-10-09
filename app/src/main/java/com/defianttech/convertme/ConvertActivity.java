@@ -56,8 +56,10 @@ public class ConvertActivity extends AppCompatActivity {
     private int currentUnitIndex = UnitCollection.DEFAULT_FROM_INDEX;
 
     private double currentValue = UnitCollection.DEFAULT_VALUE;
-    private View categoryContainer;
+
     private TextView categoryText;
+    private PopupMenu categoryMenu;
+
     private NumberPadView numberPadView;
     private UnitListAdapter listAdapter;
     private ListView unitsList;
@@ -79,29 +81,30 @@ public class ConvertActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        categoryContainer = findViewById(R.id.category_toolbar_container);
+        View categoryContainer = findViewById(R.id.category_toolbar_container);
         categoryContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu menu = new PopupMenu(ConvertActivity.this, categoryContainer);
-                int i = 0;
-                for (String name : allCategoryNames) {
-                    menu.getMenu().add(0, i++, 0, name);
+                categoryMenu.show();
+            }
+        });
+
+        categoryMenu = new PopupMenu(ConvertActivity.this, categoryContainer);
+        int i = 0;
+        for (String name : allCategoryNames) {
+            categoryMenu.getMenu().add(0, i++, 0, name);
+        }
+        categoryMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                currentCategory = UnitCollection.collectionIndexByName(collections,
+                        allCategoryNames[item.getItemId()]);
+                if (currentUnitIndex >= collections[currentCategory].length()) {
+                    currentUnitIndex = 0;
                 }
-                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        currentCategory = UnitCollection.collectionIndexByName(collections,
-                                allCategoryNames[item.getItemId()]);
-                        if (currentUnitIndex >= collections[currentCategory].length()) {
-                            currentUnitIndex = 0;
-                        }
-                        categoryText.setText(item.getTitle());
-                        listAdapter.notifyDataSetInvalidated();
-                        return true;
-                    }
-                });
-                menu.show();
+                categoryText.setText(item.getTitle());
+                listAdapter.notifyDataSetInvalidated();
+                return true;
             }
         });
 
