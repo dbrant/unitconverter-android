@@ -13,8 +13,8 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.Space;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
@@ -30,12 +30,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,7 +56,8 @@ public class ConvertActivity extends AppCompatActivity {
     private int currentUnitIndex = UnitCollection.DEFAULT_FROM_INDEX;
 
     private double currentValue = UnitCollection.DEFAULT_VALUE;
-    private Toolbar toolbar;
+    private View categoryContainer;
+    private TextView categoryText;
     private NumberPadView numberPadView;
     private UnitListAdapter listAdapter;
     private ListView unitsList;
@@ -74,28 +72,40 @@ public class ConvertActivity extends AppCompatActivity {
 
         collections = UnitCollection.getInstance(this);
         allCategoryNames = UnitCollection.getAllCategoryNames(this);
-        SpinnerAdapter categoryAdapter = new ArrayAdapter(this, R.layout.unit_categoryitem, allCategoryNames);
 
-        toolbar = findViewById(R.id.main_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            // TODO: move away from this deprecated implementation:
-            getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setListNavigationCallbacks(categoryAdapter, new ActionBar.OnNavigationListener() {
-                @Override
-                public boolean onNavigationItemSelected(int i, long l) {
-                    currentCategory = UnitCollection.collectionIndexByName(collections, allCategoryNames[i]);
-                    if (currentUnitIndex >= collections[currentCategory].length()) {
-                        currentUnitIndex = 0;
-                    }
-                    listAdapter.notifyDataSetInvalidated();
-                    setCategoryBackground();
-                    return true;
-                }
-            });
         }
 
+        categoryContainer = findViewById(R.id.category_toolbar_container);
+        categoryContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu menu = new PopupMenu(ConvertActivity.this, categoryContainer);
+                int i = 0;
+                for (String name : allCategoryNames) {
+                    menu.getMenu().add(0, i++, 0, name);
+                }
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        currentCategory = UnitCollection.collectionIndexByName(collections,
+                                allCategoryNames[item.getItemId()]);
+                        if (currentUnitIndex >= collections[currentCategory].length()) {
+                            currentUnitIndex = 0;
+                        }
+                        categoryText.setText(item.getTitle());
+                        listAdapter.notifyDataSetInvalidated();
+                        return true;
+                    }
+                });
+                menu.show();
+            }
+        });
+
+        categoryText = findViewById(R.id.category_text);
         unitsList = findViewById(R.id.unitsList);
         listAdapter = new UnitListAdapter();
         unitsList.setAdapter(listAdapter);
@@ -133,9 +143,9 @@ public class ConvertActivity extends AppCompatActivity {
 
         restoreSettings();
 
-        for (int i = 0; i < allCategoryNames.length; i++) {
-            if (allCategoryNames[i].equals(collections[currentCategory].getNames()[0])) {
-                getSupportActionBar().setSelectedNavigationItem(i);
+        for (String name : allCategoryNames) {
+            if (name.equals(collections[currentCategory].getNames()[0])) {
+                categoryText.setText(name);
             }
         }
 
@@ -170,6 +180,8 @@ public class ConvertActivity extends AppCompatActivity {
             case R.id.menu_about:
                 showAboutDialog();
                 return true;
+            default:
+                break;
         }
         return false;
     }
@@ -223,15 +235,6 @@ public class ConvertActivity extends AppCompatActivity {
             fabEdit.show();
         }
         listAdapter.notifyDataSetInvalidated();
-    }
-
-    private void setCategoryBackground() {
-        for (int i = 0; i < toolbar.getChildCount(); i++) {
-            View v = toolbar.getChildAt(i);
-            if (v instanceof Spinner) {
-                ((Spinner) v).getChildAt(0).setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.category_shape));
-            }
-        }
     }
 
     private void setValueFromNumberPad(String value) {
@@ -357,7 +360,8 @@ public class ConvertActivity extends AppCompatActivity {
                         unitsList.setItemChecked(position, true);
                     }
 
-                    itemContainer.setBackgroundDrawable(ContextCompat.getDrawable(ConvertActivity.this, R.drawable.selectable_item_background));
+                    ViewCompat.setBackground(itemContainer,
+                            ContextCompat.getDrawable(ConvertActivity.this, R.drawable.selectable_item_background));
 
                     double p = UnitCollection.convert(ConvertActivity.this, currentCategory, currentUnitIndex, position, currentValue);
                     unitValue.setText(getFormattedValueStr(p));

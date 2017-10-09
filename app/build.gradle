@@ -18,6 +18,7 @@ android {
         targetSdkVersion 26
         versionCode 33
         versionName "${versionStart}-${date}"
+        vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

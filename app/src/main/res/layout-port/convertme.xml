@@ -48,6 +48,9 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/toolbar"
         android:elevation="4dp">
+
+        <include layout="@layout/toolbar_category_button" />
+
     </android.support.v7.widget.Toolbar>
 
 </FrameLayout>

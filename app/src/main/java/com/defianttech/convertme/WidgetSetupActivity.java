@@ -23,7 +23,6 @@ public class WidgetSetupActivity extends AppCompatActivity {
     private String[] allCategoryNames;
     private int widgetId = -1;
 
-    private Spinner unitCategorySpinner;
     private Spinner unitFromSpinner;
     private Spinner unitToSpinner;
     private EditText incrementEditText;
@@ -37,7 +36,9 @@ public class WidgetSetupActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.configure_widget);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.configure_widget);
+        }
 
         if (!TextUtils.isEmpty(getIntent().getAction())
                 && getIntent().getAction().contains(WidgetProvider.CLICK_ACTION_SETTINGS)) {
@@ -52,9 +53,10 @@ public class WidgetSetupActivity extends AppCompatActivity {
 
         collections = UnitCollection.getInstance(this);
         allCategoryNames = UnitCollection.getAllCategoryNames(this);
+        @SuppressWarnings("unchecked")
         SpinnerAdapter categoryAdapter = new ArrayAdapter(this, R.layout.unit_categoryitem, allCategoryNames);
 
-        unitCategorySpinner = findViewById(R.id.unit_category_spinner);
+        Spinner unitCategorySpinner = findViewById(R.id.unit_category_spinner);
         unitCategorySpinner.setAdapter(categoryAdapter);
         unitCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -140,6 +142,7 @@ public class WidgetSetupActivity extends AppCompatActivity {
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     private void setUnitSpinners(int category) {
         unitFromSpinner.setAdapter(new ArrayAdapter(this, R.layout.unit_categoryitem, collections[category].getItems()));
         unitFromSpinner.setSelection(prefs.currentFromIndex);
