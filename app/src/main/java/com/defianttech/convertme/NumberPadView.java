@@ -57,7 +57,7 @@ public class NumberPadView extends LinearLayout {
         return currentValue;
     }
 
-    public void setCurrentValue(String value) {
+    public void setCurrentValue(@NonNull String value) {
         currentValue = value;
     }
 

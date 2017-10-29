@@ -240,7 +240,7 @@ public class ConvertActivity extends AppCompatActivity {
         listAdapter.notifyDataSetInvalidated();
     }
 
-    private void setValueFromNumberPad(String value) {
+    private void setValueFromNumberPad(@NonNull String value) {
         try {
             currentValue = Double.parseDouble(value);
         } catch (NumberFormatException e) {
@@ -403,7 +403,7 @@ public class ConvertActivity extends AppCompatActivity {
         }
     }
 
-    private void doLongPressMenu(View parentView, final int position) {
+    private void doLongPressMenu(@NonNull View parentView, final int position) {
         PopupMenu menu = new PopupMenu(this, parentView, Gravity.END | Gravity.CENTER_HORIZONTAL);
         menu.getMenuInflater().inflate(R.menu.menu_long_press, menu.getMenu());
         menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -431,8 +431,11 @@ public class ConvertActivity extends AppCompatActivity {
         menu.show();
     }
 
-    private void setClipboardText(String text) {
+    private void setClipboardText(@NonNull String text) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        if (clipboard == null) {
+            return;
+        }
         clipboard.setPrimaryClip(ClipData.newPlainText("", text));
         Toast.makeText(ConvertActivity.this, R.string.menu_clipboard_copied, Toast.LENGTH_SHORT).show();
     }
