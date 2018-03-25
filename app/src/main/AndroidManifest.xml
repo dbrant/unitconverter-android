@@ -26,7 +26,7 @@
         </activity>
 
         <receiver
-            android:icon="@drawable/ic_launcher"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/widget_title"
             android:name=".WidgetProvider" >
             <intent-filter >
