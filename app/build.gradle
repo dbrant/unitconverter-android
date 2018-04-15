@@ -41,7 +41,7 @@ android {
 
 dependencies {
 
-    String supportVersion = '27.1.0'
+    String supportVersion = '27.1.1'
     String testSupportVersion = '0.5'
 
     implementation "com.android.support:appcompat-v7:$supportVersion"
