@@ -13,5 +13,5 @@ Unit conversion app for Android
 
 ## License
 
-    Copyright 2014-2016 Dmitry Brant
+    Copyright 2014–2018 Dmitry Brant
     See LICENSE file in the repository.
