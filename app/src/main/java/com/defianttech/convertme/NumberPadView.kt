@@ -10,36 +10,26 @@ import kotlinx.android.synthetic.main.number_pad_view.view.*
 /*
  * Copyright (c) 2014-2018 Dmitry Brant
  */
-class NumberPadView : LinearLayout {
-
-    var currentValue = "0"
-    private var valueChangedListener: OnValueChangedListener? = null
-
-    private val numberClickListener = OnClickListener { view ->
-        val text = (view as TextView).text.toString()
-        appendDigit(text)
-        if (valueChangedListener != null) {
-            valueChangedListener!!.onValueChanged(currentValue)
-        }
-    }
+class NumberPadView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyle: Int = 0
+) : LinearLayout(context, attrs, defStyle) {
 
     interface OnValueChangedListener {
         fun onValueChanged(value: String)
     }
 
-    constructor(context: Context) : super(context) {
-        init(context)
+    var currentValue = "0"
+    var valueChangedListener: OnValueChangedListener? = null
+
+    private val numberClickListener = OnClickListener { view ->
+        val text = (view as TextView).text.toString()
+        appendDigit(text)
+        valueChangedListener!!.onValueChanged(currentValue)
     }
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        init(context)
-    }
-
-    fun setOnValueChangedListener(listener: OnValueChangedListener) {
-        valueChangedListener = listener
-    }
-
-    private fun init(context: Context) {
+    init {
         View.inflate(context, R.layout.number_pad_view, this)
 
         btn0.setOnClickListener(numberClickListener)

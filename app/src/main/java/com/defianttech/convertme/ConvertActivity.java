@@ -136,7 +136,7 @@ public class ConvertActivity extends AppCompatActivity {
         });
 
         numberPadView = findViewById(R.id.numberPad);
-        numberPadView.setOnValueChangedListener(new NumberPadView.OnValueChangedListener() {
+        numberPadView.setValueChangedListener(new NumberPadView.OnValueChangedListener() {
             @Override
             public void onValueChanged(String value) {
                 setValueFromNumberPad(value);
