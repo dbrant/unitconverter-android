@@ -14,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.Space;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
@@ -138,7 +137,7 @@ public class ConvertActivity extends AppCompatActivity {
         numberPadView = findViewById(R.id.numberPad);
         numberPadView.setValueChangedListener(new NumberPadView.OnValueChangedListener() {
             @Override
-            public void onValueChanged(String value) {
+            public void onValueChanged(@NonNull String value) {
                 setValueFromNumberPad(value);
                 listAdapter.notifyDataSetChanged();
             }
@@ -373,7 +372,7 @@ public class ConvertActivity extends AppCompatActivity {
                     if (convertView == null) {
                         AbsListView.LayoutParams params
                                 = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-                        convertView = new Space(ConvertActivity.this);
+                        convertView = new View(ConvertActivity.this);
                         convertView.setLayoutParams(params);
                     }
                 }
