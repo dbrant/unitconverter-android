@@ -21,7 +21,7 @@ android {
         versionName "${versionStart}-${date}"
         vectorDrawables.useSupportLibrary = true
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -42,18 +42,14 @@ android {
 
 dependencies {
 
-    String supportVersion = '28.0.0'
-    String testSupportVersion = '0.5'
-
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "com.android.support:design:$supportVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation "com.google.android.material:material:1.1.0-alpha04"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     androidTestImplementation 'junit:junit:4.12'
-    androidTestImplementation "com.android.support:support-annotations:$supportVersion"
-    androidTestImplementation "com.android.support.test:rules:$testSupportVersion"
-    androidTestImplementation "com.android.support.test:runner:$testSupportVersion"
+    androidTestImplementation "androidx.annotation:annotation:1.1.0-alpha02"
+    androidTestImplementation "androidx.test:rules:1.1.2-alpha02"
+    androidTestImplementation "androidx.test:runner:1.1.2-alpha02"
     androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
 }
 repositories {

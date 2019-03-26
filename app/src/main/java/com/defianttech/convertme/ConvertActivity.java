@@ -9,16 +9,16 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -36,7 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /*
- * Copyright (c) 2014-2017 Dmitry Brant
+ * Copyright (c) 2014-2019 Dmitry Brant
  */
 public class ConvertActivity extends AppCompatActivity {
     private static final String TAG = "ConvertActivity";
