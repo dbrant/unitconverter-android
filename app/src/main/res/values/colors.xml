@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="list_item_highlight">#6080c0ff</color>
+    <color name="accent">#4080ff</color>
     <color name="toolbar">#ff4050a0</color>
     <color name="statusBar">#ff203080</color>
     <color name="window_background">#444</color>

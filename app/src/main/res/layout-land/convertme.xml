@@ -36,10 +36,11 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
+        android:tint="@android:color/white"
         app:srcCompat="@drawable/ic_settings_white_24dp"
         app:useCompatPadding="true"
         app:backgroundTint="@color/fab_color"
-        app:elevation="4sp"
+        app:elevation="4dp"
         app:borderWidth="0dp" />
 
     <androidx.appcompat.widget.Toolbar
