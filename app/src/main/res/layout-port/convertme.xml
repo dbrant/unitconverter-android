@@ -40,8 +40,7 @@
         app:srcCompat="@drawable/ic_settings_white_24dp"
         app:useCompatPadding="true"
         app:backgroundTint="@color/fab_color"
-        app:elevation="4dp"
-        app:borderWidth="0dp" />
+        app:tint="@android:color/white" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/main_toolbar"
