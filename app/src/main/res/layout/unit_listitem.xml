@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
                 android:textSize="@dimen/units_text_size"
-                android:fontFamily="sans-serif-medium"
+                app:fontFamily="sans-serif-medium"
                 android:textColor="@color/name_text"
                 tools:text="Lorem ipsum">
             </TextView>
