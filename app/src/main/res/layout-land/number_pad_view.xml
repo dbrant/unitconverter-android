@@ -1,138 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@color/number_pad_background"
-    android:padding="4dp"
-    android:elevation="6dp">
+    android:elevation="6dp"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <TextView
+        android:id="@+id/btn1"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="6dp"
+        style="@style/ButtonTextView"
+        android:text="@string/str_1"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/btn1"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                style="@style/ButtonTextView"
-                android:text="@string/str_1"/>
-            <TextView
-                android:id="@+id/btn2"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                style="@style/ButtonTextView"
-                android:text="@string/str_2"/>
-            <TextView
-                android:id="@+id/btn3"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                style="@style/ButtonTextView"
-                android:text="@string/str_3"/>
-        </LinearLayout>
+    <TextView
+        android:id="@+id/btn2"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintTop_toTopOf="@+id/btn1"
+        app:layout_constraintStart_toEndOf="@id/btn1"
+        android:layout_marginStart="@dimen/button_margin"
+        android:layout_marginLeft="@dimen/button_margin"
+        style="@style/ButtonTextView"
+        android:text="@string/str_2"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/btn4"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                style="@style/ButtonTextView"
-                android:text="@string/str_4"/>
-            <TextView
-                android:id="@+id/btn5"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                style="@style/ButtonTextView"
-                android:text="@string/str_5"/>
-            <TextView
-                android:id="@+id/btn6"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                style="@style/ButtonTextView"
-                android:text="@string/str_6"/>
-        </LinearLayout>
+    <TextView
+        android:id="@+id/btn3"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintTop_toTopOf="@+id/btn1"
+        app:layout_constraintStart_toEndOf="@id/btn2"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/button_margin"
+        android:layout_marginLeft="@dimen/button_margin"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp"
+        style="@style/ButtonTextView"
+        android:text="@string/str_3"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/btn7"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                style="@style/ButtonTextView"
-                android:text="@string/str_7"/>
-            <TextView
-                android:id="@+id/btn8"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                style="@style/ButtonTextView"
-                android:text="@string/str_8"/>
-            <TextView
-                android:id="@+id/btn9"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                style="@style/ButtonTextView"
-                android:text="@string/str_9"/>
-        </LinearLayout>
+    <TextView
+        android:id="@+id/btn4"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintTop_toBottomOf="@id/btn1"
+        app:layout_constraintStart_toStartOf="@id/btn1"
+        android:layout_marginTop="@dimen/button_margin"
+        style="@style/ButtonTextView"
+        android:text="@string/str_4"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/btnNegative"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                style="@style/ButtonTextView"
-                android:text="@string/str_pad_negate"/>
-            <TextView
-                android:id="@+id/btn0"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                style="@style/ButtonTextView"
-                android:text="@string/str_0"/>
-            <TextView
-                android:id="@+id/btnDecimal"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                style="@style/ButtonTextView"
-                android:text="@string/str_pad_point"/>
-        </LinearLayout>
+    <TextView
+        android:id="@+id/btn5"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintTop_toTopOf="@id/btn4"
+        app:layout_constraintStart_toStartOf="@id/btn2"
+        style="@style/ButtonTextView"
+        android:text="@string/str_5"/>
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/btn6"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintTop_toTopOf="@id/btn5"
+        app:layout_constraintStart_toStartOf="@id/btn3"
+        style="@style/ButtonTextView"
+        android:text="@string/str_6"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp">
+    <TextView
+        android:id="@+id/btn7"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintTop_toBottomOf="@id/btn4"
+        app:layout_constraintStart_toStartOf="@id/btn4"
+        android:layout_marginTop="@dimen/button_margin"
+        style="@style/ButtonTextView"
+        android:text="@string/str_7"/>
 
-        <TextView
-            android:id="@+id/btnBackspace"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
-            style="@style/ButtonTextView"
-            android:text="@string/str_pad_back"/>
+    <TextView
+        android:id="@+id/btn8"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintTop_toTopOf="@id/btn7"
+        app:layout_constraintStart_toStartOf="@id/btn5"
+        style="@style/ButtonTextView"
+        android:text="@string/str_8"/>
 
-        <TextView
-            android:id="@+id/btnClear"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
-            style="@style/ButtonTextView"
-            android:text="@string/str_pad_clear"/>
+    <TextView
+        android:id="@+id/btn9"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintTop_toTopOf="@id/btn8"
+        app:layout_constraintStart_toStartOf="@id/btn6"
+        style="@style/ButtonTextView"
+        android:text="@string/str_9"/>
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/btnNegative"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintTop_toBottomOf="@id/btn7"
+        app:layout_constraintStart_toStartOf="@id/btn7"
+        android:layout_marginTop="@dimen/button_margin"
+        style="@style/ButtonTextView"
+        android:text="@string/str_pad_negate"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/btn0"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintTop_toTopOf="@id/btnNegative"
+        app:layout_constraintStart_toStartOf="@id/btn8"
+        style="@style/ButtonTextView"
+        android:text="@string/str_0"/>
+
+    <TextView
+        android:id="@+id/btnDecimal"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintTop_toTopOf="@id/btn0"
+        app:layout_constraintStart_toStartOf="@id/btn9"
+        style="@style/ButtonTextView"
+        android:text="@string/str_pad_point"/>
+
+    <TextView
+        android:id="@+id/btnBackspace"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintTop_toBottomOf="@id/btnNegative"
+        app:layout_constraintStart_toStartOf="@id/btnNegative"
+        android:layout_marginTop="16dp"
+        style="@style/ButtonTextView"
+        android:text="@string/str_pad_back"/>
+
+    <TextView
+        android:id="@+id/btnClear"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintTop_toTopOf="@id/btnBackspace"
+        app:layout_constraintStart_toStartOf="@id/btn0"
+        style="@style/ButtonTextView"
+        android:text="@string/str_pad_clear"/>
+
+</merge>

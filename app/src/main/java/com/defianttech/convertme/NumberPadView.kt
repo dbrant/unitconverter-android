@@ -3,18 +3,15 @@ package com.defianttech.convertme
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.number_pad_view.view.*
 
 /*
- * Copyright (c) 2014-2018 Dmitry Brant
+ * Copyright (c) 2014-2020 Dmitry Brant
  */
-class NumberPadView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyle: Int = 0
-) : LinearLayout(context, attrs, defStyle) {
+class NumberPadView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
+    : ConstraintLayout(context, attrs, defStyle), View.OnClickListener {
 
     interface OnValueChangedListener {
         fun onValueChanged(value: String)
@@ -23,27 +20,21 @@ class NumberPadView @JvmOverloads constructor(
     var currentValue = "0"
     var valueChangedListener: OnValueChangedListener? = null
 
-    private val numberClickListener = OnClickListener { view ->
-        val text = (view as TextView).text.toString()
-        appendDigit(text)
-        valueChangedListener!!.onValueChanged(currentValue)
-    }
-
     init {
         View.inflate(context, R.layout.number_pad_view, this)
 
-        btn0.setOnClickListener(numberClickListener)
-        btn1.setOnClickListener(numberClickListener)
-        btn2.setOnClickListener(numberClickListener)
-        btn3.setOnClickListener(numberClickListener)
-        btn4.setOnClickListener(numberClickListener)
-        btn5.setOnClickListener(numberClickListener)
-        btn6.setOnClickListener(numberClickListener)
-        btn7.setOnClickListener(numberClickListener)
-        btn8.setOnClickListener(numberClickListener)
-        btn9.setOnClickListener(numberClickListener)
-        btnNegative.setOnClickListener(numberClickListener)
-        btnDecimal.setOnClickListener(numberClickListener)
+        btn0.setOnClickListener(this)
+        btn1.setOnClickListener(this)
+        btn2.setOnClickListener(this)
+        btn3.setOnClickListener(this)
+        btn4.setOnClickListener(this)
+        btn5.setOnClickListener(this)
+        btn6.setOnClickListener(this)
+        btn7.setOnClickListener(this)
+        btn8.setOnClickListener(this)
+        btn9.setOnClickListener(this)
+        btnNegative.setOnClickListener(this)
+        btnDecimal.setOnClickListener(this)
 
         btnBackspace.setOnClickListener {
             if (currentValue.isNotEmpty()) {
@@ -82,5 +73,11 @@ class NumberPadView @JvmOverloads constructor(
             }
         }
         currentValue = curVal
+    }
+
+    override fun onClick(v: View?) {
+        val text = (v as TextView).text.toString()
+        appendDigit(text)
+        valueChangedListener!!.onValueChanged(currentValue)
     }
 }

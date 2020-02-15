@@ -25,7 +25,8 @@
         <com.defianttech.convertme.NumberPadView
             android:id="@+id/numberPad"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:background="@color/number_pad_background"/>
 
     </LinearLayout>
 
