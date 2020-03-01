@@ -58,18 +58,22 @@ class NumberPadView @JvmOverloads constructor(context: Context, attrs: Attribute
                 curVal += "."
             }
         } else if (str == "±") {
-            if (curVal.startsWith("-")) {
-                curVal = curVal.substring(1, curVal.length)
+            curVal = if (curVal.startsWith("-")) {
+                curVal.substring(1, curVal.length)
             } else {
-                curVal = "-$curVal"
+                "-$curVal"
             }
         } else {
-            if (curVal == "0") {
-                curVal = str
-            } else if (curVal == "-0") {
-                curVal = "-$str"
-            } else {
-                curVal += str
+            when (curVal) {
+                "0" -> {
+                    curVal = str
+                }
+                "-0" -> {
+                    curVal = "-$str"
+                }
+                else -> {
+                    curVal += str
+                }
             }
         }
         currentValue = curVal

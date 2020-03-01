@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.widget_setup_activity.*
 
 /*
- * Copyright (c) 2014-2018 Dmitry Brant
+ * Copyright (c) 2014-2020 Dmitry Brant
  */
 class WidgetSetupActivity : AppCompatActivity() {
 
@@ -32,7 +32,7 @@ class WidgetSetupActivity : AppCompatActivity() {
         if (widgetId == -1) {
             return
         }
-        Log.d(TAG, "Configuring widget $widgetId")
+        Log.d("WidgetSetupActivity", "Configuring widget $widgetId")
 
         prefs = WidgetPrefs(this, widgetId)
 
@@ -79,7 +79,7 @@ class WidgetSetupActivity : AppCompatActivity() {
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
 
-        unit_increment_text.setText(java.lang.Float.toString(prefs!!.increment))
+        unit_increment_text.setText(prefs!!.increment.toString())
     }
 
     public override fun onResume() {
@@ -116,10 +116,6 @@ class WidgetSetupActivity : AppCompatActivity() {
 
         unit_to_spinner.adapter = ArrayAdapter(this, R.layout.unit_categoryitem, collections[category].items)
         unit_to_spinner.setSelection(prefs!!.currentToIndex)
-    }
-
-    companion object {
-        private val TAG = "WidgetSetupActivity"
     }
 }
 
