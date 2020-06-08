@@ -1,349 +1,349 @@
 
 == Acceleration
-centimeter/s², 100.0, 0.0
-foot/s², 3.280839895013123, 0.0
-meter/s², 1.0, 0.0
-millimeter/s², 1000.0, 0.0
-surface gravity (g), 0.101971621297793, 0.0
+0, centimeter/s², 100.0, 0.0
+1, foot/s², 3.280839895013123, 0.0
+2, meter/s², 1.0, 0.0
+3, millimeter/s², 1000.0, 0.0
+4, surface gravity (g), 0.101971621297793, 0.0
 
 == Angle
-degree (°), 1.0, 0.0
-grad, 1.11111111111111111, 0.0
-radian, 0.017453292519943296, 0.0
-revolution, 2.777777777777777e-3, 0.0
-minute (′), 60.0, 0.0
-second (″), 3600.0, 0.0
-mil (real), 17.453292519943296, 0.0
-mil (NATO), 17.777777777777777, 0.0
+0, degree (°), 1.0, 0.0
+1, grad, 1.11111111111111111, 0.0
+2, radian, 0.017453292519943296, 0.0
+3, revolution, 2.777777777777777e-3, 0.0
+4, minute (′), 60.0, 0.0
+5, second (″), 3600.0, 0.0
+6, mil (real), 17.453292519943296, 0.0
+7, mil (NATO), 17.777777777777777, 0.0
 
 == Area
-acre, 2.4710538146716534e-4, 0.0
-are, 0.01, 0.0
-centimeter², 10000.0, 0.0
-decare, 0.001, 0.0
-foot², 10.7639104167097223, 0.0
-hectare, 1.0e-4, 0.0
-inch², 1550.0031000062, 0.0
-kilometer², 1.0e-6, 0.0
-meter², 1.0, 0.0
-mile², 3.86102158542445847e-7, 0.0
-millimeter², 1.0e+6, 0.0
-yard², 1.19599004630108026, 0.0
-rood, 9.88421525868661369e-4, 0.0
-perch, 0.039536861034746455, 0.0
-stremma, 0.001, 0.0
-dunam, 0.001, 0.0
-mål, 0.001, 0.0
-tatami, 0.6049606775559589, 0.0
-tsubo, 0.30248033877797943, 0.0
-ping (坪), 0.30248033877797943, 0.0
-rai (ไร่), 0.000625, 0.0
+0, acre, 2.4710538146716534e-4, 0.0
+1, are, 0.01, 0.0
+2, centimeter², 10000.0, 0.0
+3, decare, 0.001, 0.0
+4, foot², 10.7639104167097223, 0.0
+5, hectare, 1.0e-4, 0.0
+6, inch², 1550.0031000062, 0.0
+7, kilometer², 1.0e-6, 0.0
+8, meter², 1.0, 0.0
+9, mile², 3.86102158542445847e-7, 0.0
+10, millimeter², 1.0e+6, 0.0
+11, yard², 1.19599004630108026, 0.0
+12, rood, 9.88421525868661369e-4, 0.0
+13, perch, 0.039536861034746455, 0.0
+14, stremma, 0.001, 0.0
+15, dunam, 0.001, 0.0
+16, mål, 0.001, 0.0
+17, tatami, 0.6049606775559589, 0.0
+18, tsubo, 0.30248033877797943, 0.0
+19, ping (坪), 0.30248033877797943, 0.0
+20, rai (ไร่), 0.000625, 0.0
 
 == Data
-bit, 8192.0, 0.0
-byte, 1024.0, 0.0
-nibble, 2048.0, 0.0
-kilobit, 8.0, 0.0
-megabit, 0.0078125, 0.0
-gigabit, 7.62939453125e-6, 0.0
-kilobyte (KB), 1.024, 0.0
-kibibyte (KiB), 1.0, 0.0
-megabyte (MB), 1.024e-3, 0.0
-mebibyte (MiB), 9.765625e-4, 0.0
-gigabyte (GB), 1.024e-6, 0.0
-gibibyte (GiB), 9.5367431640625e-7, 0.0
-terabyte (TB), 1.024e-9, 0.0
-tebibyte (TiB), 9.31322574615478515625e-10, 0.0
-petabyte (PB), 1.024e-12, 0.0
-pebibyte (PiB), 9.094947017729282379e-13, 0.0
-exabyte (EB), 1.024e-15, 0.0
-exbibyte (EiB), 8.881784197001252323e-16, 0.0
-zettabyte (ZB), 1.024e-18, 0.0
-zebibyte (ZiB), 8.673617379884035472e-19, 0.0
-yottabyte (YB), 1.024e-21, 0.0
-yobibyte (YiB), 8.47032947254300339e-22, 0.0
+0, bit, 8192.0, 0.0
+1, byte, 1024.0, 0.0
+2, nibble, 2048.0, 0.0
+3, kilobit, 8.0, 0.0
+4, megabit, 0.0078125, 0.0
+5, gigabit, 7.62939453125e-6, 0.0
+6, kilobyte (KB), 1.024, 0.0
+7, kibibyte (KiB), 1.0, 0.0
+8, megabyte (MB), 1.024e-3, 0.0
+9, mebibyte (MiB), 9.765625e-4, 0.0
+10, gigabyte (GB), 1.024e-6, 0.0
+11, gibibyte (GiB), 9.5367431640625e-7, 0.0
+12, terabyte (TB), 1.024e-9, 0.0
+13, tebibyte (TiB), 9.31322574615478515625e-10, 0.0
+14, petabyte (PB), 1.024e-12, 0.0
+15, pebibyte (PiB), 9.094947017729282379e-13, 0.0
+16, exabyte (EB), 1.024e-15, 0.0
+17, exbibyte (EiB), 8.881784197001252323e-16, 0.0
+18, zettabyte (ZB), 1.024e-18, 0.0
+19, zebibyte (ZiB), 8.673617379884035472e-19, 0.0
+20, yottabyte (YB), 1.024e-21, 0.0
+21, yobibyte (YiB), 8.47032947254300339e-22, 0.0
 
 == Density
-gram/centimeter³, 0.001, 0.0
-gram/meter³, 1000.0, 0.0
-kilogram/meter³, 1.0, 0.0
-milligram/meter³, 1000000.0, 0.0
-ounce/gallon, 0.1335265, 0.0
-pound/foot³, 0.06242796, 0.0
-pound/inch³, 3.612729e-5, 0.0
-ton/yard³, 0.00075248, 0.0
+0, gram/centimeter³, 0.001, 0.0
+1, gram/meter³, 1000.0, 0.0
+2, kilogram/meter³, 1.0, 0.0
+3, milligram/meter³, 1000000.0, 0.0
+4, ounce/gallon, 0.1335265, 0.0
+5, pound/foot³, 0.06242796, 0.0
+6, pound/inch³, 3.612729e-5, 0.0
+7, ton/yard³, 0.00075248, 0.0
 
 == Distance,Length
-angstrom (Å), 1.0e+10, 0.0
-astr. unit (AU), 6.6844919786e-12, 0.0
-centimeter (cm), 100.0, 0.0
-decimeter (dm), 10.0, 0.0
-dekameter (dam), 0.1, 0.0
-fathom, 0.54680664916885383, 0.0
-foot (ft), 3.280839895013123, 0.0
-furlong, 4.9709695378986712e-3, 0.0
-hand, 9.84251968503937, 0.0
-hectometer (hm), 0.01, 0.0
-inch (in), 39.37007874015748, 0.0
-kilometer (km), 0.001, 0.0
-light year (ly), 1.0570008340246154637e-16, 0.0
-meter (m), 1.0, 0.0
-micrometer (µm), 1.0e+6, 0.0
-mile (mi), 6.2137119223733397e-4, 0.0
-millimeter (mm), 1000.0, 0.0
-nanometer (nm), 1.0e+9, 0.0
-nautical mile, 5.399554642178303e-4, 0.0
-parsec (pc), 3.2407786545502059e-17, 0.0
-span, 4.374453193350831, 0.0
-yard (yd), 1.0936132983377078, 0.0
-chain, 0.0497096953789867, 0.0
-link, 4.97096953789867, 0.0
-rod, 0.198838781515947, 0.0
-league, 2.07123730745778e-4, 0.0
-cable, 0.0053961182483769, 0.0
-versta (верста), 9.37382827146606674e-4, 0.0
-shaku (尺), 3.3, 0.0
-chi (市尺), 3, 0.0
-wa (วา), 0.5, 0.0
+0, angstrom (Å), 1.0e+10, 0.0
+1, astr. unit (AU), 6.6844919786e-12, 0.0
+2, centimeter (cm), 100.0, 0.0
+3, decimeter (dm), 10.0, 0.0
+4, dekameter (dam), 0.1, 0.0
+5, fathom, 0.54680664916885383, 0.0
+6, foot (ft), 3.280839895013123, 0.0
+7, furlong, 4.9709695378986712e-3, 0.0
+8, hand, 9.84251968503937, 0.0
+9, hectometer (hm), 0.01, 0.0
+10, inch (in), 39.37007874015748, 0.0
+11, kilometer (km), 0.001, 0.0
+12, light year (ly), 1.0570008340246154637e-16, 0.0
+13, meter (m), 1.0, 0.0
+14, micrometer (µm), 1.0e+6, 0.0
+15, mile (mi), 6.2137119223733397e-4, 0.0
+16, millimeter (mm), 1000.0, 0.0
+17, nanometer (nm), 1.0e+9, 0.0
+18, nautical mile, 5.399554642178303e-4, 0.0
+19, parsec (pc), 3.2407786545502059e-17, 0.0
+20, span, 4.374453193350831, 0.0
+21, yard (yd), 1.0936132983377078, 0.0
+22, chain, 0.0497096953789867, 0.0
+23, link, 4.97096953789867, 0.0
+24, rod, 0.198838781515947, 0.0
+25, league, 2.07123730745778e-4, 0.0
+26, cable, 0.0053961182483769, 0.0
+27, versta (верста), 9.37382827146606674e-4, 0.0
+28, shaku (尺), 3.3, 0.0
+29, chi (市尺), 3, 0.0
+30, wa (วา), 0.5, 0.0
 
 == Energy
-BTU, 0.00094781712, 0.0
-calorie, 0.238902957619, 0.0
-electron volt (eV), 6.24150974e+18, 0.0
-erg, 10000000.0, 0.0
-foe, 1.0e-44, 0.0
-hoursepower-hour, 3.72506136e-7, 0.0
-joule (J), 1.0, 0.0
-kilocalorie, 0.000238902957619, 0.0
-kiloelectron volt (keV), 6.24150974e+15, 0.0
-kilojoule (kJ), 0.001, 0.0
-kilowatt-hour (kWh), 2.77777778e-7, 0.0
-megaelectron volt (MeV), 6.24150974e+12, 0.0
-megajoule (MJ), 0.000001, 0.0
-megawatt-hour (MWh), 2.77777778e-10, 0.0
-microjoule (µJ), 1000000.0, 0.0
-millijoule (mJ), 1000.0, 0.0
-therm, 9.4781712e-9, 0.0
-TNT ton, 2.390057361376673e-10, 0.0
-TNT kiloton, 2.390057361376673e-13, 0.0
-TNT megaton, 2.390057361376673e-16, 0.0
-watt-hour (Wh), 0.000277777778, 0.0
+0, BTU, 0.00094781712, 0.0
+1, calorie, 0.238902957619, 0.0
+2, electron volt (eV), 6.24150974e+18, 0.0
+3, erg, 10000000.0, 0.0
+4, foe, 1.0e-44, 0.0
+5, hoursepower-hour, 3.72506136e-7, 0.0
+6, joule (J), 1.0, 0.0
+7, kilocalorie, 0.000238902957619, 0.0
+8, kiloelectron volt (keV), 6.24150974e+15, 0.0
+9, kilojoule (kJ), 0.001, 0.0
+10, kilowatt-hour (kWh), 2.77777778e-7, 0.0
+11, megaelectron volt (MeV), 6.24150974e+12, 0.0
+12, megajoule (MJ), 0.000001, 0.0
+13, megawatt-hour (MWh), 2.77777778e-10, 0.0
+14, microjoule (µJ), 1000000.0, 0.0
+15, millijoule (mJ), 1000.0, 0.0
+16, therm, 9.4781712e-9, 0.0
+17, TNT ton, 2.390057361376673e-10, 0.0
+18, TNT kiloton, 2.390057361376673e-13, 0.0
+19, TNT megaton, 2.390057361376673e-16, 0.0
+20, watt-hour (Wh), 0.000277777778, 0.0
 
 == Flow
-meter³/sec, 1.0, 0.0
-meter³/min, 60.0, 0.0
-meter³/hr, 3600.0, 0.0
-foot³/sec, 35.31, 0.0
-foot³/min (cfm), 2119.0, 0.0
-foot³/hr, 127100.0, 0.0
-liter/sec, 1000.0, 0.0
-liter/min, 60000.0, 0.0
-liter/hr, 3600000.0, 0.0
-gallon/day (US), 22820000.0, 0.0
-gallon/hr (US) (gph), 951000.0, 0.0
-gallon/min (US) (gpm), 15850.0, 0.0
-gallon/day (Imp), 19010000.0, 0.0
-gallon/hr (Imp), 791900.0, 0.0
-gallon/min (Imp), 13200.0, 0.0
+0, meter³/sec, 1.0, 0.0
+1, meter³/min, 60.0, 0.0
+2, meter³/hr, 3600.0, 0.0
+3, foot³/sec, 35.31, 0.0
+4, foot³/min (cfm), 2119.0, 0.0
+5, foot³/hr, 127100.0, 0.0
+6, liter/sec, 1000.0, 0.0
+7, liter/min, 60000.0, 0.0
+8, liter/hr, 3600000.0, 0.0
+9, gallon/day (US), 22820000.0, 0.0
+10, gallon/hr (US) (gph), 951000.0, 0.0
+11, gallon/min (US) (gpm), 15850.0, 0.0
+12, gallon/day (Imp), 19010000.0, 0.0
+13, gallon/hr (Imp), 791900.0, 0.0
+14, gallon/min (Imp), 13200.0, 0.0
 
 == Force
-newton (N), 1.0, 0.0
-kilonewton, 0.001, 0.0
-ounce-force, 3.5969431019, 0.0
-pound-force, 0.22480894387, 0.0
-gram-force, 101.9716213, 0.0
-kilogram-force, 0.1019716, 0.0
-pond, 101.9716213, 0.0
-kip, 0.0002248, 0.0
-dyne, 100000, 0.0
-poundal, 7.2330140801, 0.0
-sthene, 0.001, 0.0
+0, newton (N), 1.0, 0.0
+1, kilonewton, 0.001, 0.0
+2, ounce-force, 3.5969431019, 0.0
+3, pound-force, 0.22480894387, 0.0
+4, gram-force, 101.9716213, 0.0
+5, kilogram-force, 0.1019716, 0.0
+6, pond, 101.9716213, 0.0
+7, kip, 0.0002248, 0.0
+8, dyne, 100000, 0.0
+9, poundal, 7.2330140801, 0.0
+10, sthene, 0.001, 0.0
 
 == Light
-centimeter-candle, 1.0, 0.0
-flame, 232.2576, 0.0
-foot-candle, 929.0304, 0.0
-lumen/cm², 1.0, 0.0
-lumen/ft², 929.030, 0.0
-lux (lumen/m²), 10000.0, 0.0
-meter-candle, 10000.0, 0.0
-nox, 10000000.0, 0.0
-phot, 1.0, 0.0
-watt/cm², 0.00146412884334, 0.0
+0, centimeter-candle, 1.0, 0.0
+1, flame, 232.2576, 0.0
+2, foot-candle, 929.0304, 0.0
+3, lumen/cm², 1.0, 0.0
+4, lumen/ft², 929.030, 0.0
+5, lux (lumen/m²), 10000.0, 0.0
+6, meter-candle, 10000.0, 0.0
+7, nox, 10000000.0, 0.0
+8, phot, 1.0, 0.0
+9, watt/cm², 0.00146412884334, 0.0
 
 == Mass,Weight
-carat, 5000.0, 0.0
-drachm, 564.3833911932866, 0.0
-earth mass (M⊕), 1.67400398206061581e-25, 0.0
-grain (gr), 15432.35835294143065, 0.0
-gram (g), 1000.0, 0.0
-jupiter mass, 5.266979064014641e-28, 0.0
-hundredweight (cwt), 0.0196841305522212, 0.0
-kilogram (kg), 1.0, 0.0
-megagram (Mg), 0.001, 0.0
-metric ton (t), 0.001, 0.0
-microgram (µg), 1.0e+9, 0.0
-milligram (mg), 1.0e+6, 0.0
-ounce (oz), 35.2739619806867227, 0.0
-pennyweight (dwt), 643.01493137255961, 0.0
-pound (lb), 2.20462262379292017, 0.0
-slug, 0.068521765843675, 0.0
-solar mass (M☉), 5.0278543128934296e-31, 0.0
-stone, 0.157473044556637155, 0.0
-ton (tn), 0.00110231131189646, 0.0
-troy ounce (oz), 32.15074656862798, 0.0
-funt (фунт), 2.4418999955020202083, 0.0
-pood (пуд), 0.0610474998875505052, 0.0
-assload, 0.333333333333333333, 0.0
-shit-ton, 0.00000055115565594823, 0.0
+0, carat, 5000.0, 0.0
+1, drachm, 564.3833911932866, 0.0
+2, earth mass (M⊕), 1.67400398206061581e-25, 0.0
+3, grain (gr), 15432.35835294143065, 0.0
+4, gram (g), 1000.0, 0.0
+5, jupiter mass, 5.266979064014641e-28, 0.0
+6, hundredweight (cwt), 0.0196841305522212, 0.0
+7, kilogram (kg), 1.0, 0.0
+8, megagram (Mg), 0.001, 0.0
+9, metric ton (t), 0.001, 0.0
+10, microgram (µg), 1.0e+9, 0.0
+11, milligram (mg), 1.0e+6, 0.0
+12, ounce (oz), 35.2739619806867227, 0.0
+13, pennyweight (dwt), 643.01493137255961, 0.0
+14, pound (lb), 2.20462262379292017, 0.0
+15, slug, 0.068521765843675, 0.0
+16, solar mass (M☉), 5.0278543128934296e-31, 0.0
+17, stone, 0.157473044556637155, 0.0
+18, ton (tn), 0.00110231131189646, 0.0
+19, troy ounce (oz), 32.15074656862798, 0.0
+20, funt (фунт), 2.4418999955020202083, 0.0
+21, pood (пуд), 0.0610474998875505052, 0.0
+22, assload, 0.333333333333333333, 0.0
+23, shit-ton, 0.00000055115565594823, 0.0
 
 == Power
-BTU/hour, 3415.179027, 0.0
-BTU/minute, 56.91965045, 0.0
-BTU/second, 0.9486608408, 0.0
-calorie/sec, 239.0585106, 0.0
-horsepower, 1.34102209, 0.0
-kilowatt, 1.0, 0.0
-lb-ft/min, 44253.72896, 0.0
-lb-ft/sec, 737.5621493, 0.0
-megawatt, 0.001, 0.0
-watt, 1000.0, 0.0
+0, BTU/hour, 3415.179027, 0.0
+1, BTU/minute, 56.91965045, 0.0
+2, BTU/second, 0.9486608408, 0.0
+3, calorie/sec, 239.0585106, 0.0
+4, horsepower, 1.34102209, 0.0
+5, kilowatt, 1.0, 0.0
+6, lb-ft/min, 44253.72896, 0.0
+7, lb-ft/sec, 737.5621493, 0.0
+8, megawatt, 0.001, 0.0
+9, watt, 1000.0, 0.0
 
 == Pressure
-atmosphere (atm), 0.0680459639, 0.0
-bar, 0.06894757, 0.0
-centimeter mercury, 5.171493, 0.0
-dyne/cm², 68947.57, 0.0
-inch mercury, 2.036021, 0.0
-inch water, 27.7075924014815, 0.0
-kilogram/cm², 0.07030696, 0.0
-kilogram/m², 703.0696, 0.0
-kilopascal (kPa), 6.894757, 0.0
-megapascal (MPa), 0.006894757, 0.0
-millibar, 68.94757, 0.0
-millimeter mercury, 51.71493, 0.0
-pascal (Pa), 6894.757, 0.0
-pound/inch² (PSI), 1.0, 0.0
-pound/foot², 144.0, 0.0
-torr, 51.71493, 0.0
+0, atmosphere (atm), 0.0680459639, 0.0
+1, bar, 0.06894757, 0.0
+2, centimeter mercury, 5.171493, 0.0
+3, dyne/cm², 68947.57, 0.0
+4, inch mercury, 2.036021, 0.0
+5, inch water, 27.7075924014815, 0.0
+6, kilogram/cm², 0.07030696, 0.0
+7, kilogram/m², 703.0696, 0.0
+8, kilopascal (kPa), 6.894757, 0.0
+9, megapascal (MPa), 0.006894757, 0.0
+10, millibar, 68.94757, 0.0
+11, millimeter mercury, 51.71493, 0.0
+12, pascal (Pa), 6894.757, 0.0
+13, pound/inch² (PSI), 1.0, 0.0
+14, pound/foot², 144.0, 0.0
+15, torr, 51.71493, 0.0
 
 == Radiation dose
-gray (Gy), 1.0, 0.0
-rad, 100.0, 0.0
-röntgen (R), 115.0, 0.0
+0, gray (Gy), 1.0, 0.0
+1, rad, 100.0, 0.0
+2, röntgen (R), 115.0, 0.0
 
 == Radioactivity
-becquerel (Bq), 1.0, 0.0
-curie (Ci), 2.7027027027027027e-11, 0.0
-rutherford (rd), 0.000001, 0.0
+0, becquerel (Bq), 1.0, 0.0
+1, curie (Ci), 2.7027027027027027e-11, 0.0
+2, rutherford (rd), 0.000001, 0.0
 
 == SI prefixes
-yotta (Y), 1.0e-24, 0.0
-zetta (Z), 1.0e-21, 0.0
-exa (E), 1.0e-18, 0.0
-peta (P), 1.0e-15, 0.0
-tera (T), 1.0e-12, 0.0
-giga (G), 1.0e-9, 0.0
-mega (M), 1.0e-6, 0.0
-kilo (k), 0.001, 0.0
-hecto (h), 0.01, 0.0
-deca (da), 0.1, 0.0
-[one], 1.0, 0.0
-deci (d), 10.0, 0.0
-centi (c), 100.0, 0.0
-milli (m), 1000.0, 0.0
-micro (µ), 1.0e+6, 0.0
-nano (n), 1.0e+9, 0.0
-pico (p), 1.0e+12, 0.0
-femto (f), 1.0e+15, 0.0
-atto (a), 1.0e+18, 0.0
-zepto (z), 1.0e+21, 0.0
-yocto (y), 1.0e+24, 0.0
+0, yotta (Y), 1.0e-24, 0.0
+1, zetta (Z), 1.0e-21, 0.0
+2, exa (E), 1.0e-18, 0.0
+3, peta (P), 1.0e-15, 0.0
+4, tera (T), 1.0e-12, 0.0
+5, giga (G), 1.0e-9, 0.0
+6, mega (M), 1.0e-6, 0.0
+7, kilo (k), 0.001, 0.0
+8, hecto (h), 0.01, 0.0
+9, deca (da), 0.1, 0.0
+10, [one], 1.0, 0.0
+11, deci (d), 10.0, 0.0
+12, centi (c), 100.0, 0.0
+13, milli (m), 1000.0, 0.0
+14, micro (µ), 1.0e+6, 0.0
+15, nano (n), 1.0e+9, 0.0
+16, pico (p), 1.0e+12, 0.0
+17, femto (f), 1.0e+15, 0.0
+18, atto (a), 1.0e+18, 0.0
+19, zepto (z), 1.0e+21, 0.0
+20, yocto (y), 1.0e+24, 0.0
 
 == Speed
-foot/sec, 3280.839895013123, 0.0
-foot/min, 196850.39370078738, 0.0
-foot/hour, 11811023.622047243, 0.0
-kilometer/sec, 1.0, 0.0
-kilometer/min, 60.0, 0.0
-kilometer/hour, 3600.0, 0.0
-knot, 1943.84449244060475, 0.0
-light speed (c), 3.3356409519815205e-6, 0.0
-mach, 2.9385836, 0.0
-meter/sec, 1000.0, 0.0
-meter/min, 60000.0, 0.0
-meter/hour, 3.6e+6, 0.0
-mile/sec, 0.6213711922373339, 0.0
-mile/min, 37.282271534240034, 0.0
-mile/hour, 2236.936292054402, 0.0
+0, foot/sec, 3280.839895013123, 0.0
+1, foot/min, 196850.39370078738, 0.0
+2, foot/hour, 11811023.622047243, 0.0
+3, kilometer/sec, 1.0, 0.0
+4, kilometer/min, 60.0, 0.0
+5, kilometer/hour, 3600.0, 0.0
+6, knot, 1943.84449244060475, 0.0
+7, light speed (c), 3.3356409519815205e-6, 0.0
+8, mach, 2.9385836, 0.0
+9, meter/sec, 1000.0, 0.0
+10, meter/min, 60000.0, 0.0
+11, meter/hour, 3.6e+6, 0.0
+12, mile/sec, 0.6213711922373339, 0.0
+13, mile/min, 37.282271534240034, 0.0
+14, mile/hour, 2236.936292054402, 0.0
 
 == Temperature
-celsius (°C), 1.0, 0.0
-delisle (°De), -1.5, 150.0
-fahrenheit (°F), 1.8, 32.0
-kelvin (K), 1.0, 273.15
-newton (°N), 0.33, 0.0
-rankine (°Ra), 1.8, 491.67
-réaumur (°R), 0.8, 0.0
-rømer (°Rø), 0.525, 7.5
+0, celsius (°C), 1.0, 0.0
+1, delisle (°De), -1.5, 150.0
+2, fahrenheit (°F), 1.8, 32.0
+3, kelvin (K), 1.0, 273.15
+4, newton (°N), 0.33, 0.0
+5, rankine (°Ra), 1.8, 491.67
+6, réaumur (°R), 0.8, 0.0
+7, rømer (°Rø), 0.525, 7.5
 
 == Time
-century, 2.73790933079226e-5, 0.0
-day, 1.0, 0.0
-decade, 0.000273790933079226, 0.0
-eon, 2.73790933079226e-9, 0.0
-fortnight, 0.071428571428571429, 0.0
-hour, 24.0, 0.0
-microsecond (µs), 8.64e+10, 0.0
-millennium, 2.73790933079226e-6, 0.0
-millisecond (ms), 8.64e+7, 0.0
-minute, 1440.0, 0.0
-month (30 days), 0.0333333333333333, 0.0
-nanosecond, 8.64e+13, 0.0
-second (s), 86400.0, 0.0
-week, 0.14285714285714286, 0.0
-year, 0.00273790933079226, 0.0
+0, century, 2.73790933079226e-5, 0.0
+1, day, 1.0, 0.0
+2, decade, 0.000273790933079226, 0.0
+3, eon, 2.73790933079226e-9, 0.0
+4, fortnight, 0.071428571428571429, 0.0
+5, hour, 24.0, 0.0
+6, microsecond (µs), 8.64e+10, 0.0
+7, millennium, 2.73790933079226e-6, 0.0
+8, millisecond (ms), 8.64e+7, 0.0
+9, minute, 1440.0, 0.0
+10, month (30 days), 0.0333333333333333, 0.0
+11, nanosecond, 8.64e+13, 0.0
+12, second (s), 86400.0, 0.0
+13, week, 0.14285714285714286, 0.0
+14, year, 0.00273790933079226, 0.0
 
 == Torque
-newton meter, 1.0, 0.0
-newton cm, 100.0, 0.0
-newton mm, 1000.0, 0.0
-dyne meter, 100000.0, 0.0
-dyne cm, 10000000.0, 0.0
-dyne mm, 100000000.0, 0.0
-kg-force meter, 0.10197162129779, 0.0
-kg-force cm, 10.197162129779, 0.0
-kg-force mm, 101.97162129779, 0.0
-gram-force meter, 101.97162129779, 0.0
-gram-force cm, 10197.162129779, 0.0
-gram-force mm, 101971.62129779, 0.0
-oz-force foot, 11.800994078, 0.0
-oz-force inch, 141.611928936, 0.0
-lb-force foot, 0.737562121, 0.0
-lb-force inch, 8.850745454, 0.0
+0, newton meter, 1.0, 0.0
+1, newton cm, 100.0, 0.0
+2, newton mm, 1000.0, 0.0
+3, dyne meter, 100000.0, 0.0
+4, dyne cm, 10000000.0, 0.0
+5, dyne mm, 100000000.0, 0.0
+6, kg-force meter, 0.10197162129779, 0.0
+7, kg-force cm, 10.197162129779, 0.0
+8, kg-force mm, 101.97162129779, 0.0
+9, gram-force meter, 101.97162129779, 0.0
+10, gram-force cm, 10197.162129779, 0.0
+11, gram-force mm, 101971.62129779, 0.0
+12, oz-force foot, 11.800994078, 0.0
+13, oz-force inch, 141.611928936, 0.0
+14, lb-force foot, 0.737562121, 0.0
+15, lb-force inch, 8.850745454, 0.0
 
 == Volume
-centimeter³, 1000.0, 0.0
-meter³, 0.001, 0.0
-dram, 270.51218161474397756, 0.0
-yard³, 0.0013079506193144, 0.0
-foot³, 0.0353146667214886, 0.0
-inch³, 61.023744094732284, 0.0
-liter, 1.0, 0.0
-milliliter, 1000.0, 0.0
-gallon (US), 0.264172052358148416, 0.0
-quart (US), 1.05668820943259366, 0.0
-pint (US), 2.11337641886518732, 0.0
-ounce (US), 33.81402270184299719, 0.0
-gallon (Imp), 0.21996924829908779, 0.0
-quart (Imp), 0.87987699319635115, 0.0
-pint (Imp), 1.7597539863927023, 0.0
-ounce (Imp), 35.195079727854046, 0.0
-gill (Imp), 7.0390159455708092, 0.0
-cup, 4.22675283773037465, 0.0
-tablespoon, 67.62804540368599439, 0.0
-teaspoon, 202.88413621105798317, 0.0
-acre-foot, 8.1071319378991254e-7, 0.0
-scruple (℈), 844.681913473253688, 0.0
-drachm (ʒ), 281.560637822832368, 0.0
-minim (♏), 16893.63826937945525, 0.0
+0, centimeter³, 1000.0, 0.0
+1, meter³, 0.001, 0.0
+2, dram, 270.51218161474397756, 0.0
+3, yard³, 0.0013079506193144, 0.0
+4, foot³, 0.0353146667214886, 0.0
+5, inch³, 61.023744094732284, 0.0
+6, liter, 1.0, 0.0
+7, milliliter, 1000.0, 0.0
+8, gallon (US), 0.264172052358148416, 0.0
+9, quart (US), 1.05668820943259366, 0.0
+10, pint (US), 2.11337641886518732, 0.0
+11, ounce (US), 33.81402270184299719, 0.0
+12, gallon (Imp), 0.21996924829908779, 0.0
+13, quart (Imp), 0.87987699319635115, 0.0
+14, pint (Imp), 1.7597539863927023, 0.0
+15, ounce (Imp), 35.195079727854046, 0.0
+16, gill (Imp), 7.0390159455708092, 0.0
+17, cup, 4.22675283773037465, 0.0
+18, tablespoon, 67.62804540368599439, 0.0
+19, teaspoon, 202.88413621105798317, 0.0
+20, acre-foot, 8.1071319378991254e-7, 0.0
+21, scruple (℈), 844.681913473253688, 0.0
+22, drachm (ʒ), 281.560637822832368, 0.0
+23, minim (♏), 16893.63826937945525, 0.0

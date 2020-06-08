@@ -120,7 +120,7 @@ public class UnitCollection {
                     continue;
                 }
                 lineArr = line.split("\\s*,\\s*");
-                currentCollection.add(new SingleUnit(lineArr[0], Double.parseDouble(lineArr[1]), Double.parseDouble(lineArr[2])));
+                currentCollection.add(new SingleUnit(Integer.parseInt(lineArr[0]), lineArr[1], Double.parseDouble(lineArr[2]), Double.parseDouble(lineArr[3])));
             }
         } catch (IOException e) {
             Log.e(TAG, "Failed to read unit collection.", e);
@@ -132,6 +132,6 @@ public class UnitCollection {
                 }
             }
         }
-        return collections.toArray(new UnitCollection[collections.size()]);
+        return collections.toArray(new UnitCollection[0]);
     }
 }
