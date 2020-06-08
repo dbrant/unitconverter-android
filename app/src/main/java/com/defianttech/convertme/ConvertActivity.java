@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -44,6 +45,9 @@ public class ConvertActivity extends AppCompatActivity {
     private static final String KEY_CURRENT_CATEGORY = "currentCategory";
     private static final String KEY_CURRENT_UNIT = "currentUnitIndex";
     private static final String KEY_CURRENT_VALUE = "currentValue";
+
+    public static final int REQUEST_CODE_CUSTOM_UNITS = 100;
+    public static final int RESPONSE_CODE_CUSTOM_UNITS_CHANGED = 1;
 
     private static DecimalFormat dfExp = new DecimalFormat("#.#######E0");
     private static DecimalFormat dfNoexp = new DecimalFormat("#.#######");
@@ -181,6 +185,9 @@ public class ConvertActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_about:
                 showAboutDialog();
+                return true;
+            case R.id.menu_custom_units:
+                startActivityForResult(new Intent(this, CustomUnitsActivity.class), REQUEST_CODE_CUSTOM_UNITS);
                 return true;
             default:
                 break;

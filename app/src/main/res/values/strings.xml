@@ -32,4 +32,14 @@
     <string name="unit_to">Unit to convert to:</string>
     <string name="unit_increment">Increment amount:</string>
 
+    <string name="custom_units">Custom units</string>
+    <string name="add_new_unit">Add new unit…</string>
+    <string name="add_button">Add</string>
+    <string name="delete_unit">Delete unit</string>
+    <string name="delete_unit_confirm">Are you sure you want to delete \"%s\"?</string>
+    <string name="custom_unit_name">Name of unit</string>
+    <string name="custom_unit_base">Base unit:</string>
+    <string name="custom_unit_multiplier">Multiplier</string>
+    <string name="custom_unit_multiplier_default">1.0</string>
+
 </resources>
