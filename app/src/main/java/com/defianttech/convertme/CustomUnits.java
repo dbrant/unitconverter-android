@@ -51,6 +51,10 @@ public class CustomUnits {
             return name;
         }
 
+        public void setName(String name) {
+            this.name = name;
+        }
+
         public int getCategoryId() {
             return categoryId;
         }
@@ -59,12 +63,20 @@ public class CustomUnits {
             return baseUnitId;
         }
 
+        public void setBaseUnitId(int baseUnitId) {
+            this.baseUnitId = baseUnitId;
+        }
+
         public double getOffset() {
             return offset;
         }
 
         public double getMultiplier() {
             return multiplier;
+        }
+
+        public void setMultiplier(double multiplier) {
+            this.multiplier = multiplier;
         }
     }
 }

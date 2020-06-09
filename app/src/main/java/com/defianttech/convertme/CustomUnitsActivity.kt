@@ -16,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.custom_units_activity.*
 import kotlinx.android.synthetic.main.custom_units_activity.add_button
 import kotlinx.android.synthetic.main.custom_units_activity.toolbar
-import kotlinx.android.synthetic.main.custom_units_add_activity.*
-
 
 /*
  * Copyright (c) 2020 Dmitry Brant
@@ -92,6 +90,10 @@ class CustomUnitsActivity : AppCompatActivity() {
         override fun onClick(v: View?) {
             val unit = customUnits!!.units[v?.tag as Int]
             if (v == editButton) {
+
+                val intent = Intent(this@CustomUnitsActivity, CustomUnitsAddActivity::class.java)
+                        .putExtra(ConvertActivity.INTENT_EXTRA_UNIT_ID, unit.id)
+                startActivityForResult(intent, ConvertActivity.REQUEST_CODE_CUSTOM_UNITS)
 
             } else if (v == deleteButton) {
                 // check if other custom units depend on this one...

@@ -17,12 +17,19 @@ class CustomUnitsAddActivity : AppCompatActivity() {
     private var categories: Array<UnitCollection> = UnitCollection.getInstance(this)
     private var allCategoryNames: Array<String> = UnitCollection.getAllCategoryNames(this)
     private val textWatcher: UnitTextWatcher = UnitTextWatcher()
+    private var editUnit: CustomUnits.CustomUnit? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.custom_units_add_activity)
         setSupportActionBar(toolbar)
-        supportActionBar?.setTitle(R.string.add_new_unit)
+
+        val editUnitId = intent.getIntExtra(ConvertActivity.INTENT_EXTRA_UNIT_ID, 0)
+        if (editUnitId != 0) {
+            editUnit = UnitCollection.getCustomUnits(this).units.first { unit -> unit.id == editUnitId }
+        }
+
+        supportActionBar?.setTitle(if (isEditing()) R.string.edit_unit else R.string.add_new_unit)
 
         val categoryAdapter = ArrayAdapter(this, R.layout.unit_categoryitem, allCategoryNames)
 
@@ -32,10 +39,17 @@ class CustomUnitsAddActivity : AppCompatActivity() {
                 val currentCategory = UnitCollection.collectionIndexByName(categories, allCategoryNames[index])
                 unit_base_spinner.adapter = ArrayAdapter(this@CustomUnitsAddActivity, R.layout.unit_categoryitem, categories[currentCategory].items)
 
-                // find the default base unit in this collection
-                val defaultIndex = categories[currentCategory].items.indexOfFirst { unit -> unit.multiplier == 1.0 }
-                if (defaultIndex >= 0) {
-                    unit_base_spinner.setSelection(defaultIndex)
+                if (isEditing()) {
+                    val defaultIndex = categories[editUnit!!.categoryId].items.indexOfFirst { unit -> unit.id == editUnit!!.baseUnitId }
+                    if (defaultIndex >= 0) {
+                        unit_base_spinner.setSelection(defaultIndex)
+                    }
+                } else {
+                    // find the default base unit in this collection
+                    val defaultIndex = categories[currentCategory].items.indexOfFirst { unit -> unit.multiplier == 1.0 }
+                    if (defaultIndex >= 0) {
+                        unit_base_spinner.setSelection(defaultIndex)
+                    }
                 }
                 updatePreview()
             }
@@ -52,8 +66,21 @@ class CustomUnitsAddActivity : AppCompatActivity() {
         unit_name_text.addTextChangedListener(textWatcher)
         unit_multiplier_text.addTextChangedListener(textWatcher)
 
+        add_button.setText(if (isEditing()) R.string.done_button else R.string.add_button)
         add_button.setOnClickListener {
-            addNewUnit()
+            if (isEditing()) {
+                commitEditUnit()
+            } else {
+                addNewUnit()
+            }
+        }
+
+        if (isEditing()) {
+            unit_category_spinner.setSelection(editUnit!!.categoryId)
+            unit_category_spinner.isEnabled = false
+
+            unit_name_text.setText(editUnit!!.name)
+            unit_multiplier_text.setText((1.0 / editUnit!!.multiplier).toString())
         }
     }
 
@@ -73,7 +100,14 @@ class CustomUnitsAddActivity : AppCompatActivity() {
         return false
     }
 
+    private fun isEditing(): Boolean {
+        return editUnit != null
+    }
+
     private fun updatePreview() {
+        if (unit_category_spinner.selectedItemPosition == -1 || unit_base_spinner.selectedItemPosition == -1) {
+            return
+        }
         val multiplier = unit_multiplier_text.text.toString().toDoubleOrNull()
         val currentCategory = UnitCollection.collectionIndexByName(categories, allCategoryNames[unit_category_spinner.selectedItemPosition])
         val baseUnitId = categories[currentCategory].items[unit_base_spinner.selectedItemPosition].id
@@ -102,6 +136,23 @@ class CustomUnitsAddActivity : AppCompatActivity() {
             return
         }
         UnitCollection.addCustomUnit(this, currentCategory, baseUnitId, 1.0 / multiplier, unit_name_text.text.toString())
+        setResult(ConvertActivity.RESULT_CODE_CUSTOM_UNITS_CHANGED)
+        finish()
+    }
+
+    private fun commitEditUnit() {
+        val currentCategory = editUnit!!.categoryId
+        val baseUnitId = categories[currentCategory].items[unit_base_spinner.selectedItemPosition].id
+        val multiplier = unit_multiplier_text.text.toString().toDoubleOrNull()
+        if (multiplier == null || multiplier == 0.0) {
+            unit_multiplier_input.error = getString(R.string.custom_unit_multiplier_invalid)
+            return
+        }
+        if (unit_name_text.text.isNullOrEmpty()) {
+            unit_name_input.error = getString(R.string.custom_unit_name_invalid)
+            return
+        }
+        UnitCollection.editCustomUnit(this, editUnit!!.id, baseUnitId, 1.0 / multiplier, unit_name_text.text.toString())
         setResult(ConvertActivity.RESULT_CODE_CUSTOM_UNITS_CHANGED)
         finish()
     }

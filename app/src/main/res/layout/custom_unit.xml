@@ -50,8 +50,7 @@
         android:clickable="true"
         android:focusable="true"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:visibility="gone"
-        android:contentDescription="@null"/>
+        android:contentDescription="@string/edit_unit"/>
 
     <ImageView
         android:id="@+id/btnDeleteUnit"
@@ -63,6 +62,6 @@
         android:clickable="true"
         android:focusable="true"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@null"/>
+        android:contentDescription="@string/delete_unit"/>
 
 </androidx.cardview.widget.CardView>

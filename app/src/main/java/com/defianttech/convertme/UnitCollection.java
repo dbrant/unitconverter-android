@@ -53,7 +53,7 @@ public class UnitCollection {
             for (UnitCollection collection : collections) {
                 unitCategories.addAll(Arrays.asList(collection.getNames()));
             }
-            allCategoryNames = unitCategories.toArray(new String[unitCategories.size()]);
+            allCategoryNames = unitCategories.toArray(new String[0]);
             Arrays.sort(allCategoryNames, new Comparator<String>() {
                 @Override
                 public int compare(String left, String right) {
@@ -190,6 +190,27 @@ public class UnitCollection {
         CustomUnits.CustomUnit unit = new CustomUnits.CustomUnit(maxId, categoryId, baseUnitId, 0.0, multiplier, name);
         List<CustomUnits.CustomUnit> newUnits = new ArrayList<>(customUnits.getUnits());
         newUnits.add(unit);
+        customUnits.setUnits(newUnits);
+        saveCustomUnits(context, customUnits);
+        resetInstance(context);
+    }
+
+    static void editCustomUnit(@NonNull Context context, int id, int baseUnitId, double multiplier, String name) {
+        CustomUnits customUnits = getCustomUnits(context);
+        CustomUnits.CustomUnit unit = null;
+        for (CustomUnits.CustomUnit u : customUnits.getUnits()) {
+            if (u.getId() == id) {
+                unit = u;
+                break;
+            }
+        }
+        if (unit == null) {
+            return;
+        }
+        unit.setName(name);
+        unit.setBaseUnitId(baseUnitId);
+        unit.setMultiplier(multiplier);
+        List<CustomUnits.CustomUnit> newUnits = new ArrayList<>(customUnits.getUnits());
         customUnits.setUnits(newUnits);
         saveCustomUnits(context, customUnits);
         resetInstance(context);

@@ -50,6 +50,7 @@ public class ConvertActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_CUSTOM_UNITS = 100;
     public static final int RESULT_CODE_CUSTOM_UNITS_CHANGED = 1;
+    public static final String INTENT_EXTRA_UNIT_ID = "extra_unit_id";
 
     private static DecimalFormat dfExp = new DecimalFormat("#.#######E0");
     private static DecimalFormat dfNoexp = new DecimalFormat("#.#######");
