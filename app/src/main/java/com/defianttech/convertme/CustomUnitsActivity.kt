@@ -90,6 +90,17 @@ class CustomUnitsActivity : AppCompatActivity() {
             if (v == editButton) {
 
             } else if (v == deleteButton) {
+                // check if other custom units depend on this one...
+                for (u in customUnits!!.units) {
+                    if (u.baseUnitId == unit.id) {
+                        AlertDialog.Builder(this@CustomUnitsActivity)
+                                .setMessage(getString(R.string.delete_unit_dependent, unit.name, u.name))
+                                .setPositiveButton(android.R.string.ok, null)
+                                .create()
+                                .show()
+                        return
+                    }
+                }
                 AlertDialog.Builder(this@CustomUnitsActivity)
                         .setMessage(getString(R.string.delete_unit_confirm, unit.name))
                         .setNegativeButton(android.R.string.cancel, null)
