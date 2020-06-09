@@ -2,7 +2,11 @@ package com.defianttech.convertme;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+
+import android.content.SharedPreferences;
 import android.util.Log;
+
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,11 +22,13 @@ import java.util.List;
  */
 public class UnitCollection {
     private static final String TAG = "UnitCollection";
+    private static final String CUSTOM_COLLECTION_PREF_NAME = "custom_collection";
 
     public static final int DEFAULT_CATEGORY = 5; //default to "distance"
     public static final int DEFAULT_FROM_INDEX = 10; //default to "inch"
     public static final int DEFAULT_TO_INDEX = 2; //default to "centimeter"
     public static final double DEFAULT_VALUE = 1.0;
+    public static final int CUSTOM_ID_START = 10000;
 
     private static UnitCollection[] INSTANCE;
     private static String[] allCategoryNames;
@@ -30,9 +36,13 @@ public class UnitCollection {
     @NonNull
     public static UnitCollection[] getInstance(@NonNull Context context) {
         if (INSTANCE == null) {
-            INSTANCE = getAllUnits(context);
+            resetInstance(context);
         }
         return INSTANCE;
+    }
+
+    private static void resetInstance(@NonNull Context context) {
+        INSTANCE = getAllUnits(context);
     }
 
     @NonNull
@@ -132,6 +142,74 @@ public class UnitCollection {
                 }
             }
         }
+
+        // deserialize and append custom units.
+        CustomUnits customUnits = getCustomUnits(context);
+
+        for (CustomUnits.CustomUnit unit : customUnits.getUnits()) {
+            UnitCollection category = collections.get(unit.getCategoryId());
+            SingleUnit baseUnit = null;
+            for (SingleUnit u : category.getItems()) {
+                if (u.getId() == unit.getBaseUnitId()) {
+                    baseUnit = u;
+                    break;
+                }
+            }
+            if (baseUnit == null) {
+                break;
+            }
+            category.getItems().add(new SingleUnit(unit.getId(), unit.getName(),
+                    baseUnit.getMultiplier() * unit.getMultiplier(), unit.getOffset()));
+        }
+
         return collections.toArray(new UnitCollection[0]);
+    }
+
+    @NonNull
+    static CustomUnits getCustomUnits(@NonNull Context context) {
+        SharedPreferences prefs = ConvertActivity.getPrefs(context);
+        String customSerialized = prefs.getString(CUSTOM_COLLECTION_PREF_NAME, "{}");
+        CustomUnits customUnits = new Gson().fromJson(customSerialized, CustomUnits.class);
+        return customUnits != null ? customUnits : new CustomUnits();
+    }
+
+    static void saveCustomUnits(@NonNull Context context, CustomUnits customUnits) {
+        SharedPreferences.Editor editor = ConvertActivity.getPrefs(context).edit();
+        editor.putString(CUSTOM_COLLECTION_PREF_NAME, new Gson().toJson(customUnits));
+        editor.apply();
+    }
+
+    static void addCustomUnit(@NonNull Context context, int categoryId, int baseUnitId, double multiplier, String name) {
+        CustomUnits customUnits = getCustomUnits(context);
+        int maxId = CUSTOM_ID_START;
+        for (CustomUnits.CustomUnit u : customUnits.getUnits()) {
+            if (u.getId() >= maxId) {
+                maxId = u.getId() + 1;
+            }
+        }
+        CustomUnits.CustomUnit unit = new CustomUnits.CustomUnit(maxId, categoryId, baseUnitId, 0.0, multiplier, name);
+        List<CustomUnits.CustomUnit> newUnits = new ArrayList<>(customUnits.getUnits());
+        newUnits.add(unit);
+        customUnits.setUnits(newUnits);
+        saveCustomUnits(context, customUnits);
+        resetInstance(context);
+    }
+
+    static void deleteCustomUnit(@NonNull Context context, CustomUnits.CustomUnit unit) {
+        CustomUnits customUnits = getCustomUnits(context);
+        List<CustomUnits.CustomUnit> newUnits = new ArrayList<>(customUnits.getUnits());
+        int index = -1;
+        for (int i = 0; i < newUnits.size(); i++) {
+            if (newUnits.get(i).getId() == unit.getId()) {
+                index = i;
+                break;
+            }
+        }
+        if (index >= 0) {
+            newUnits.remove(index);
+        }
+        customUnits.setUnits(newUnits);
+        saveCustomUnits(context, customUnits);
+        resetInstance(context);
     }
 }

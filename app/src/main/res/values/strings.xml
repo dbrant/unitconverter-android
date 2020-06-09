@@ -38,8 +38,10 @@
     <string name="delete_unit">Delete unit</string>
     <string name="delete_unit_confirm">Are you sure you want to delete \"%s\"?</string>
     <string name="custom_unit_name">Name of unit</string>
+    <string name="custom_unit_name_invalid">Invalid name (must be non-empty)</string>
     <string name="custom_unit_base">Base unit:</string>
     <string name="custom_unit_multiplier">Multiplier</string>
+    <string name="custom_unit_multiplier_invalid">Invalid multiplier (must be a decimal number)</string>
     <string name="custom_unit_multiplier_default">1.0</string>
 
 </resources>

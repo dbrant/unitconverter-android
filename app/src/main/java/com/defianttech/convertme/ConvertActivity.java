@@ -13,6 +13,8 @@ import android.os.Bundle;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AlertDialog;
@@ -47,7 +49,7 @@ public class ConvertActivity extends AppCompatActivity {
     private static final String KEY_CURRENT_VALUE = "currentValue";
 
     public static final int REQUEST_CODE_CUSTOM_UNITS = 100;
-    public static final int RESPONSE_CODE_CUSTOM_UNITS_CHANGED = 1;
+    public static final int RESULT_CODE_CUSTOM_UNITS_CHANGED = 1;
 
     private static DecimalFormat dfExp = new DecimalFormat("#.#######E0");
     private static DecimalFormat dfNoexp = new DecimalFormat("#.#######");
@@ -75,8 +77,7 @@ public class ConvertActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.convertme);
 
-        collections = UnitCollection.getInstance(this);
-        allCategoryNames = UnitCollection.getAllCategoryNames(this);
+        resetLists();
 
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
@@ -113,8 +114,10 @@ public class ConvertActivity extends AppCompatActivity {
 
         categoryText = findViewById(R.id.category_text);
         unitsList = findViewById(R.id.unitsList);
+
         listAdapter = new UnitListAdapter();
         unitsList.setAdapter(listAdapter);
+
         unitsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -193,6 +196,22 @@ public class ConvertActivity extends AppCompatActivity {
                 break;
         }
         return false;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_CUSTOM_UNITS && resultCode == RESULT_CODE_CUSTOM_UNITS_CHANGED) {
+            resetLists();
+            restoreSettings();
+        }
+    }
+
+    private void resetLists() {
+        collections = UnitCollection.getInstance(this);
+        allCategoryNames = UnitCollection.getAllCategoryNames(this);
+        if (listAdapter != null) {
+            listAdapter.notifyDataSetChanged();
+        }
     }
 
     @NonNull

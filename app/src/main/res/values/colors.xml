@@ -13,4 +13,5 @@
     <color name="value_text">#f0f0f0</color>
     <color name="list_divider">#555</color>
     <color name="fab_color">#0a6</color>
+    <color name="card_background">#666</color>
 </resources>

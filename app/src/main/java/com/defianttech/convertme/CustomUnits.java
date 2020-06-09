@@ -1,30 +1,50 @@
 package com.defianttech.convertme;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.util.Collections;
 import java.util.List;
 
 /*
  * Copyright (c) 2020 Dmitry Brant
  */
 public class CustomUnits {
-    private List<CustomUnit> units;
+    private int version = 1;
+    @Nullable private List<CustomUnit> units;
 
+    public int getVersion() {
+        return version;
+    }
+
+    @NonNull
     public List<CustomUnit> getUnits() {
-        return units;
+        return units != null ? units : Collections.<CustomUnit>emptyList();
+    }
+
+    public void setUnits(@NonNull List<CustomUnit> units) {
+        this.units = units;
     }
 
     public static class CustomUnit {
+        private int id;
         private int categoryId;
-        private int unitId;
+        private int baseUnitId;
         private double offset;
         private double multiplier;
         private String name;
 
-        public CustomUnit(int categoryId, int unitId, double offset, double multiplier, String name) {
+        public CustomUnit(int id, int categoryId, int baseUnitId, double offset, double multiplier, String name) {
+            this.id = id;
             this.categoryId = categoryId;
-            this.unitId = unitId;
+            this.baseUnitId = baseUnitId;
             this.offset = offset;
             this.multiplier = multiplier;
             this.name = name;
+        }
+
+        public int getId() {
+            return id;
         }
 
         public String getName() {
@@ -35,8 +55,8 @@ public class CustomUnits {
             return categoryId;
         }
 
-        public int getUnitId() {
-            return unitId;
+        public int getBaseUnitId() {
+            return baseUnitId;
         }
 
         public double getOffset() {
