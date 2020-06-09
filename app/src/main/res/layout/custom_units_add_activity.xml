@@ -26,7 +26,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/unit_name_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -35,7 +37,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/category_shape"
                 android:orientation="vertical"
-                android:padding="4dp">
+                android:padding="8dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -54,7 +56,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/category_shape"
                 android:orientation="vertical"
-                android:padding="4dp">
+                android:padding="8dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -78,6 +80,8 @@
                     android:id="@+id/unit_multiplier_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:imeOptions="actionDone"
                     android:text="@string/custom_unit_multiplier_default" />
             </com.google.android.material.textfield.TextInputLayout>
 
