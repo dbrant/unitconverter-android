@@ -39,6 +39,8 @@
     <string name="delete_unit">Delete unit</string>
     <string name="edit_unit">Edit unit</string>
     <string name="preview">Preview</string>
+    <string name="inverse">Inverse</string>
+    <string name="nice_try">Nice try!</string>
     <string name="delete_unit_confirm">Are you sure you want to delete \"%s\"?</string>
     <string name="delete_unit_dependent">\"%s\" cannot be deleted because other units depend on it (%s).</string>
     <string name="custom_unit_name">Name of unit</string>

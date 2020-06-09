@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.custom_units_add_activity.*
 
 /*
@@ -65,6 +66,21 @@ class CustomUnitsAddActivity : AppCompatActivity() {
 
         unit_name_text.addTextChangedListener(textWatcher)
         unit_multiplier_text.addTextChangedListener(textWatcher)
+
+        invert_button.setOnClickListener {
+            val multiplier = unit_multiplier_text.text.toString().toDoubleOrNull()
+            if (multiplier != null) {
+                if (multiplier == 0.0) {
+                    AlertDialog.Builder(this@CustomUnitsAddActivity)
+                            .setMessage(R.string.nice_try)
+                            .setPositiveButton(android.R.string.ok, null)
+                            .create()
+                            .show()
+                } else {
+                    unit_multiplier_text.setText((1 / multiplier).toString())
+                }
+            }
+        }
 
         add_button.setText(if (isEditing()) R.string.done_button else R.string.add_button)
         add_button.setOnClickListener {
