@@ -1,13 +1,14 @@
 package com.defianttech.convertme
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.custom_units_add_activity.*
-import java.lang.Exception
 
 /*
  * Copyright (c) 2020 Dmitry Brant
@@ -15,6 +16,7 @@ import java.lang.Exception
 class CustomUnitsAddActivity : AppCompatActivity() {
     private var categories: Array<UnitCollection> = UnitCollection.getInstance(this)
     private var allCategoryNames: Array<String> = UnitCollection.getAllCategoryNames(this)
+    private val textWatcher: UnitTextWatcher = UnitTextWatcher()
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,21 +37,30 @@ class CustomUnitsAddActivity : AppCompatActivity() {
                 if (defaultIndex >= 0) {
                     unit_base_spinner.setSelection(defaultIndex)
                 }
+                updatePreview()
             }
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
+
+        unit_base_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View, index: Int, l: Long) {
+                updatePreview()
+            }
+            override fun onNothingSelected(adapterView: AdapterView<*>) {}
+        }
+
+        unit_name_text.addTextChangedListener(textWatcher)
+        unit_multiplier_text.addTextChangedListener(textWatcher)
 
         add_button.setOnClickListener {
             addNewUnit()
         }
     }
 
-    public override fun onResume() {
-        super.onResume()
-    }
-
-    public override fun onPause() {
-        super.onPause()
+    public override fun onDestroy() {
+        super.onDestroy()
+        unit_name_text.removeTextChangedListener(textWatcher)
+        unit_multiplier_text.removeTextChangedListener(textWatcher)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -62,11 +73,27 @@ class CustomUnitsAddActivity : AppCompatActivity() {
         return false
     }
 
+    private fun updatePreview() {
+        val multiplier = unit_multiplier_text.text.toString().toDoubleOrNull()
+        val currentCategory = UnitCollection.collectionIndexByName(categories, allCategoryNames[unit_category_spinner.selectedItemPosition])
+        val baseUnitId = categories[currentCategory].items[unit_base_spinner.selectedItemPosition].id
+        val baseUnit = categories[currentCategory].items.first { u -> u.id == baseUnitId }
+        if (unit_name_text.text.isNullOrEmpty() || multiplier == null || multiplier == 0.0 || baseUnit == null) {
+            unit_preview_label.visibility = View.GONE
+            unit_preview_text.visibility = View.GONE
+            return
+        }
+        unit_preview_label.visibility = View.VISIBLE
+        unit_preview_text.visibility = View.VISIBLE
+        unit_preview_text.text = "1 " +  unit_name_text.text + " = " + multiplier + " " + baseUnit.name + "\n" +
+                "1 " + baseUnit.name + " = " + (1.0 / multiplier) + " " + unit_name_text.text
+    }
+
     private fun addNewUnit() {
         val currentCategory = UnitCollection.collectionIndexByName(categories, allCategoryNames[unit_category_spinner.selectedItemPosition])
         val baseUnitId = categories[currentCategory].items[unit_base_spinner.selectedItemPosition].id
         val multiplier = unit_multiplier_text.text.toString().toDoubleOrNull()
-        if (multiplier == null) {
+        if (multiplier == null || multiplier == 0.0) {
             unit_multiplier_input.error = getString(R.string.custom_unit_multiplier_invalid)
             return
         }
@@ -74,9 +101,21 @@ class CustomUnitsAddActivity : AppCompatActivity() {
             unit_name_input.error = getString(R.string.custom_unit_name_invalid)
             return
         }
-        UnitCollection.addCustomUnit(this, currentCategory, baseUnitId, multiplier, unit_name_text.text.toString())
+        UnitCollection.addCustomUnit(this, currentCategory, baseUnitId, 1.0 / multiplier, unit_name_text.text.toString())
         setResult(ConvertActivity.RESULT_CODE_CUSTOM_UNITS_CHANGED)
         finish()
+    }
+
+    private inner class UnitTextWatcher : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+            updatePreview()
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
     }
 }
 

@@ -14,6 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.custom_units_activity.*
+import kotlinx.android.synthetic.main.custom_units_activity.add_button
+import kotlinx.android.synthetic.main.custom_units_activity.toolbar
+import kotlinx.android.synthetic.main.custom_units_add_activity.*
 
 
 /*
@@ -82,7 +85,8 @@ class CustomUnitsActivity : AppCompatActivity() {
                 // TODO: add warning
                 return
             }
-            unitBaseView.text = baseUnit.name + " × " + unit.multiplier
+            unitBaseView.text = "1 " +  unit.name + " = " + (1.0 / unit.multiplier) + " " + baseUnit.name + "\n" +
+                    "1 " + baseUnit.name + " = " + unit.multiplier + " " + unit.name
         }
 
         override fun onClick(v: View?) {

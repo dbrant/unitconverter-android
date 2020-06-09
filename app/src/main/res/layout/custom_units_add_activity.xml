@@ -85,6 +85,23 @@
                     android:text="@string/custom_unit_multiplier_default" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/unit_preview_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/preview"/>
+            <TextView
+                android:id="@+id/unit_preview_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                tools:text="1 in = 2.54 cm"/>
+
             <Button
                 android:id="@+id/add_button"
                 android:layout_width="wrap_content"
