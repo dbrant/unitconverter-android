@@ -11,12 +11,12 @@ def static getDate() {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.defianttech.convertme"
         minSdkVersion 14
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 44
         versionName "${versionStart}-${date}"
         vectorDrawables.useSupportLibrary = true
