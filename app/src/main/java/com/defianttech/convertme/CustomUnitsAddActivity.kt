@@ -9,12 +9,14 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
-import kotlinx.android.synthetic.main.custom_units_add_activity.*
+import com.defianttech.convertme.databinding.CustomUnitsAddActivityBinding
 
 /*
  * Copyright (c) 2020 Dmitry Brant
  */
 class CustomUnitsAddActivity : AppCompatActivity() {
+    private lateinit var binding: CustomUnitsAddActivityBinding
+    
     private var categories: Array<UnitCollection> = UnitCollection.getInstance(this)
     private var allCategoryNames: Array<String> = UnitCollection.getAllCategoryNames(this)
     private val textWatcher: UnitTextWatcher = UnitTextWatcher()
@@ -22,8 +24,10 @@ class CustomUnitsAddActivity : AppCompatActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.custom_units_add_activity)
-        setSupportActionBar(toolbar)
+        binding = CustomUnitsAddActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        
+        setSupportActionBar(binding.toolbar)
 
         val editUnitId = intent.getIntExtra(ConvertActivity.INTENT_EXTRA_UNIT_ID, 0)
         if (editUnitId != 0) {
@@ -34,22 +38,22 @@ class CustomUnitsAddActivity : AppCompatActivity() {
 
         val categoryAdapter = ArrayAdapter(this, R.layout.unit_categoryitem, allCategoryNames)
 
-        unit_category_spinner.adapter = categoryAdapter
-        unit_category_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.unitCategorySpinner.adapter = categoryAdapter
+        binding.unitCategorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, index: Int, l: Long) {
                 val currentCategory = UnitCollection.collectionIndexByName(categories, allCategoryNames[index])
-                unit_base_spinner.adapter = ArrayAdapter(this@CustomUnitsAddActivity, R.layout.unit_categoryitem, categories[currentCategory].items)
+                binding.unitBaseSpinner.adapter = ArrayAdapter(this@CustomUnitsAddActivity, R.layout.unit_categoryitem, categories[currentCategory].items)
 
                 if (isEditing()) {
                     val defaultIndex = categories[editUnit!!.categoryId].items.indexOfFirst { unit -> unit.id == editUnit!!.baseUnitId }
                     if (defaultIndex >= 0) {
-                        unit_base_spinner.setSelection(defaultIndex)
+                        binding.unitBaseSpinner.setSelection(defaultIndex)
                     }
                 } else {
                     // find the default base unit in this collection
                     val defaultIndex = categories[currentCategory].items.indexOfFirst { unit -> unit.multiplier == 1.0 }
                     if (defaultIndex >= 0) {
-                        unit_base_spinner.setSelection(defaultIndex)
+                        binding.unitBaseSpinner.setSelection(defaultIndex)
                     }
                 }
                 updatePreview()
@@ -57,18 +61,18 @@ class CustomUnitsAddActivity : AppCompatActivity() {
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
 
-        unit_base_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.unitBaseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, index: Int, l: Long) {
                 updatePreview()
             }
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
 
-        unit_name_text.addTextChangedListener(textWatcher)
-        unit_multiplier_text.addTextChangedListener(textWatcher)
+        binding.unitNameText.addTextChangedListener(textWatcher)
+        binding.unitMultiplierText.addTextChangedListener(textWatcher)
 
-        invert_button.setOnClickListener {
-            val multiplier = unit_multiplier_text.text.toString().toDoubleOrNull()
+        binding.invertButton.setOnClickListener {
+            val multiplier = binding.unitMultiplierText.text.toString().toDoubleOrNull()
             if (multiplier != null) {
                 if (multiplier == 0.0) {
                     AlertDialog.Builder(this@CustomUnitsAddActivity)
@@ -77,13 +81,13 @@ class CustomUnitsAddActivity : AppCompatActivity() {
                             .create()
                             .show()
                 } else {
-                    unit_multiplier_text.setText((1 / multiplier).toString())
+                    binding.unitMultiplierText.setText((1 / multiplier).toString())
                 }
             }
         }
 
-        add_button.setText(if (isEditing()) R.string.done_button else R.string.add_button)
-        add_button.setOnClickListener {
+        binding.addButton.setText(if (isEditing()) R.string.done_button else R.string.add_button)
+        binding.addButton.setOnClickListener {
             if (isEditing()) {
                 commitEditUnit()
             } else {
@@ -92,18 +96,18 @@ class CustomUnitsAddActivity : AppCompatActivity() {
         }
 
         if (isEditing()) {
-            unit_category_spinner.setSelection(editUnit!!.categoryId)
-            unit_category_spinner.isEnabled = false
+            binding.unitCategorySpinner.setSelection(editUnit!!.categoryId)
+            binding.unitCategorySpinner.isEnabled = false
 
-            unit_name_text.setText(editUnit!!.name)
-            unit_multiplier_text.setText((1.0 / editUnit!!.multiplier).toString())
+            binding.unitNameText.setText(editUnit!!.name)
+            binding.unitMultiplierText.setText((1.0 / editUnit!!.multiplier).toString())
         }
     }
 
     public override fun onDestroy() {
         super.onDestroy()
-        unit_name_text.removeTextChangedListener(textWatcher)
-        unit_multiplier_text.removeTextChangedListener(textWatcher)
+        binding.unitNameText.removeTextChangedListener(textWatcher)
+        binding.unitMultiplierText.removeTextChangedListener(textWatcher)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -121,54 +125,58 @@ class CustomUnitsAddActivity : AppCompatActivity() {
     }
 
     private fun updatePreview() {
-        if (unit_category_spinner.selectedItemPosition == -1 || unit_base_spinner.selectedItemPosition == -1) {
+        if (binding.unitCategorySpinner.selectedItemPosition == -1 || binding.unitBaseSpinner.selectedItemPosition == -1) {
             return
         }
-        val multiplier = unit_multiplier_text.text.toString().toDoubleOrNull()
-        val currentCategory = UnitCollection.collectionIndexByName(categories, allCategoryNames[unit_category_spinner.selectedItemPosition])
-        val baseUnitId = categories[currentCategory].items[unit_base_spinner.selectedItemPosition].id
-        val baseUnit = categories[currentCategory].items.first { u -> u.id == baseUnitId }
-        if (unit_name_text.text.isNullOrEmpty() || multiplier == null || multiplier == 0.0 || baseUnit == null) {
-            unit_preview_label.visibility = View.GONE
-            unit_preview_text.visibility = View.GONE
+        val multiplier = binding.unitMultiplierText.text.toString().toDoubleOrNull()
+        val currentCategory = UnitCollection.collectionIndexByName(categories, allCategoryNames[binding.unitCategorySpinner.selectedItemPosition])
+        val baseUnitId = categories[currentCategory].items[binding.unitBaseSpinner.selectedItemPosition].id
+        var baseUnit: SingleUnit? = null
+        try {
+            baseUnit = categories[currentCategory].items.first { u -> u.id == baseUnitId }
+        } catch (e: NoSuchElementException) {
+        }
+        if (binding.unitNameText.text.isNullOrEmpty() || multiplier == null || multiplier == 0.0 || baseUnit == null) {
+            binding.unitPreviewLabel.visibility = View.GONE
+            binding.unitPreviewText.visibility = View.GONE
             return
         }
-        unit_preview_label.visibility = View.VISIBLE
-        unit_preview_text.visibility = View.VISIBLE
-        unit_preview_text.text = "1 " +  unit_name_text.text + " = " + multiplier + " " + baseUnit.name + "\n" +
-                "1 " + baseUnit.name + " = " + (1.0 / multiplier) + " " + unit_name_text.text
+        binding.unitPreviewLabel.visibility = View.VISIBLE
+        binding.unitPreviewText.visibility = View.VISIBLE
+        binding.unitPreviewText.text = "1 " +  binding.unitNameText.text + " = " + multiplier + " " + baseUnit.name + "\n" +
+                "1 " + baseUnit.name + " = " + (1.0 / multiplier) + " " + binding.unitNameText.text
     }
 
     private fun addNewUnit() {
-        val currentCategory = UnitCollection.collectionIndexByName(categories, allCategoryNames[unit_category_spinner.selectedItemPosition])
-        val baseUnitId = categories[currentCategory].items[unit_base_spinner.selectedItemPosition].id
-        val multiplier = unit_multiplier_text.text.toString().toDoubleOrNull()
+        val currentCategory = UnitCollection.collectionIndexByName(categories, allCategoryNames[binding.unitCategorySpinner.selectedItemPosition])
+        val baseUnitId = categories[currentCategory].items[binding.unitBaseSpinner.selectedItemPosition].id
+        val multiplier = binding.unitMultiplierText.text.toString().toDoubleOrNull()
         if (multiplier == null || multiplier == 0.0) {
-            unit_multiplier_input.error = getString(R.string.custom_unit_multiplier_invalid)
+            binding.unitMultiplierInput.error = getString(R.string.custom_unit_multiplier_invalid)
             return
         }
-        if (unit_name_text.text.isNullOrEmpty()) {
-            unit_name_input.error = getString(R.string.custom_unit_name_invalid)
+        if (binding.unitNameText.text.isNullOrEmpty()) {
+            binding.unitNameInput.error = getString(R.string.custom_unit_name_invalid)
             return
         }
-        UnitCollection.addCustomUnit(this, currentCategory, baseUnitId, 1.0 / multiplier, unit_name_text.text.toString())
+        UnitCollection.addCustomUnit(this, currentCategory, baseUnitId, 1.0 / multiplier, binding.unitNameText.text.toString())
         setResult(ConvertActivity.RESULT_CODE_CUSTOM_UNITS_CHANGED)
         finish()
     }
 
     private fun commitEditUnit() {
         val currentCategory = editUnit!!.categoryId
-        val baseUnitId = categories[currentCategory].items[unit_base_spinner.selectedItemPosition].id
-        val multiplier = unit_multiplier_text.text.toString().toDoubleOrNull()
+        val baseUnitId = categories[currentCategory].items[binding.unitBaseSpinner.selectedItemPosition].id
+        val multiplier = binding.unitMultiplierText.text.toString().toDoubleOrNull()
         if (multiplier == null || multiplier == 0.0) {
-            unit_multiplier_input.error = getString(R.string.custom_unit_multiplier_invalid)
+            binding.unitMultiplierInput.error = getString(R.string.custom_unit_multiplier_invalid)
             return
         }
-        if (unit_name_text.text.isNullOrEmpty()) {
-            unit_name_input.error = getString(R.string.custom_unit_name_invalid)
+        if (binding.unitNameText.text.isNullOrEmpty()) {
+            binding.unitNameInput.error = getString(R.string.custom_unit_name_invalid)
             return
         }
-        UnitCollection.editCustomUnit(this, editUnit!!.id, baseUnitId, 1.0 / multiplier, unit_name_text.text.toString())
+        UnitCollection.editCustomUnit(this, editUnit!!.id, baseUnitId, 1.0 / multiplier, binding.unitNameText.text.toString())
         setResult(ConvertActivity.RESULT_CODE_CUSTOM_UNITS_CHANGED)
         finish()
     }

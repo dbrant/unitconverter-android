@@ -16,11 +16,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.PopupMenu
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.defianttech.convertme.NumberPadView.OnValueChangedListener
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.defianttech.convertme.databinding.ConvertmeBinding
 import java.text.DecimalFormat
 import kotlin.math.abs
 
@@ -28,6 +27,7 @@ import kotlin.math.abs
 * Copyright (c) 2014-2019 Dmitry Brant
 */
 class ConvertActivity : AppCompatActivity() {
+    private lateinit var binding: ConvertmeBinding
 
     private lateinit var collections: Array<UnitCollection>
     private lateinit var allCategoryNames: Array<String>
@@ -35,33 +35,29 @@ class ConvertActivity : AppCompatActivity() {
     private var currentCategory = UnitCollection.DEFAULT_CATEGORY
     private var currentUnitIndex = UnitCollection.DEFAULT_FROM_INDEX
     private var currentValue = UnitCollection.DEFAULT_VALUE
-    private var categoryText: TextView? = null
+
     private var categoryMenu: PopupMenu? = null
-    private var numberPadView: NumberPadView? = null
     private var listAdapter: UnitListAdapter? = null
-    private var unitsList: ListView? = null
-    private var fabEdit: FloatingActionButton? = null
     private var actionMode: ActionMode? = null
     private var editModeEnabled = false
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.convertme)
+        binding = ConvertmeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         resetLists()
 
-        val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.mainToolbar)
         if (supportActionBar != null) {
             supportActionBar!!.setDisplayShowTitleEnabled(false)
         }
 
-        val categoryContainer = findViewById<View>(R.id.category_toolbar_container)
-        categoryContainer.setOnClickListener { categoryMenu!!.show() }
-        categoryMenu = PopupMenu(this@ConvertActivity, categoryContainer)
+        binding.toolbarButton.categoryToolbarContainer.setOnClickListener { categoryMenu!!.show() }
+        categoryMenu = PopupMenu(this@ConvertActivity, binding.toolbarButton.categoryToolbarContainer)
 
-        var i = 0
-        for (name in allCategoryNames) {
-            categoryMenu!!.menu.add(0, i++, 0, name)
+        for ((i, name) in allCategoryNames.withIndex()) {
+            categoryMenu!!.menu.add(0, i, 0, name)
         }
 
         categoryMenu!!.setOnMenuItemClickListener { item ->
@@ -70,17 +66,15 @@ class ConvertActivity : AppCompatActivity() {
             if (currentUnitIndex >= collections[currentCategory].length()) {
                 currentUnitIndex = 0
             }
-            categoryText!!.text = item.title
+            binding.toolbarButton.categoryText.text = item.title
             listAdapter!!.notifyDataSetInvalidated()
             true
         }
 
-        categoryText = findViewById(R.id.category_text)
-        unitsList = findViewById(R.id.unitsList)
         listAdapter = UnitListAdapter()
 
-        unitsList.setAdapter(listAdapter)
-        unitsList.setOnItemClickListener(OnItemClickListener { parent, view, position, id ->
+        binding.unitsList.adapter = listAdapter
+        binding.unitsList.onItemClickListener = OnItemClickListener { _, _, position, _ ->
             if (editModeEnabled) {
                 collections[currentCategory][position]
                         .isEnabled = !collections[currentCategory][position].isEnabled
@@ -88,18 +82,17 @@ class ConvertActivity : AppCompatActivity() {
                 currentUnitIndex = position
             }
             listAdapter!!.notifyDataSetChanged()
-        })
+        }
 
-        unitsList.setOnItemLongClickListener(OnItemLongClickListener { adapterView, view, position, id ->
+        binding.unitsList.onItemLongClickListener = OnItemLongClickListener { _, view, position, _ ->
             if (editModeEnabled) {
                 return@OnItemLongClickListener false
             }
             doLongPressMenu(view.findViewById(R.id.unitValue), position)
             true
-        })
+        }
 
-        numberPadView = findViewById(R.id.numberPad)
-        numberPadView.valueChangedListener = object : OnValueChangedListener {
+        binding.numberPad.valueChangedListener = object : OnValueChangedListener {
             override fun onValueChanged(value: String) {
                 setValueFromNumberPad(value)
                 listAdapter!!.notifyDataSetChanged()
@@ -110,12 +103,11 @@ class ConvertActivity : AppCompatActivity() {
 
         for (name in allCategoryNames) {
             if (name == collections[currentCategory].names[0]) {
-                categoryText.setText(name)
+                binding.toolbarButton.categoryText.text = name
             }
         }
 
-        fabEdit = findViewById(R.id.fabEdit)
-        fabEdit.setOnClickListener(View.OnClickListener { startSupportActionMode(EditUnitsActionModeCallback()) })
+        binding.fabEdit.setOnClickListener(View.OnClickListener { startSupportActionMode(EditUnitsActionModeCallback()) })
     }
 
     public override fun onStop() {
@@ -167,7 +159,7 @@ class ConvertActivity : AppCompatActivity() {
         val editor = getPrefs(this).edit()
         editor.putInt(KEY_CURRENT_CATEGORY, currentCategory)
         editor.putInt(KEY_CURRENT_UNIT, currentUnitIndex)
-        editor.putString(KEY_CURRENT_VALUE, numberPadView!!.currentValue)
+        editor.putString(KEY_CURRENT_VALUE, binding.numberPad.currentValue)
         for (col in collections) {
             for (unit in col.items) {
                 editor.putBoolean(unit.name, unit.isEnabled)
@@ -187,8 +179,8 @@ class ConvertActivity : AppCompatActivity() {
             if (currentUnitIndex >= collections[currentCategory].length()) {
                 currentUnitIndex = 0
             }
-            numberPadView!!.currentValue = prefs.getString(KEY_CURRENT_VALUE, "1")!!
-            setValueFromNumberPad(numberPadView!!.currentValue)
+            binding.numberPad.currentValue = prefs.getString(KEY_CURRENT_VALUE, "1")!!
+            setValueFromNumberPad(binding.numberPad.currentValue)
             for (col in collections) {
                 for (unit in col.items) {
                     unit.isEnabled = prefs.getBoolean(unit.name, true)
@@ -200,11 +192,11 @@ class ConvertActivity : AppCompatActivity() {
     }
 
     private fun updateActionModeState() {
-        numberPadView!!.visibility = if (editModeEnabled) View.GONE else View.VISIBLE
+        binding.numberPad.visibility = if (editModeEnabled) View.GONE else View.VISIBLE
         if (editModeEnabled) {
-            fabEdit!!.hide()
+            binding.fabEdit.hide()
         } else {
-            fabEdit!!.show()
+            binding.fabEdit.show()
         }
         listAdapter!!.notifyDataSetInvalidated()
     }
@@ -293,7 +285,7 @@ class ConvertActivity : AppCompatActivity() {
                 chkEnable.visibility = View.VISIBLE
                 unitName.text = Html.fromHtml(collections[currentCategory][position].name)
                 if (position == currentUnitIndex) {
-                    unitsList!!.setItemChecked(position, true)
+                    binding.unitsList.setItemChecked(position, true)
                 }
                 itemContainer.setBackgroundColor(ContextCompat.getColor(this@ConvertActivity,
                         android.R.color.transparent))
@@ -311,7 +303,7 @@ class ConvertActivity : AppCompatActivity() {
                     chkEnable.visibility = View.GONE
                     unitName.text = Html.fromHtml(collections[currentCategory][position].name)
                     if (position == currentUnitIndex) {
-                        unitsList!!.setItemChecked(position, true)
+                        binding.unitsList.setItemChecked(position, true)
                     }
                     ViewCompat.setBackground(itemContainer,
                             ContextCompat.getDrawable(this@ConvertActivity,

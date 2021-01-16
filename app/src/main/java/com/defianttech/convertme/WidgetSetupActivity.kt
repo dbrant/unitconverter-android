@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import kotlinx.android.synthetic.main.widget_setup_activity.*
 
 /*
  * Copyright (c) 2014-2020 Dmitry Brant

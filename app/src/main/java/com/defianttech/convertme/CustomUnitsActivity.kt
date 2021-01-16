@@ -13,34 +13,35 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.custom_units_activity.*
-import kotlinx.android.synthetic.main.custom_units_activity.add_button
-import kotlinx.android.synthetic.main.custom_units_activity.toolbar
+import com.defianttech.convertme.databinding.CustomUnitsActivityBinding
 
 /*
  * Copyright (c) 2020 Dmitry Brant
  */
 class CustomUnitsActivity : AppCompatActivity() {
+    private lateinit var binding: CustomUnitsActivityBinding
     private var customUnits: CustomUnits? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.custom_units_activity)
-        setSupportActionBar(toolbar)
+        binding = CustomUnitsActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setTitle(R.string.custom_units)
 
         resetList()
-        units_recycler_view.layoutManager = LinearLayoutManager(this)
-        units_recycler_view.adapter = RecyclerAdapter()
+        binding.unitsRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.unitsRecyclerView.adapter = RecyclerAdapter()
 
-        add_button.setOnClickListener {
+        binding.addButton.setOnClickListener {
             startActivityForResult(Intent(this, CustomUnitsAddActivity::class.java), ConvertActivity.REQUEST_CODE_CUSTOM_UNITS)
         }
     }
 
     private fun resetList() {
         customUnits = UnitCollection.getCustomUnits(this)
-        units_recycler_view.adapter?.notifyDataSetChanged()
+        binding.unitsRecyclerView.adapter?.notifyDataSetChanged()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -78,13 +79,11 @@ class CustomUnitsActivity : AppCompatActivity() {
             deleteButton.tag = position
             nameView.text = unit.name
             val categories = UnitCollection.getInstance(this@CustomUnitsActivity)
-            val baseUnit = categories[unit.categoryId].items.first { u -> u.id == unit.baseUnitId }
-            if (baseUnit == null) {
-                // TODO: add warning
-                return
+            try {
+                val baseUnit = categories[unit.categoryId].items.first { u -> u.id == unit.baseUnitId }
+                unitBaseView.text = "1 ${unit.name} = ${(1.0 / unit.multiplier)} ${baseUnit.name}\n1 ${baseUnit.name} = ${unit.multiplier} ${unit.name}"
+            } catch (e: NoSuchElementException) {
             }
-            unitBaseView.text = "1 " +  unit.name + " = " + (1.0 / unit.multiplier) + " " + baseUnit.name + "\n" +
-                    "1 " + baseUnit.name + " = " + unit.multiplier + " " + unit.name
         }
 
         override fun onClick(v: View?) {
@@ -110,7 +109,7 @@ class CustomUnitsActivity : AppCompatActivity() {
                 AlertDialog.Builder(this@CustomUnitsActivity)
                         .setMessage(getString(R.string.delete_unit_confirm, unit.name))
                         .setNegativeButton(android.R.string.cancel, null)
-                        .setPositiveButton(android.R.string.ok) { _: DialogInterface, i: Int ->
+                        .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
                             UnitCollection.deleteCustomUnit(this@CustomUnitsActivity, unit)
                             resetList()
                             setResult(ConvertActivity.RESULT_CODE_CUSTOM_UNITS_CHANGED)

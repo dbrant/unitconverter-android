@@ -50,7 +50,9 @@
         android:background="@color/toolbar"
         android:elevation="4dp">
 
-        <include layout="@layout/toolbar_category_button" />
+        <include
+            android:id="@+id/toolbarButton"
+            layout="@layout/toolbar_category_button" />
 
     </androidx.appcompat.widget.Toolbar>
 
