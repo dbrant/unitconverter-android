@@ -53,8 +53,8 @@ class ConvertActivity : AppCompatActivity() {
             supportActionBar!!.setDisplayShowTitleEnabled(false)
         }
 
-        binding.toolbarButton.categoryToolbarContainer.setOnClickListener { categoryMenu!!.show() }
-        categoryMenu = PopupMenu(this@ConvertActivity, binding.toolbarButton.categoryToolbarContainer)
+        binding.toolbarContents.categoryToolbarContainer.setOnClickListener { categoryMenu!!.show() }
+        categoryMenu = PopupMenu(this@ConvertActivity, binding.toolbarContents.categoryToolbarContainer)
 
         for ((i, name) in allCategoryNames.withIndex()) {
             categoryMenu!!.menu.add(0, i, 0, name)
@@ -66,7 +66,7 @@ class ConvertActivity : AppCompatActivity() {
             if (currentUnitIndex >= collections[currentCategory].length()) {
                 currentUnitIndex = 0
             }
-            binding.toolbarButton.categoryText.text = item.title
+            binding.toolbarContents.categoryText.text = item.title
             listAdapter!!.notifyDataSetInvalidated()
             true
         }
@@ -103,7 +103,7 @@ class ConvertActivity : AppCompatActivity() {
 
         for (name in allCategoryNames) {
             if (name == collections[currentCategory].names[0]) {
-                binding.toolbarButton.categoryText.text = name
+                binding.toolbarContents.categoryText.text = name
             }
         }
 

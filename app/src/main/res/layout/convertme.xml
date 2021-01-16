@@ -41,7 +41,8 @@
         app:srcCompat="@drawable/ic_settings_white_24dp"
         app:useCompatPadding="true"
         app:backgroundTint="@color/fab_color"
-        app:tint="@android:color/white" />
+        app:tint="@android:color/white"
+        android:contentDescription="@null" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/main_toolbar"
@@ -51,7 +52,7 @@
         android:elevation="4dp">
 
         <include
-            android:id="@+id/toolbarButton"
+            android:id="@+id/toolbarContents"
             layout="@layout/toolbar_category_button" />
 
     </androidx.appcompat.widget.Toolbar>
