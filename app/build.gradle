@@ -24,6 +24,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    
+
     buildTypes {
         debug {
             minifyEnabled false
