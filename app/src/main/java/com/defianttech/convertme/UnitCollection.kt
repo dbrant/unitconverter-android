@@ -80,7 +80,7 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
             return result
         }
 
-        fun getAllUnits(context: Context): Array<UnitCollection> {
+        private fun getAllUnits(context: Context): Array<UnitCollection> {
             val collections: MutableList<UnitCollection> = ArrayList()
             var inStream: InputStream? = null
             try {
@@ -88,20 +88,20 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
                 inStream = context.assets.open("units.txt")
                 val reader = BufferedReader(InputStreamReader(inStream))
                 var currentCollection: MutableList<SingleUnit> = ArrayList()
-                var line: String
+                var line: String?
                 var lineArr: Array<String>
                 while (reader.readLine().also { line = it } != null) {
-                    line = line.trim { it <= ' ' }
-                    if (line.startsWith("#") || line.isEmpty()) {
+                    line = line!!.trim { it <= ' ' }
+                    if (line!!.startsWith("#") || line!!.isEmpty()) {
                         continue
                     }
-                    if (line.startsWith("==")) {
+                    if (line!!.startsWith("==")) {
                         currentCollection = ArrayList()
-                        lineArr = line.replace("==", "").trim { it <= ' ' }.split("\\s*,\\s*".toRegex()).toTypedArray()
+                        lineArr = line!!.replace("==", "").trim { it <= ' ' }.split("\\s*,\\s*".toRegex()).toTypedArray()
                         collections.add(UnitCollection(lineArr, currentCollection))
                         continue
                     }
-                    lineArr = line.split("\\s*,\\s*".toRegex()).toTypedArray()
+                    lineArr = line!!.split("\\s*,\\s*".toRegex()).toTypedArray()
                     currentCollection.add(SingleUnit(lineArr[0].toInt(), lineArr[1], lineArr[2].toDouble(), lineArr[3].toDouble()))
                 }
             } catch (e: IOException) {
@@ -143,7 +143,7 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
             return customUnits ?: CustomUnits()
         }
 
-        fun saveCustomUnits(context: Context, customUnits: CustomUnits?) {
+        private fun saveCustomUnits(context: Context, customUnits: CustomUnits?) {
             val editor = ConvertActivity.getPrefs(context).edit()
             editor.putString(CUSTOM_COLLECTION_PREF_NAME, Gson().toJson(customUnits))
             editor.apply()

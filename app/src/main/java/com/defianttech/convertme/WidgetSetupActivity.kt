@@ -8,11 +8,13 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import com.defianttech.convertme.databinding.WidgetSetupActivityBinding
 
 /*
  * Copyright (c) 2014-2020 Dmitry Brant
  */
 class WidgetSetupActivity : AppCompatActivity() {
+    private lateinit var binding: WidgetSetupActivityBinding
 
     private var collections: Array<UnitCollection> = UnitCollection.getInstance(this)
     private var allCategoryNames: Array<String> = UnitCollection.getAllCategoryNames(this)
@@ -21,8 +23,11 @@ class WidgetSetupActivity : AppCompatActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.widget_setup_activity)
-        setSupportActionBar(toolbar)
+        binding = WidgetSetupActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
+
         supportActionBar!!.setTitle(R.string.configure_widget)
 
         if (!TextUtils.isEmpty(intent.action) && intent.action!!.contains(WidgetProvider.CLICK_ACTION_SETTINGS)) {
@@ -37,8 +42,8 @@ class WidgetSetupActivity : AppCompatActivity() {
 
         val categoryAdapter = ArrayAdapter(this, R.layout.unit_categoryitem, allCategoryNames)
 
-        unit_category_spinner.adapter = categoryAdapter
-        unit_category_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.unitCategorySpinner.adapter = categoryAdapter
+        binding.unitCategorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 prefs!!.currentCategory = UnitCollection.collectionIndexByName(collections, allCategoryNames[i])
                 if (prefs!!.currentFromIndex > collections[prefs!!.currentCategory].length()) {
@@ -56,11 +61,11 @@ class WidgetSetupActivity : AppCompatActivity() {
 
         for (i in allCategoryNames.indices) {
             if (allCategoryNames[i] == collections[prefs!!.currentCategory].names[0]) {
-                unit_category_spinner.setSelection(i)
+                binding.unitCategorySpinner.setSelection(i)
             }
         }
 
-        unit_from_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.unitFromSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 prefs!!.currentFromIndex = i
                 prefs!!.save(this@WidgetSetupActivity)
@@ -69,7 +74,7 @@ class WidgetSetupActivity : AppCompatActivity() {
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
 
-        unit_to_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.unitToSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 prefs!!.currentToIndex = i
                 prefs!!.save(this@WidgetSetupActivity)
@@ -78,7 +83,7 @@ class WidgetSetupActivity : AppCompatActivity() {
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
 
-        unit_increment_text.setText(prefs!!.increment.toString())
+        binding.unitIncrementText.setText(prefs!!.increment.toString())
     }
 
     public override fun onResume() {
@@ -91,7 +96,7 @@ class WidgetSetupActivity : AppCompatActivity() {
     public override fun onPause() {
         super.onPause()
         try {
-            prefs!!.increment = java.lang.Float.parseFloat(unit_increment_text.text.toString())
+            prefs!!.increment = java.lang.Float.parseFloat(binding.unitIncrementText.text.toString())
         } catch (e: NumberFormatException) {
             prefs!!.increment = 1f
         }
@@ -110,11 +115,11 @@ class WidgetSetupActivity : AppCompatActivity() {
     }
 
     private fun setUnitSpinners(category: Int) {
-        unit_from_spinner.adapter = ArrayAdapter(this, R.layout.unit_categoryitem, collections[category].items)
-        unit_from_spinner.setSelection(prefs!!.currentFromIndex)
+        binding.unitFromSpinner.adapter = ArrayAdapter(this, R.layout.unit_categoryitem, collections[category].items)
+        binding.unitFromSpinner.setSelection(prefs!!.currentFromIndex)
 
-        unit_to_spinner.adapter = ArrayAdapter(this, R.layout.unit_categoryitem, collections[category].items)
-        unit_to_spinner.setSelection(prefs!!.currentToIndex)
+        binding.unitToSpinner.adapter = ArrayAdapter(this, R.layout.unit_categoryitem, collections[category].items)
+        binding.unitToSpinner.setSelection(prefs!!.currentToIndex)
     }
 }
 

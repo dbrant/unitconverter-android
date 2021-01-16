@@ -107,7 +107,7 @@ class ConvertActivity : AppCompatActivity() {
             }
         }
 
-        binding.fabEdit.setOnClickListener(View.OnClickListener { startSupportActionMode(EditUnitsActionModeCallback()) })
+        binding.fabEdit.setOnClickListener { startSupportActionMode(EditUnitsActionModeCallback()) }
     }
 
     public override fun onStop() {
