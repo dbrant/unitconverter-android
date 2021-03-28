@@ -20,7 +20,7 @@ import com.defianttech.convertme.databinding.CustomUnitsActivityBinding
  */
 class CustomUnitsActivity : AppCompatActivity() {
     private lateinit var binding: CustomUnitsActivityBinding
-    private var customUnits: CustomUnits? = null
+    private lateinit var customUnits: CustomUnits
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +74,7 @@ class CustomUnitsActivity : AppCompatActivity() {
         }
 
         fun bind(position: Int) {
-            val unit = customUnits!!.units[position]
+            val unit = customUnits.units[position]
             editButton.tag = position
             deleteButton.tag = position
             nameView.text = unit.name
@@ -87,7 +87,7 @@ class CustomUnitsActivity : AppCompatActivity() {
         }
 
         override fun onClick(v: View?) {
-            val unit = customUnits!!.units[v?.tag as Int]
+            val unit = customUnits.units[v?.tag as Int]
             if (v == editButton) {
 
                 val intent = Intent(this@CustomUnitsActivity, CustomUnitsAddActivity::class.java)
@@ -96,7 +96,7 @@ class CustomUnitsActivity : AppCompatActivity() {
 
             } else if (v == deleteButton) {
                 // check if other custom units depend on this one...
-                for (u in customUnits!!.units) {
+                for (u in customUnits.units) {
                     if (u.baseUnitId == unit.id) {
                         AlertDialog.Builder(this@CustomUnitsActivity)
                                 .setMessage(getString(R.string.delete_unit_dependent, unit.name, u.name))
@@ -135,8 +135,7 @@ class CustomUnitsActivity : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int {
-            return customUnits!!.units.size
+            return customUnits.units.size
         }
     }
 }
-

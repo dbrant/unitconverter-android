@@ -36,8 +36,8 @@ class ConvertActivity : AppCompatActivity() {
     private var currentUnitIndex = UnitCollection.DEFAULT_FROM_INDEX
     private var currentValue = UnitCollection.DEFAULT_VALUE
 
-    private var categoryMenu: PopupMenu? = null
-    private var listAdapter: UnitListAdapter? = null
+    private lateinit var categoryMenu: PopupMenu
+    private var listAdapter = UnitListAdapter()
     private var actionMode: ActionMode? = null
     private var editModeEnabled = false
 
@@ -49,29 +49,25 @@ class ConvertActivity : AppCompatActivity() {
         resetLists()
 
         setSupportActionBar(binding.mainToolbar)
-        if (supportActionBar != null) {
-            supportActionBar!!.setDisplayShowTitleEnabled(false)
-        }
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        binding.toolbarContents.categoryToolbarContainer.setOnClickListener { categoryMenu!!.show() }
+        binding.toolbarContents.categoryToolbarContainer.setOnClickListener { categoryMenu.show() }
         categoryMenu = PopupMenu(this@ConvertActivity, binding.toolbarContents.categoryToolbarContainer)
 
         for ((i, name) in allCategoryNames.withIndex()) {
-            categoryMenu!!.menu.add(0, i, 0, name)
+            categoryMenu.menu.add(0, i, 0, name)
         }
 
-        categoryMenu!!.setOnMenuItemClickListener { item ->
+        categoryMenu.setOnMenuItemClickListener { item ->
             currentCategory = UnitCollection.collectionIndexByName(collections,
                     allCategoryNames[item.itemId])
             if (currentUnitIndex >= collections[currentCategory].length()) {
                 currentUnitIndex = 0
             }
             binding.toolbarContents.categoryText.text = item.title
-            listAdapter!!.notifyDataSetInvalidated()
+            listAdapter.notifyDataSetInvalidated()
             true
         }
-
-        listAdapter = UnitListAdapter()
 
         binding.unitsList.adapter = listAdapter
         binding.unitsList.onItemClickListener = OnItemClickListener { _, _, position, _ ->
@@ -81,7 +77,7 @@ class ConvertActivity : AppCompatActivity() {
             } else {
                 currentUnitIndex = position
             }
-            listAdapter!!.notifyDataSetChanged()
+            listAdapter.notifyDataSetChanged()
         }
 
         binding.unitsList.onItemLongClickListener = OnItemLongClickListener { _, view, position, _ ->
@@ -95,7 +91,7 @@ class ConvertActivity : AppCompatActivity() {
         binding.numberPad.valueChangedListener = object : OnValueChangedListener {
             override fun onValueChanged(value: String) {
                 setValueFromNumberPad(value)
-                listAdapter!!.notifyDataSetChanged()
+                listAdapter.notifyDataSetChanged()
             }
         }
 
@@ -152,7 +148,7 @@ class ConvertActivity : AppCompatActivity() {
     private fun resetLists() {
         collections = UnitCollection.getInstance(this)
         allCategoryNames = UnitCollection.getAllCategoryNames(this)
-        listAdapter?.notifyDataSetChanged()
+        listAdapter.notifyDataSetChanged()
     }
 
     private fun saveSettings() {
@@ -198,7 +194,7 @@ class ConvertActivity : AppCompatActivity() {
         } else {
             binding.fabEdit.show()
         }
-        listAdapter!!.notifyDataSetInvalidated()
+        listAdapter.notifyDataSetInvalidated()
     }
 
     private fun setValueFromNumberPad(value: String) {
@@ -342,8 +338,6 @@ class ConvertActivity : AppCompatActivity() {
                     setClipboardText(resultStr)
                     return@OnMenuItemClickListener true
                 }
-                else -> {
-                }
             }
             false
         })
@@ -376,6 +370,7 @@ class ConvertActivity : AppCompatActivity() {
         const val INTENT_EXTRA_UNIT_ID = "extra_unit_id"
         private val dfExp = DecimalFormat("#.#######E0")
         private val dfNoexp = DecimalFormat("#.#######")
+
         fun getPrefs(context: Context): SharedPreferences {
             return context.getSharedPreferences(PREFS_NAME, 0)
         }
