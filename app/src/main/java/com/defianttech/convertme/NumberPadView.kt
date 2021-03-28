@@ -44,11 +44,11 @@ class NumberPadView @JvmOverloads constructor(context: Context, attrs: Attribute
             if (currentValue.isEmpty()) {
                 currentValue = "0"
             }
-            valueChangedListener!!.onValueChanged(currentValue)
+            valueChangedListener?.onValueChanged(currentValue)
         }
         binding.btnClear.setOnClickListener {
             currentValue = "0"
-            valueChangedListener!!.onValueChanged(currentValue)
+            valueChangedListener?.onValueChanged(currentValue)
         }
     }
 
@@ -66,15 +66,9 @@ class NumberPadView @JvmOverloads constructor(context: Context, attrs: Attribute
             }
         } else {
             when (curVal) {
-                "0" -> {
-                    curVal = str
-                }
-                "-0" -> {
-                    curVal = "-$str"
-                }
-                else -> {
-                    curVal += str
-                }
+                "0" -> { curVal = str }
+                "-0" -> { curVal = "-$str" }
+                else -> { curVal += str }
             }
         }
         currentValue = curVal
@@ -83,6 +77,6 @@ class NumberPadView @JvmOverloads constructor(context: Context, attrs: Attribute
     override fun onClick(v: View?) {
         val text = (v as TextView).text.toString()
         appendDigit(text)
-        valueChangedListener!!.onValueChanged(currentValue)
+        valueChangedListener?.onValueChanged(currentValue)
     }
 }

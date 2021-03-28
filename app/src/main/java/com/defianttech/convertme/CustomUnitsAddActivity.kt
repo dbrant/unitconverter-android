@@ -17,9 +17,9 @@ import com.defianttech.convertme.databinding.CustomUnitsAddActivityBinding
 class CustomUnitsAddActivity : AppCompatActivity() {
     private lateinit var binding: CustomUnitsAddActivityBinding
     
-    private var categories: Array<UnitCollection> = UnitCollection.getInstance(this)
-    private var allCategoryNames: Array<String> = UnitCollection.getAllCategoryNames(this)
-    private val textWatcher: UnitTextWatcher = UnitTextWatcher()
+    private var categories = UnitCollection.getInstance(this)
+    private var allCategoryNames = UnitCollection.getAllCategoryNames(this)
+    private val textWatcher = UnitTextWatcher()
     private var editUnit: CustomUnits.CustomUnit? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -193,4 +193,3 @@ class CustomUnitsAddActivity : AppCompatActivity() {
         }
     }
 }
-

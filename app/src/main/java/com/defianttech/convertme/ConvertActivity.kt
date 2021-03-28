@@ -131,8 +131,6 @@ class ConvertActivity : AppCompatActivity() {
                 startActivityForResult(Intent(this, CustomUnitsActivity::class.java), REQUEST_CODE_CUSTOM_UNITS)
                 return true
             }
-            else -> {
-            }
         }
         return false
     }
@@ -388,11 +386,11 @@ class ConvertActivity : AppCompatActivity() {
             return Html.fromHtml(strValue)
         }
 
-        private fun getValueStr(`val`: Double): String {
-            return if (abs(`val`) > 1e6 || abs(`val`) < 1e-6 && abs(`val`) > 0.0) {
-                dfExp.format(`val`)
+        private fun getValueStr(value: Double): String {
+            return if (abs(value) > 1e6 || abs(value) < 1e-6 && abs(value) > 0.0) {
+                dfExp.format(value)
             } else {
-                dfNoexp.format(`val`)
+                dfNoexp.format(value)
             }
         }
     }

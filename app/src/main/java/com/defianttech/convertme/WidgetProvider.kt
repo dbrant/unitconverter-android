@@ -7,7 +7,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.text.Html
-import android.text.TextUtils
 import android.util.Log
 import android.widget.RemoteViews
 
@@ -56,7 +55,7 @@ class WidgetProvider : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        if (TextUtils.isEmpty(intent.action)) {
+        if (intent.action.isNullOrEmpty()) {
             return
         }
         if (intent.action!!.contains(CLICK_ACTION_PLUS)) {
