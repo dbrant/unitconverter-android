@@ -85,7 +85,7 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
                 Log.d(TAG, "Loading units from assets...")
                 inStream = context.assets.open("units.txt")
                 val reader = BufferedReader(InputStreamReader(inStream))
-                val currentCollection = mutableListOf<SingleUnit>()
+                var currentCollection = mutableListOf<SingleUnit>()
                 var line: String
                 var lineArr: Array<String>
                 while (reader.readLine().also { line = it.orEmpty() } != null) {
@@ -94,7 +94,7 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
                         continue
                     }
                     if (line.startsWith("==")) {
-                        currentCollection.clear()
+                        currentCollection = mutableListOf()
                         lineArr = line.replace("==", "").trim().split("\\s*,\\s*".toRegex()).toTypedArray()
                         collections.add(UnitCollection(lineArr, currentCollection))
                         continue
