@@ -16,7 +16,7 @@ android {
         applicationId "com.defianttech.convertme"
         minSdkVersion 14
         targetSdkVersion 32
-        versionCode 45
+        versionCode 46
         versionName "${versionStart}-${date}"
         vectorDrawables.useSupportLibrary = true
 
