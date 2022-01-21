@@ -50,6 +50,10 @@ class ConvertActivity : AppCompatActivity() {
         setSupportActionBar(binding.mainToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.navigationBarColor = getColor(R.color.number_pad_background)
+        }
+
         binding.toolbarContents.categoryToolbarContainer.setOnClickListener { categoryMenu.show() }
         categoryMenu = PopupMenu(this@ConvertActivity, binding.toolbarContents.categoryToolbarContainer)
 

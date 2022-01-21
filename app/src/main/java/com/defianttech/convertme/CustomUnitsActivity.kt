@@ -2,6 +2,7 @@ package com.defianttech.convertme
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -29,6 +30,10 @@ class CustomUnitsActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setTitle(R.string.custom_units)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.navigationBarColor = getColor(R.color.number_pad_background)
+        }
 
         resetList()
         binding.unitsRecyclerView.layoutManager = LinearLayoutManager(this)

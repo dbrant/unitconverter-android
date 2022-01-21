@@ -1,5 +1,6 @@
 package com.defianttech.convertme
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -26,8 +27,11 @@ class CustomUnitsAddActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = CustomUnitsAddActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
         setSupportActionBar(binding.toolbar)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.navigationBarColor = getColor(R.color.number_pad_background)
+        }
 
         val editUnitId = intent.getIntExtra(ConvertActivity.INTENT_EXTRA_UNIT_ID, 0)
         if (editUnitId != 0) {
