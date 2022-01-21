@@ -26,7 +26,7 @@ class WidgetProvider : AppWidgetProvider() {
 
             val configIntent = Intent(context, WidgetSetupActivity::class.java)
             configIntent.action = CLICK_ACTION_SETTINGS + "_" + widgetId
-            val configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, 0)
+            val configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, Util.getPendingIntentFlags())
 
             remoteViews.setOnClickPendingIntent(R.id.widget_settings, configPendingIntent)
 
@@ -57,30 +57,34 @@ class WidgetProvider : AppWidgetProvider() {
         if (intent.action.isNullOrEmpty()) {
             return
         }
-        if (intent.action!!.contains(CLICK_ACTION_PLUS)) {
-            val widgetId = getWidgetId(intent.action!!)
-            val prefs = WidgetPrefs(context, widgetId)
-            prefs.currentValue += prefs.increment
-            prefs.save(context)
-        } else if (intent.action!!.contains(CLICK_ACTION_MINUS)) {
-            val widgetId = getWidgetId(intent.action!!)
-            val prefs = WidgetPrefs(context, widgetId)
-            prefs.currentValue -= prefs.increment
-            prefs.save(context)
-        } else if (intent.action!!.contains(CLICK_ACTION_EXCHANGE)) {
-            val widgetId = getWidgetId(intent.action!!)
-            val prefs = WidgetPrefs(context, widgetId)
-            val fromIndex = prefs.currentFromIndex
-            prefs.currentFromIndex = prefs.currentToIndex
-            prefs.currentToIndex = fromIndex
-            prefs.save(context)
+        when {
+            intent.action!!.contains(CLICK_ACTION_PLUS) -> {
+                val widgetId = getWidgetId(intent.action!!)
+                val prefs = WidgetPrefs(context, widgetId)
+                prefs.currentValue += prefs.increment
+                prefs.save(context)
+            }
+            intent.action!!.contains(CLICK_ACTION_MINUS) -> {
+                val widgetId = getWidgetId(intent.action!!)
+                val prefs = WidgetPrefs(context, widgetId)
+                prefs.currentValue -= prefs.increment
+                prefs.save(context)
+            }
+            intent.action!!.contains(CLICK_ACTION_EXCHANGE) -> {
+                val widgetId = getWidgetId(intent.action!!)
+                val prefs = WidgetPrefs(context, widgetId)
+                val fromIndex = prefs.currentFromIndex
+                prefs.currentFromIndex = prefs.currentToIndex
+                prefs.currentToIndex = fromIndex
+                prefs.save(context)
+            }
         }
     }
 
     private fun getSelfPendingIntent(context: Context, widgetId: Int, action: String): PendingIntent {
         val intent = Intent(context, WidgetProvider::class.java)
         intent.action = action + "_" + widgetId
-        return PendingIntent.getBroadcast(context, 0, intent, 0)
+        return PendingIntent.getBroadcast(context, 0, intent, Util.getPendingIntentFlags())
     }
 
     companion object {
