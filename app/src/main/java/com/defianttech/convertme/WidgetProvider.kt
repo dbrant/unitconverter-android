@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.text.Html
 import android.util.Log
 import android.widget.RemoteViews
 
@@ -42,9 +41,9 @@ class WidgetProvider : AppWidgetProvider() {
                 prefs.currentToIndex = UnitCollection.DEFAULT_TO_INDEX
             }
             remoteViews.setTextViewText(R.id.widget_unit_from,
-                    Html.fromHtml(collections[prefs.currentCategory][prefs.currentFromIndex].name))
+                    Util.fromHtml(collections[prefs.currentCategory][prefs.currentFromIndex].name))
             remoteViews.setTextViewText(R.id.widget_unit_to,
-                    Html.fromHtml(collections[prefs.currentCategory][prefs.currentToIndex].name))
+                    Util.fromHtml(collections[prefs.currentCategory][prefs.currentToIndex].name))
             remoteViews.setTextViewText(R.id.widget_unit_from_value, ConvertActivity.getFormattedValueStr(prefs.currentValue.toDouble()))
             remoteViews.setTextViewText(R.id.widget_unit_to_value,
                     ConvertActivity.getFormattedValueStr(UnitCollection.convert(context, prefs.currentCategory, prefs.currentFromIndex, prefs.currentToIndex, prefs.currentValue.toDouble())))

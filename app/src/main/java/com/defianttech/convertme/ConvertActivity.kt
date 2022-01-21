@@ -4,7 +4,6 @@ import android.content.*
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.text.Spanned
 import android.util.Log
 import android.view.*
@@ -277,7 +276,7 @@ class ConvertActivity : AppCompatActivity() {
                 unitValue.visibility = View.GONE
                 val chkEnable = convertView.findViewById<ImageView>(R.id.chkSelected)
                 chkEnable.visibility = View.VISIBLE
-                unitName.text = Html.fromHtml(collections[currentCategory][position].name)
+                unitName.text = Util.fromHtml(collections[currentCategory][position].name)
                 if (position == currentUnitIndex) {
                     binding.unitsList.setItemChecked(position, true)
                 }
@@ -295,7 +294,7 @@ class ConvertActivity : AppCompatActivity() {
                     unitValue.visibility = View.VISIBLE
                     val chkEnable = convertView.findViewById<ImageView>(R.id.chkSelected)
                     chkEnable.visibility = View.GONE
-                    unitName.text = Html.fromHtml(collections[currentCategory][position].name)
+                    unitName.text = Util.fromHtml(collections[currentCategory][position].name)
                     if (position == currentUnitIndex) {
                         binding.unitsList.setItemChecked(position, true)
                     }
@@ -383,7 +382,7 @@ class ConvertActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Log.d(TAG, "Error while rendering unit.", e)
             }
-            return Html.fromHtml(strValue)
+            return Util.fromHtml(strValue)
         }
 
         private fun getValueStr(value: Double): String {
