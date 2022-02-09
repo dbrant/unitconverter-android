@@ -128,7 +128,12 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
         fun getCustomUnits(context: Context): CustomUnits {
             val prefs = ConvertActivity.getPrefs(context)
             val customSerialized = prefs.getString(CUSTOM_COLLECTION_PREF_NAME, "{}")
-            val customUnits = Gson().fromJson(customSerialized, CustomUnits::class.java)
+            val customUnits: CustomUnits? = null
+            try {
+                Gson().fromJson(customSerialized, CustomUnits::class.java)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             return customUnits ?: CustomUnits()
         }
 
@@ -138,7 +143,7 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
             editor.apply()
         }
 
-        fun addCustomUnit(context: Context, categoryId: Int, baseUnitId: Int, multiplier: Double, name: String?) {
+        fun addCustomUnit(context: Context, categoryId: Int, baseUnitId: Int, multiplier: Double, name: String) {
             val customUnits = getCustomUnits(context)
             var maxId = CUSTOM_ID_START
             for (u in customUnits.units) {
@@ -146,7 +151,7 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
                     maxId = u.id + 1
                 }
             }
-            val unit = CustomUnit(maxId, categoryId, baseUnitId, 0.0, multiplier, name!!)
+            val unit = CustomUnit(maxId, categoryId, baseUnitId, 0.0, multiplier, name)
             val newUnits = customUnits.units.toMutableList()
             newUnits.add(unit)
             customUnits.units.clear()
@@ -155,10 +160,10 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
             resetInstance(context)
         }
 
-        fun editCustomUnit(context: Context, id: Int, baseUnitId: Int, multiplier: Double, name: String?) {
+        fun editCustomUnit(context: Context, id: Int, baseUnitId: Int, multiplier: Double, name: String) {
             val customUnits = getCustomUnits(context)
             val unit = customUnits.units.find { it.id == id } ?: return
-            unit.name = name!!
+            unit.name = name
             unit.baseUnitId = baseUnitId
             unit.multiplier = multiplier
             val newUnits = customUnits.units.toMutableList()
