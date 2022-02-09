@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import com.defianttech.convertme.databinding.CustomUnitsAddActivityBinding
 
 /*
- * Copyright (c) 2020 Dmitry Brant
+ * Copyright (c) 2022 Dmitry Brant
  */
 class CustomUnitsAddActivity : AppCompatActivity() {
     private lateinit var binding: CustomUnitsAddActivityBinding
@@ -44,7 +44,7 @@ class CustomUnitsAddActivity : AppCompatActivity() {
 
         binding.unitCategorySpinner.adapter = categoryAdapter
         binding.unitCategorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>, view: View, index: Int, l: Long) {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, index: Int, l: Long) {
                 val currentCategory = UnitCollection.collectionIndexByName(categories, allCategoryNames[index])
                 binding.unitBaseSpinner.adapter = ArrayAdapter(this@CustomUnitsAddActivity, R.layout.unit_categoryitem, categories[currentCategory].items)
 
@@ -66,7 +66,7 @@ class CustomUnitsAddActivity : AppCompatActivity() {
         }
 
         binding.unitBaseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>, view: View, index: Int, l: Long) {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, index: Int, l: Long) {
                 updatePreview()
             }
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
