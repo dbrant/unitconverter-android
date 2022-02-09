@@ -35,7 +35,7 @@ class CustomUnitsAddActivity : AppCompatActivity() {
 
         val editUnitId = intent.getIntExtra(ConvertActivity.INTENT_EXTRA_UNIT_ID, 0)
         if (editUnitId != 0) {
-            editUnit = UnitCollection.getCustomUnits(this).units.first { unit -> unit.id == editUnitId }
+            editUnit = UnitCollection.getCustomUnits(this).units.first { it.id == editUnitId }
         }
 
         supportActionBar?.setTitle(if (isEditing()) R.string.edit_unit else R.string.add_new_unit)
@@ -49,13 +49,13 @@ class CustomUnitsAddActivity : AppCompatActivity() {
                 binding.unitBaseSpinner.adapter = ArrayAdapter(this@CustomUnitsAddActivity, R.layout.unit_categoryitem, categories[currentCategory].items)
 
                 if (isEditing()) {
-                    val defaultIndex = categories[editUnit!!.categoryId].items.indexOfFirst { unit -> unit.id == editUnit!!.baseUnitId }
+                    val defaultIndex = categories[editUnit!!.categoryId].items.indexOfFirst { it.id == editUnit!!.baseUnitId }
                     if (defaultIndex >= 0) {
                         binding.unitBaseSpinner.setSelection(defaultIndex)
                     }
                 } else {
                     // find the default base unit in this collection
-                    val defaultIndex = categories[currentCategory].items.indexOfFirst { unit -> unit.multiplier == 1.0 }
+                    val defaultIndex = categories[currentCategory].items.indexOfFirst { it.multiplier == 1.0 }
                     if (defaultIndex >= 0) {
                         binding.unitBaseSpinner.setSelection(defaultIndex)
                     }
@@ -137,7 +137,7 @@ class CustomUnitsAddActivity : AppCompatActivity() {
         val baseUnitId = categories[currentCategory].items[binding.unitBaseSpinner.selectedItemPosition].id
         var baseUnit: SingleUnit? = null
         try {
-            baseUnit = categories[currentCategory].items.first { u -> u.id == baseUnitId }
+            baseUnit = categories[currentCategory].items.first { it.id == baseUnitId }
         } catch (e: NoSuchElementException) {
         }
         if (binding.unitNameText.text.isNullOrEmpty() || multiplier == null || multiplier == 0.0 || baseUnit == null) {
