@@ -128,9 +128,9 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
         fun getCustomUnits(context: Context): CustomUnits {
             val prefs = ConvertActivity.getPrefs(context)
             val customSerialized = prefs.getString(CUSTOM_COLLECTION_PREF_NAME, "{}")
-            val customUnits: CustomUnits? = null
+            var customUnits: CustomUnits? = null
             try {
-                Gson().fromJson(customSerialized, CustomUnits::class.java)
+                customUnits = Gson().fromJson(customSerialized, CustomUnits::class.java)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
