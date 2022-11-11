@@ -64,24 +64,20 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/unit_name_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="4dp"
-            android:padding="4dp"
-            android:background="@drawable/category_shape">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/unit_increment"/>
-            <EditText
+            android:hint="@string/unit_increment">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/unit_increment_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:maxLines="1"/>
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
