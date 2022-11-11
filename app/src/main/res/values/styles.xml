@@ -14,7 +14,7 @@
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
-    <style name="Toolbar.ConvertMe" parent="@style/Widget.AppCompat.Toolbar">
+    <style name="Toolbar.ConvertMe" parent="@style/Widget.Material3.Toolbar">
         <item name="android:background">@color/toolbar</item>
         <item name="navigationIcon">?attr/homeAsUpIndicator</item>
     </style>
