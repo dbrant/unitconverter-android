@@ -366,7 +366,6 @@ class ConvertActivity : AppCompatActivity() {
         private const val KEY_CURRENT_CATEGORY = "currentCategory"
         private const val KEY_CURRENT_UNIT = "currentUnitIndex"
         private const val KEY_CURRENT_VALUE = "currentValue"
-        const val REQUEST_CODE_CUSTOM_UNITS = 100
         const val RESULT_CODE_CUSTOM_UNITS_CHANGED = 1
         const val INTENT_EXTRA_UNIT_ID = "extra_unit_id"
         private val dfExp = DecimalFormat("#.#######E0")
