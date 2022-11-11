@@ -10,6 +10,7 @@ import android.view.*
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemLongClickListener
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +24,7 @@ import java.text.DecimalFormat
 import kotlin.math.abs
 
 /*
-* Copyright (c) 2014-2019 Dmitry Brant
+* Copyright (c) 2014-2022 Dmitry Brant
 */
 class ConvertActivity : AppCompatActivity() {
     private lateinit var binding: ConvertmeBinding
@@ -39,6 +40,13 @@ class ConvertActivity : AppCompatActivity() {
     private var listAdapter = UnitListAdapter()
     private var actionMode: ActionMode? = null
     private var editModeEnabled = false
+
+    private val customUnitsLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == RESULT_CODE_CUSTOM_UNITS_CHANGED) {
+            resetLists()
+            restoreSettings()
+        }
+    }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,19 +139,11 @@ class ConvertActivity : AppCompatActivity() {
                 return true
             }
             R.id.menu_custom_units -> {
-                startActivityForResult(Intent(this, CustomUnitsActivity::class.java), REQUEST_CODE_CUSTOM_UNITS)
+                customUnitsLauncher.launch(Intent(this, CustomUnitsActivity::class.java))
                 return true
             }
         }
         return false
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_CUSTOM_UNITS && resultCode == RESULT_CODE_CUSTOM_UNITS_CHANGED) {
-            resetLists()
-            restoreSettings()
-        }
     }
 
     private fun resetLists() {

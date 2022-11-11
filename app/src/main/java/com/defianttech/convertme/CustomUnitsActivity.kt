@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,11 +18,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.defianttech.convertme.databinding.CustomUnitsActivityBinding
 
 /*
- * Copyright (c) 2020 Dmitry Brant
+ * Copyright (c) 2022 Dmitry Brant
  */
 class CustomUnitsActivity : AppCompatActivity() {
     private lateinit var binding: CustomUnitsActivityBinding
     private lateinit var customUnits: CustomUnits
+
+    private val customUnitsLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == ConvertActivity.RESULT_CODE_CUSTOM_UNITS_CHANGED) {
+            setResult(ConvertActivity.RESULT_CODE_CUSTOM_UNITS_CHANGED)
+            resetList()
+        }
+    }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,21 +48,13 @@ class CustomUnitsActivity : AppCompatActivity() {
         binding.unitsRecyclerView.adapter = RecyclerAdapter()
 
         binding.addButton.setOnClickListener {
-            startActivityForResult(Intent(this, CustomUnitsAddActivity::class.java), ConvertActivity.REQUEST_CODE_CUSTOM_UNITS)
+            customUnitsLauncher.launch(Intent(this, CustomUnitsAddActivity::class.java))
         }
     }
 
     private fun resetList() {
         customUnits = UnitCollection.getCustomUnits(this)
         binding.unitsRecyclerView.adapter?.notifyDataSetChanged()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == ConvertActivity.REQUEST_CODE_CUSTOM_UNITS && resultCode == ConvertActivity.RESULT_CODE_CUSTOM_UNITS_CHANGED) {
-            setResult(ConvertActivity.RESULT_CODE_CUSTOM_UNITS_CHANGED)
-            resetList()
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -97,7 +97,7 @@ class CustomUnitsActivity : AppCompatActivity() {
 
                 val intent = Intent(this@CustomUnitsActivity, CustomUnitsAddActivity::class.java)
                         .putExtra(ConvertActivity.INTENT_EXTRA_UNIT_ID, unit.id)
-                startActivityForResult(intent, ConvertActivity.REQUEST_CODE_CUSTOM_UNITS)
+                customUnitsLauncher.launch(intent)
 
             } else if (v == deleteButton) {
                 // check if other custom units depend on this one...
