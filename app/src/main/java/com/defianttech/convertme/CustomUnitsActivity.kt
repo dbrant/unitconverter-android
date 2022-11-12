@@ -114,7 +114,7 @@ class CustomUnitsActivity : AppCompatActivity() {
                 AlertDialog.Builder(this@CustomUnitsActivity)
                         .setMessage(getString(R.string.delete_unit_confirm, unit.name))
                         .setNegativeButton(android.R.string.cancel, null)
-                        .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
+                        .setPositiveButton(android.R.string.ok) { _, _ ->
                             UnitCollection.deleteCustomUnit(this@CustomUnitsActivity, unit)
                             resetList()
                             setResult(ConvertActivity.RESULT_CODE_CUSTOM_UNITS_CHANGED)
