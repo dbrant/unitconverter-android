@@ -44,7 +44,7 @@
         app:tint="@android:color/white"
         android:contentDescription="@null" />
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -55,6 +55,6 @@
             android:id="@+id/toolbarContents"
             layout="@layout/toolbar_category_button" />
 
-    </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.MaterialToolbar>
 
 </FrameLayout>
