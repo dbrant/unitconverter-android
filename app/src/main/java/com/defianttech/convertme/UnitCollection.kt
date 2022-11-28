@@ -11,7 +11,7 @@ import java.io.InputStreamReader
 import java.util.*
 
 /*
-* Copyright (c) 2014-2017 Dmitry Brant
+* Copyright (c) 2014-2022 Dmitry Brant
 */
 class UnitCollection internal constructor(val names: Array<String>, val items: MutableList<SingleUnit>) {
     operator fun get(index: Int): SingleUnit {
@@ -33,31 +33,31 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
 
         private const val CUSTOM_ID_START = 10000
 
-        private var _INSTANCE: Array<UnitCollection>? = null
-        private var _allCategoryNames: Array<String>? = null
+        private var INSTANCE: Array<UnitCollection>? = null
+        private var ALL_CATEGORY_NAMES: Array<String>? = null
 
         fun getInstance(context: Context): Array<UnitCollection> {
-            if (_INSTANCE == null) {
+            if (INSTANCE == null) {
                 resetInstance(context)
             }
-            return _INSTANCE!!
+            return INSTANCE!!
         }
 
         private fun resetInstance(context: Context) {
-            _INSTANCE = getAllUnits(context)
+            INSTANCE = getAllUnits(context)
         }
 
         fun getAllCategoryNames(context: Context): Array<String> {
-            if (_allCategoryNames == null) {
+            if (ALL_CATEGORY_NAMES == null) {
                 val collections = getInstance(context)
                 val unitCategories = mutableListOf<String>()
                 for (collection in collections) {
                     unitCategories.addAll(listOf(*collection.names))
                 }
-                _allCategoryNames = unitCategories.toTypedArray()
-                Arrays.sort(_allCategoryNames!!) { left, right -> left.compareTo(right) }
+                ALL_CATEGORY_NAMES = unitCategories.toTypedArray()
+                Arrays.sort(ALL_CATEGORY_NAMES!!) { left, right -> left.compareTo(right) }
             }
-            return _allCategoryNames!!
+            return ALL_CATEGORY_NAMES!!
         }
 
         fun collectionIndexByName(collections: Array<UnitCollection>, name: String): Int {
