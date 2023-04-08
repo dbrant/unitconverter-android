@@ -12,7 +12,6 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemLongClickListener
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorInt
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.PopupMenu
@@ -20,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.defianttech.convertme.NumberPadView.OnValueChangedListener
 import com.defianttech.convertme.databinding.ConvertmeBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.DecimalFormat
 import kotlin.math.abs
 
@@ -352,11 +352,10 @@ class ConvertActivity : AppCompatActivity() {
     }
 
     private fun showAboutDialog() {
-        AlertDialog.Builder(this)
+        MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.menu_about))
                 .setMessage(getString(R.string.about_message))
                 .setPositiveButton(R.string.ok, null)
-                .create()
                 .show()
     }
 

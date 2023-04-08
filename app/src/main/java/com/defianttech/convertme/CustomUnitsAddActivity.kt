@@ -9,8 +9,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AlertDialog
 import com.defianttech.convertme.databinding.CustomUnitsAddActivityBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /*
  * Copyright (c) 2022 Dmitry Brant
@@ -79,10 +79,9 @@ class CustomUnitsAddActivity : AppCompatActivity() {
             val multiplier = binding.unitMultiplierText.text.toString().toDoubleOrNull()
             if (multiplier != null) {
                 if (multiplier == 0.0) {
-                    AlertDialog.Builder(this@CustomUnitsAddActivity)
+                    MaterialAlertDialogBuilder(this@CustomUnitsAddActivity)
                             .setMessage(R.string.nice_try)
                             .setPositiveButton(android.R.string.ok, null)
-                            .create()
                             .show()
                 } else {
                     binding.unitMultiplierText.setText((1 / multiplier).toString())

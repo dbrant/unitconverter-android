@@ -10,11 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.defianttech.convertme.databinding.CustomUnitsActivityBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /*
  * Copyright (c) 2022 Dmitry Brant
@@ -102,15 +102,14 @@ class CustomUnitsActivity : AppCompatActivity() {
                 // check if other custom units depend on this one...
                 for (u in customUnits.units) {
                     if (u.baseUnitId == unit.id) {
-                        AlertDialog.Builder(this@CustomUnitsActivity)
+                        MaterialAlertDialogBuilder(this@CustomUnitsActivity)
                                 .setMessage(getString(R.string.delete_unit_dependent, unit.name, u.name))
                                 .setPositiveButton(android.R.string.ok, null)
-                                .create()
                                 .show()
                         return
                     }
                 }
-                AlertDialog.Builder(this@CustomUnitsActivity)
+                MaterialAlertDialogBuilder(this@CustomUnitsActivity)
                         .setMessage(getString(R.string.delete_unit_confirm, unit.name))
                         .setNegativeButton(android.R.string.cancel, null)
                         .setPositiveButton(android.R.string.ok) { _, _ ->
@@ -118,7 +117,6 @@ class CustomUnitsActivity : AppCompatActivity() {
                             resetList()
                             setResult(ConvertActivity.RESULT_CODE_CUSTOM_UNITS_CHANGED)
                         }
-                        .create()
                         .show()
             }
         }
