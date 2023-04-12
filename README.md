@@ -1,7 +1,5 @@
 # unitconverter-android
 
-[![Build Status](https://travis-ci.org/dbrant/unitconverter-android.svg)](https://travis-ci.org/dbrant/unitconverter-android)
-
 Unit conversion app for Android
 
 ## Features
