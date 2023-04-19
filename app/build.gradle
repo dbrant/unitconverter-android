@@ -12,6 +12,14 @@ def static getDate() {
 android {
     compileSdkVersion 33
 
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
+    }
+
     defaultConfig {
         applicationId "com.defianttech.convertme"
         minSdkVersion 14
