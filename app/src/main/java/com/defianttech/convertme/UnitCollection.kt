@@ -143,7 +143,7 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
             editor.apply()
         }
 
-        fun addCustomUnit(context: Context, categoryId: Int, baseUnitId: Int, multiplier: Double, name: String) {
+        fun addCustomUnit(context: Context, categoryId: Int, baseUnitId: Int, multiplier: Double, offset: Double, name: String) {
             val customUnits = getCustomUnits(context)
             var maxId = CUSTOM_ID_START
             for (u in customUnits.units) {
@@ -151,7 +151,7 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
                     maxId = u.id + 1
                 }
             }
-            val unit = CustomUnit(maxId, categoryId, baseUnitId, 0.0, multiplier, name)
+            val unit = CustomUnit(maxId, categoryId, baseUnitId, offset, multiplier, name)
             val newUnits = customUnits.units.toMutableList()
             newUnits.add(unit)
             customUnits.units.clear()

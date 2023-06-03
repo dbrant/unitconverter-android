@@ -153,6 +153,7 @@ class CustomUnitsAddActivity : AppCompatActivity() {
     private fun addNewUnit() {
         val currentCategory = UnitCollection.collectionIndexByName(categories, allCategoryNames[binding.unitCategorySpinner.selectedItemPosition])
         val baseUnitId = categories[currentCategory].items[binding.unitBaseSpinner.selectedItemPosition].id
+        val offset = categories[currentCategory].items[binding.unitBaseSpinner.selectedItemPosition].offset
         val multiplier = binding.unitMultiplierText.text.toString().toDoubleOrNull()
         if (multiplier == null || multiplier == 0.0) {
             binding.unitMultiplierInput.error = getString(R.string.custom_unit_multiplier_invalid)
@@ -162,7 +163,7 @@ class CustomUnitsAddActivity : AppCompatActivity() {
             binding.unitNameInput.error = getString(R.string.custom_unit_name_invalid)
             return
         }
-        UnitCollection.addCustomUnit(this, currentCategory, baseUnitId, 1.0 / multiplier, binding.unitNameText.text.toString())
+        UnitCollection.addCustomUnit(this, currentCategory, baseUnitId, 1.0 / multiplier, offset, binding.unitNameText.text.toString())
         setResult(ConvertActivity.RESULT_CODE_CUSTOM_UNITS_CHANGED)
         finish()
     }

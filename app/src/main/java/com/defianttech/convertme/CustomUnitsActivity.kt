@@ -84,7 +84,7 @@ class CustomUnitsActivity : AppCompatActivity() {
             nameView.text = unit.name
             val categories = UnitCollection.getInstance(this@CustomUnitsActivity)
             try {
-                val baseUnit = categories[unit.categoryId].items.first { u -> u.id == unit.baseUnitId }
+                val baseUnit = categories[unit.categoryId].items.first { it.id == unit.baseUnitId }
                 unitBaseView.text = "1 ${unit.name} = ${(1.0 / unit.multiplier)} ${baseUnit.name}\n1 ${baseUnit.name} = ${unit.multiplier} ${unit.name}"
             } catch (e: NoSuchElementException) {
             }
