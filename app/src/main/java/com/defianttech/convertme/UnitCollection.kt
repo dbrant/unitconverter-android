@@ -8,12 +8,12 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.util.*
+import kotlin.math.max
 
 /*
 * Copyright (c) 2014-2022 Dmitry Brant
 */
-class UnitCollection internal constructor(val names: Array<String>, val items: MutableList<SingleUnit>) {
+class UnitCollection internal constructor(val names: List<String>, val items: MutableList<SingleUnit>) {
     operator fun get(index: Int): SingleUnit {
         return items[index]
     }
@@ -25,6 +25,7 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
     companion object {
         private const val TAG = "UnitCollection"
         private const val CUSTOM_COLLECTION_PREF_NAME = "custom_collection"
+        private val sRegex = "\\s*,\\s*".toRegex()
 
         const val DEFAULT_CATEGORY = 5 //default to "distance"
         const val DEFAULT_FROM_INDEX = 10 //default to "inch"
@@ -33,10 +34,10 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
 
         private const val CUSTOM_ID_START = 10000
 
-        private var INSTANCE: Array<UnitCollection>? = null
-        private var ALL_CATEGORY_NAMES: Array<String>? = null
+        private var INSTANCE: List<UnitCollection>? = null
+        private var ALL_CATEGORY_NAMES: List<String>? = null
 
-        fun getInstance(context: Context): Array<UnitCollection> {
+        fun getInstance(context: Context): List<UnitCollection> {
             if (INSTANCE == null) {
                 resetInstance(context)
             }
@@ -47,20 +48,14 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
             INSTANCE = getAllUnits(context)
         }
 
-        fun getAllCategoryNames(context: Context): Array<String> {
+        fun getAllCategoryNames(context: Context): List<String> {
             if (ALL_CATEGORY_NAMES == null) {
-                val collections = getInstance(context)
-                val unitCategories = mutableListOf<String>()
-                for (collection in collections) {
-                    unitCategories.addAll(listOf(*collection.names))
-                }
-                ALL_CATEGORY_NAMES = unitCategories.toTypedArray()
-                Arrays.sort(ALL_CATEGORY_NAMES!!) { left, right -> left.compareTo(right) }
+                ALL_CATEGORY_NAMES = getInstance(context).flatMap { it.names }.sortedBy { it }
             }
             return ALL_CATEGORY_NAMES!!
         }
 
-        fun collectionIndexByName(collections: Array<UnitCollection>, name: String): Int {
+        fun collectionIndexByName(collections: List<UnitCollection>, name: String): Int {
             for (i in collections.indices) {
                 if (collections[i].names.find { it == name } != null) {
                     return i
@@ -78,7 +73,7 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
             return result
         }
 
-        private fun getAllUnits(context: Context): Array<UnitCollection> {
+        private fun getAllUnits(context: Context): List<UnitCollection> {
             val collections = mutableListOf<UnitCollection>()
             var inStream: InputStream? = null
             try {
@@ -87,7 +82,7 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
                 val reader = BufferedReader(InputStreamReader(inStream))
                 var currentCollection = mutableListOf<SingleUnit>()
                 var line: String
-                var lineArr: Array<String>
+                var lineArr: List<String>
                 while (reader.readLine().also { line = it.orEmpty() } != null) {
                     line = line.trim()
                     if (line.startsWith("#") || line.isEmpty()) {
@@ -95,11 +90,11 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
                     }
                     if (line.startsWith("==")) {
                         currentCollection = mutableListOf()
-                        lineArr = line.replace("==", "").trim().split("\\s*,\\s*".toRegex()).toTypedArray()
+                        lineArr = line.replace("==", "").trim().split(sRegex)
                         collections.add(UnitCollection(lineArr, currentCollection))
                         continue
                     }
-                    lineArr = line.split("\\s*,\\s*".toRegex()).toTypedArray()
+                    lineArr = line.split(sRegex)
                     currentCollection.add(SingleUnit(lineArr[0].toInt(), lineArr[1], lineArr[2].toDouble(), lineArr[3].toDouble()))
                 }
             } catch (e: IOException) {
@@ -122,7 +117,7 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
                 category.items.add(SingleUnit(unit.id, unit.name,
                         baseUnit.multiplier * unit.multiplier, unit.offset))
             }
-            return collections.toTypedArray()
+            return collections
         }
 
         fun getCustomUnits(context: Context): CustomUnits {
@@ -145,17 +140,9 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
 
         fun addCustomUnit(context: Context, categoryId: Int, baseUnitId: Int, multiplier: Double, offset: Double, name: String) {
             val customUnits = getCustomUnits(context)
-            var maxId = CUSTOM_ID_START
-            for (u in customUnits.units) {
-                if (u.id >= maxId) {
-                    maxId = u.id + 1
-                }
-            }
+            val maxId = max(CUSTOM_ID_START,(customUnits.units.maxOfOrNull { it.id } ?: 0) + 1)
             val unit = CustomUnit(maxId, categoryId, baseUnitId, offset, multiplier, name)
-            val newUnits = customUnits.units.toMutableList()
-            newUnits.add(unit)
-            customUnits.units.clear()
-            customUnits.units.addAll(newUnits)
+            customUnits.units.add(unit)
             saveCustomUnits(context, customUnits)
             resetInstance(context)
         }
@@ -166,28 +153,22 @@ class UnitCollection internal constructor(val names: Array<String>, val items: M
             unit.name = name
             unit.baseUnitId = baseUnitId
             unit.multiplier = multiplier
-            val newUnits = customUnits.units.toMutableList()
-            customUnits.units.clear()
-            customUnits.units.addAll(newUnits)
             saveCustomUnits(context, customUnits)
             resetInstance(context)
         }
 
         fun deleteCustomUnit(context: Context, unit: CustomUnit) {
             val customUnits = getCustomUnits(context)
-            val newUnits = customUnits.units.toMutableList()
             var index = -1
-            for (i in newUnits.indices) {
-                if (newUnits[i].id == unit.id) {
+            for (i in customUnits.units.indices) {
+                if (customUnits.units[i].id == unit.id) {
                     index = i
                     break
                 }
             }
             if (index >= 0) {
-                newUnits.removeAt(index)
+                customUnits.units.removeAt(index)
             }
-            customUnits.units.clear()
-            customUnits.units.addAll(newUnits)
             saveCustomUnits(context, customUnits)
             resetInstance(context)
         }

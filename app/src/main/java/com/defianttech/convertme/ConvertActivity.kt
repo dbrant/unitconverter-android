@@ -17,6 +17,7 @@ import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import com.defianttech.convertme.NumberPadView.OnValueChangedListener
 import com.defianttech.convertme.databinding.ConvertmeBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -29,8 +30,8 @@ import kotlin.math.abs
 class ConvertActivity : AppCompatActivity() {
     private lateinit var binding: ConvertmeBinding
 
-    private lateinit var collections: Array<UnitCollection>
-    private lateinit var allCategoryNames: Array<String>
+    private lateinit var collections: List<UnitCollection>
+    private lateinit var allCategoryNames: List<String>
 
     private var currentCategory = UnitCollection.DEFAULT_CATEGORY
     private var currentUnitIndex = UnitCollection.DEFAULT_FROM_INDEX
@@ -56,6 +57,7 @@ class ConvertActivity : AppCompatActivity() {
         resetLists()
 
         setSupportActionBar(binding.mainToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -69,13 +71,13 @@ class ConvertActivity : AppCompatActivity() {
             categoryMenu.menu.add(0, i, 0, name)
         }
 
-        categoryMenu.setOnMenuItemClickListener { item ->
+        categoryMenu.setOnMenuItemClickListener {
             currentCategory = UnitCollection.collectionIndexByName(collections,
-                    allCategoryNames[item.itemId])
+                    allCategoryNames[it.itemId])
             if (currentUnitIndex >= collections[currentCategory].length()) {
                 currentUnitIndex = 0
             }
-            binding.toolbarContents.categoryText.text = item.title
+            binding.toolbarContents.categoryText.text = it.title
             listAdapter.notifyDataSetInvalidated()
             true
         }
@@ -130,10 +132,6 @@ class ConvertActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressedDispatcher.onBackPressed()
-                return true
-            }
             R.id.menu_about -> {
                 showAboutDialog()
                 return true
@@ -189,7 +187,7 @@ class ConvertActivity : AppCompatActivity() {
     }
 
     private fun updateActionModeState() {
-        binding.numberPad.visibility = if (editModeEnabled) View.GONE else View.VISIBLE
+        binding.numberPad.isVisible = !editModeEnabled
         if (editModeEnabled) {
             binding.fabEdit.hide()
         } else {
@@ -207,8 +205,8 @@ class ConvertActivity : AppCompatActivity() {
     }
 
     private inner class EditUnitsActionModeCallback : ActionMode.Callback {
-        @ColorInt
-        var statusBarColor = 0
+        @ColorInt var statusBarColor = 0
+
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
             actionMode = mode
             actionMode!!.title = getString(R.string.show_hide_units)
@@ -323,9 +321,9 @@ class ConvertActivity : AppCompatActivity() {
     private fun doLongPressMenu(parentView: View, position: Int) {
         val menu = PopupMenu(this, parentView, Gravity.END or Gravity.CENTER_HORIZONTAL)
         menu.menuInflater.inflate(R.menu.menu_long_press, menu.menu)
-        menu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { menuItem ->
+        menu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
             val resultStr: String
-            when (menuItem.itemId) {
+            when (it.itemId) {
                 R.id.menu_copy_value -> {
                     resultStr = String.format("%1\$s", getValueStr(UnitCollection.convert(this@ConvertActivity, currentCategory, currentUnitIndex, position, currentValue)))
                     setClipboardText(resultStr)

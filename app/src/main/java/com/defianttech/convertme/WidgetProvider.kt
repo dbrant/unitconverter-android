@@ -94,7 +94,7 @@ class WidgetProvider : AppWidgetProvider() {
         private const val CLICK_ACTION_MINUS = "actionMinus"
         private const val CLICK_ACTION_EXCHANGE = "actionExchange"
         fun getWidgetId(actionName: String): Int {
-            return actionName.split("_".toRegex()).toTypedArray()[1].toInt()
+            return actionName.split("_")[1].toInt()
         }
     }
 }
