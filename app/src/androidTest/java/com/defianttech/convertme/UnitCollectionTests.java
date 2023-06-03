@@ -26,7 +26,7 @@ public class UnitCollectionTests {
         final float fromIn = 42f;
         final float toCm = 106.68f;
 
-        assertThat((float) UnitCollection.convert(context, categoryDistance, unitInch, unitCm, fromIn), is(toCm));
+        assertThat((float) UnitCollection.Companion.convert(context, categoryDistance, unitInch, unitCm, fromIn), is(toCm));
 
     }
 }
