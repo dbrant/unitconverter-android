@@ -99,7 +99,7 @@ class CustomUnitsAddActivity : AppCompatActivity() {
         }
 
         if (isEditing()) {
-            binding.unitCategorySpinner.setSelection(editUnit!!.categoryId)
+            binding.unitCategorySpinner.setSelection(allCategoryNames.indexOf(categories[editUnit!!.categoryId].names[0]))
             binding.unitCategorySpinner.isEnabled = false
 
             binding.unitNameText.setText(editUnit!!.name)
@@ -131,7 +131,7 @@ class CustomUnitsAddActivity : AppCompatActivity() {
         if (binding.unitCategorySpinner.selectedItemPosition == -1 || binding.unitBaseSpinner.selectedItemPosition == -1) {
             return
         }
-        val multiplier = binding.unitMultiplierText.text.toString().toDoubleOrNull()
+        val multiplier = binding.unitMultiplierText.text.toString().toDoubleOrNull() ?: 0.0
         val currentCategory = UnitCollection.collectionIndexByName(categories, allCategoryNames[binding.unitCategorySpinner.selectedItemPosition])
         val baseUnitId = categories[currentCategory].items[binding.unitBaseSpinner.selectedItemPosition].id
         var baseUnit: SingleUnit? = null
@@ -139,7 +139,7 @@ class CustomUnitsAddActivity : AppCompatActivity() {
             baseUnit = categories[currentCategory].items.first { it.id == baseUnitId }
         } catch (e: NoSuchElementException) {
         }
-        if (binding.unitNameText.text.isNullOrEmpty() || multiplier == null || multiplier == 0.0 || baseUnit == null) {
+        if (binding.unitNameText.text.isNullOrEmpty() || multiplier == 0.0 || baseUnit == null) {
             binding.unitPreviewLabel.visibility = View.GONE
             binding.unitPreviewText.visibility = View.GONE
             return
