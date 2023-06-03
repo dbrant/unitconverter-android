@@ -35,14 +35,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
         android:tint="@android:color/white"
         app:srcCompat="@drawable/ic_settings_white_24dp"
         app:useCompatPadding="true"
         app:backgroundTint="@color/fab_color"
         app:tint="@android:color/white"
-        android:contentDescription="@null" />
+        android:contentDescription="@string/show_hide_units" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCustomUnits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="72dp"
+        android:tint="@android:color/white"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:srcCompat="@drawable/ic_assignment_white_24dp"
+        app:useCompatPadding="true"
+        app:backgroundTint="@color/fab_color"
+        app:tint="@android:color/white"
+        android:contentDescription="@string/custom_units" />
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/main_toolbar"

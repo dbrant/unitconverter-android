@@ -116,7 +116,15 @@ class ConvertActivity : AppCompatActivity() {
             }
         }
 
-        binding.fabEdit.setOnClickListener { startSupportActionMode(EditUnitsActionModeCallback()) }
+        binding.fabEdit.setOnClickListener {
+            if (actionMode != null) {
+                actionMode?.finish()
+            } else {
+                startSupportActionMode(EditUnitsActionModeCallback())
+            }
+        }
+
+        binding.fabCustomUnits?.setOnClickListener { launchCustomUnits() }
     }
 
     public override fun onStop() {
@@ -137,11 +145,15 @@ class ConvertActivity : AppCompatActivity() {
                 return true
             }
             R.id.menu_custom_units -> {
-                customUnitsLauncher.launch(Intent(this, CustomUnitsActivity::class.java))
+                launchCustomUnits()
                 return true
             }
         }
         return false
+    }
+
+    private fun launchCustomUnits() {
+        customUnitsLauncher.launch(Intent(this, CustomUnitsActivity::class.java))
     }
 
     private fun resetLists() {
@@ -181,17 +193,17 @@ class ConvertActivity : AppCompatActivity() {
                     unit.isEnabled = prefs.getBoolean(unit.name, true)
                 }
             }
-        } catch (ex: Exception) {
-            //ehh...
+        } catch (e: Exception) {
+            Log.e(TAG, "Error restoring settings", e)
         }
     }
 
     private fun updateActionModeState() {
         binding.numberPad.isVisible = !editModeEnabled
         if (editModeEnabled) {
-            binding.fabEdit.hide()
+            binding.fabCustomUnits?.show()
         } else {
-            binding.fabEdit.show()
+            binding.fabCustomUnits?.hide()
         }
         listAdapter.notifyDataSetInvalidated()
     }
