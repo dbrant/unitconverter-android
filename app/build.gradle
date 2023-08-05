@@ -6,7 +6,7 @@ def versionStart = '1.0'
 def getFormattedDate = { (new Date()).format('yyyy-MM-dd') }
 
 android {
-    compileSdkVersion 33
+    compileSdk 33
 
     compileOptions {
         targetCompatibility JavaVersion.VERSION_17
@@ -18,8 +18,8 @@ android {
 
     defaultConfig {
         applicationId "com.defianttech.convertme"
-        minSdkVersion 14
-        targetSdkVersion 33
+        minSdk 14
+        targetSdk 33
         versionCode 53
         versionName "${versionStart}-${getFormattedDate()}"
         vectorDrawables.useSupportLibrary = true
