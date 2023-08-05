@@ -3,11 +3,7 @@ apply plugin: 'kotlin-android'
 
 def versionStart = '1.0'
 
-def static getDate() {
-    def date = new Date()
-    def formattedDate = date.format('yyyy-MM-dd')
-    return formattedDate
-}
+def getFormattedDate = { (new Date()).format('yyyy-MM-dd') }
 
 android {
     compileSdkVersion 33
@@ -25,7 +21,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 33
         versionCode 53
-        versionName "${versionStart}-${date}"
+        versionName "${versionStart}-${getFormattedDate()}"
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
