@@ -20,7 +20,7 @@ android {
         applicationId "com.defianttech.convertme"
         minSdk 14
         targetSdk 34
-        versionCode 53
+        versionCode 54
         versionName "${versionStart}-${getFormattedDate()}"
         vectorDrawables.useSupportLibrary = true
 
@@ -37,7 +37,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt')
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt')
         }
     }
