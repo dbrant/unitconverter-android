@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import com.defianttech.convertme.NumberPadView.OnValueChangedListener
 import com.defianttech.convertme.databinding.ConvertmeBinding
@@ -25,7 +24,7 @@ import java.text.DecimalFormat
 import kotlin.math.abs
 
 /*
-* Copyright (c) 2014-2022 Dmitry Brant
+* Copyright (c) 2014+ Dmitry Brant
 */
 class ConvertActivity : AppCompatActivity() {
     private lateinit var binding: ConvertmeBinding
@@ -312,9 +311,7 @@ class ConvertActivity : AppCompatActivity() {
                     if (position == currentUnitIndex) {
                         binding.unitsList.setItemChecked(position, true)
                     }
-                    ViewCompat.setBackground(itemContainer,
-                            ContextCompat.getDrawable(this@ConvertActivity,
-                                    R.drawable.selectable_item_background))
+                    itemContainer.background = ContextCompat.getDrawable(this@ConvertActivity, R.drawable.selectable_item_background)
                     val p = UnitCollection.convert(this@ConvertActivity, currentCategory,
                             currentUnitIndex, position, currentValue)
                     unitValue.text = getFormattedValueStr(p)
