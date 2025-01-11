@@ -227,10 +227,8 @@ class ConvertActivity : AppCompatActivity() {
         }
 
         override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                statusBarColor = window.statusBarColor
-                window.statusBarColor = Color.BLACK
-            }
+            statusBarColor = window.statusBarColor
+            window.statusBarColor = Color.BLACK
             return false
         }
 
@@ -243,9 +241,7 @@ class ConvertActivity : AppCompatActivity() {
         }
 
         override fun onDestroyActionMode(mode: ActionMode) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                window.statusBarColor = statusBarColor
-            }
+            window.statusBarColor = statusBarColor
             actionMode = null
             editModeEnabled = false
             updateActionModeState()
