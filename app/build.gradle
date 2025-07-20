@@ -6,7 +6,7 @@ def versionStart = '1.0'
 def getFormattedDate = { (new Date()).format('yyyy-MM-dd') }
 
 android {
-    compileSdk 35
+    compileSdk 36
 
     compileOptions {
         targetCompatibility JavaVersion.VERSION_17
@@ -19,7 +19,7 @@ android {
     defaultConfig {
         applicationId "com.defianttech.convertme"
         minSdk 21
-        targetSdk 35
+        targetSdk 36
         versionCode 56
         versionName "${versionStart}-${getFormattedDate()}"
 
