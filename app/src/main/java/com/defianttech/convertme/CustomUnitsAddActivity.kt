@@ -137,7 +137,7 @@ class CustomUnitsAddActivity : AppCompatActivity() {
         var baseUnit: SingleUnit? = null
         try {
             baseUnit = categories[currentCategory].items.first { it.id == baseUnitId }
-        } catch (e: NoSuchElementException) {
+        } catch (_: NoSuchElementException) {
         }
         if (binding.unitNameText.text.isNullOrEmpty() || multiplier == 0.0 || baseUnit == null) {
             binding.unitPreviewLabel.visibility = View.GONE

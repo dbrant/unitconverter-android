@@ -99,7 +99,7 @@ class WidgetSetupActivity : AppCompatActivity() {
         super.onPause()
         try {
             prefs.increment = java.lang.Float.parseFloat(binding.unitIncrementText.text.toString())
-        } catch (e: NumberFormatException) {
+        } catch (_: NumberFormatException) {
             prefs.increment = 1f
         }
 

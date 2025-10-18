@@ -22,6 +22,7 @@ import com.defianttech.convertme.databinding.ConvertmeBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.DecimalFormat
 import kotlin.math.abs
+import androidx.core.content.edit
 
 /*
 * Copyright (c) 2014+ Dmitry Brant
@@ -162,16 +163,16 @@ class ConvertActivity : AppCompatActivity() {
     }
 
     private fun saveSettings() {
-        val editor = getPrefs(this).edit()
-        editor.putInt(KEY_CURRENT_CATEGORY, currentCategory)
-        editor.putInt(KEY_CURRENT_UNIT, currentUnitIndex)
-        editor.putString(KEY_CURRENT_VALUE, binding.numberPad.currentValue)
-        for (col in collections) {
-            for (unit in col.items) {
-                editor.putBoolean(unit.name, unit.isEnabled)
+        getPrefs(this).edit {
+            putInt(KEY_CURRENT_CATEGORY, currentCategory)
+            putInt(KEY_CURRENT_UNIT, currentUnitIndex)
+            putString(KEY_CURRENT_VALUE, binding.numberPad.currentValue)
+            for (col in collections) {
+                for (unit in col.items) {
+                    putBoolean(unit.name, unit.isEnabled)
+                }
             }
         }
-        editor.apply()
     }
 
     private fun restoreSettings() {
@@ -210,7 +211,7 @@ class ConvertActivity : AppCompatActivity() {
     private fun setValueFromNumberPad(value: String) {
         currentValue = try {
             value.toDouble()
-        } catch (e: NumberFormatException) {
+        } catch (_: NumberFormatException) {
             0.0
         }
     }

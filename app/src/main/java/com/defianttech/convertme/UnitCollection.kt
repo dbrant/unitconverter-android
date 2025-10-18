@@ -9,6 +9,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 import kotlin.math.max
+import androidx.core.content.edit
 
 /*
 * Copyright (c) 2014-2022 Dmitry Brant
@@ -103,7 +104,7 @@ class UnitCollection internal constructor(val names: List<String>, val items: Mu
                 if (inStream != null) {
                     try {
                         inStream.close()
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                         //
                     }
                 }
@@ -133,9 +134,9 @@ class UnitCollection internal constructor(val names: List<String>, val items: Mu
         }
 
         private fun saveCustomUnits(context: Context, customUnits: CustomUnits?) {
-            val editor = ConvertActivity.getPrefs(context).edit()
-            editor.putString(CUSTOM_COLLECTION_PREF_NAME, Gson().toJson(customUnits))
-            editor.apply()
+            ConvertActivity.getPrefs(context).edit {
+                putString(CUSTOM_COLLECTION_PREF_NAME, Gson().toJson(customUnits))
+            }
         }
 
         fun addCustomUnit(context: Context, categoryId: Int, baseUnitId: Int, multiplier: Double, offset: Double, name: String) {
