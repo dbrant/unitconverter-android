@@ -1,27 +1,27 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
-def versionStart = '1.0'
-
-def getFormattedDate = { (new Date()).format('yyyy-MM-dd') }
-
 android {
-    compileSdk 36
+    compileSdk = 36
 
     compileOptions {
         targetCompatibility JavaVersion.VERSION_17
         sourceCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
     }
 
     defaultConfig {
         applicationId "com.defianttech.convertme"
-        minSdk 21
-        targetSdk 36
-        versionCode 56
-        versionName "${versionStart}-${getFormattedDate()}"
+        minSdk = 21
+        targetSdk = 36
+        versionCode = 56
+        versionName = "${(new Date()).format('yyyy-MM-dd')}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
