@@ -2,23 +2,24 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 apply plugin: 'com.android.application'
 
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
+    }
+}
+
 android {
-    compileSdk = 36
+    compileSdk = 37
 
     compileOptions {
         targetCompatibility JavaVersion.VERSION_17
         sourceCompatibility JavaVersion.VERSION_17
     }
-    kotlin {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_17
-        }
-    }
 
     defaultConfig {
         applicationId "com.defianttech.convertme"
-        minSdk = 21
-        targetSdk = 36
+        minSdk = 23
+        targetSdk = 37
         versionCode = 56
         versionName = "${(new Date()).format('yyyy-MM-dd')}"
 
