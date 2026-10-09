@@ -2,7 +2,6 @@ package com.defianttech.convertme
 
 import android.content.*
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.text.Spanned
 import android.util.Log
@@ -59,10 +58,7 @@ class ConvertActivity : AppCompatActivity() {
         setSupportActionBar(binding.mainToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.navigationBarColor = getColor(R.color.number_pad_background)
-        }
+        window.navigationBarColor = getColor(R.color.number_pad_background)
 
         binding.toolbarContents.categoryToolbarContainer.setOnClickListener { categoryMenu.show() }
         categoryMenu = PopupMenu(this@ConvertActivity, binding.toolbarContents.categoryToolbarContainer)

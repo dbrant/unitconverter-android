@@ -1,6 +1,5 @@
 package com.defianttech.convertme
 
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
@@ -27,10 +26,7 @@ class WidgetSetupActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setTitle(R.string.configure_widget)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.navigationBarColor = getColor(R.color.number_pad_background)
-        }
+        window.navigationBarColor = getColor(R.color.number_pad_background)
 
         if (!intent.action.isNullOrEmpty() && intent.action!!.contains(WidgetProvider.CLICK_ACTION_SETTINGS)) {
             widgetId = WidgetProvider.getWidgetId(intent.action!!)

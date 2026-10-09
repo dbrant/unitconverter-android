@@ -26,7 +26,7 @@ class WidgetProvider : AppWidgetProvider() {
 
             val configIntent = Intent(context, WidgetSetupActivity::class.java)
             configIntent.action = CLICK_ACTION_SETTINGS + "_" + widgetId
-            val configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, Util.getPendingIntentFlags())
+            val configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, PendingIntent.FLAG_IMMUTABLE)
 
             remoteViews.setOnClickPendingIntent(R.id.widget_settings, configPendingIntent)
 
@@ -84,7 +84,7 @@ class WidgetProvider : AppWidgetProvider() {
     private fun getSelfPendingIntent(context: Context, widgetId: Int, action: String): PendingIntent {
         val intent = Intent(context, WidgetProvider::class.java)
         intent.action = action + "_" + widgetId
-        return PendingIntent.getBroadcast(context, 0, intent, Util.getPendingIntentFlags())
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
     }
 
     companion object {
