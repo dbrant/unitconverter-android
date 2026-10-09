@@ -1,0 +1,25 @@
+[versions]
+constraintlayout = "2.2.2"
+gradle = "9.4.1"
+gradleToolchainsFoojayResolverConvention = "1.0.0"
+gson = "2.14.0"
+hamcrestLibrary = "3.0"
+junit = "4.13.2"
+kotlin = "2.4.21"
+material = "1.14.0"
+test = "1.7.0"
+
+[libraries]
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-rules = { group = "androidx.test", name = "rules", version.ref = "test" }
+androidx-runner = { group = "androidx.test", name = "runner", version.ref = "test" }
+gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+hamcrest-library = { group = "org.hamcrest", name = "hamcrest-library", version.ref = "hamcrestLibrary" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-stdlib-jdk8 = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+[plugins]
+gradle-toolchains-foojay-resolver-convention = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "gradleToolchainsFoojayResolverConvention" }

@@ -49,15 +49,15 @@ android {
 
 dependencies {
 
-    implementation "com.google.android.material:material:1.14.0"
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'com.google.code.gson:gson:2.14.0'
+    implementation libs.material
+    implementation libs.androidx.constraintlayout
+    implementation libs.kotlin.stdlib.jdk8
+    implementation libs.gson
 
-    androidTestImplementation 'junit:junit:4.13.2'
-    androidTestImplementation "androidx.test:rules:1.7.0"
-    androidTestImplementation "androidx.test:runner:1.7.0"
-    androidTestImplementation 'org.hamcrest:hamcrest-library:3.0'
+    androidTestImplementation libs.junit
+    androidTestImplementation libs.androidx.rules
+    androidTestImplementation libs.androidx.runner
+    androidTestImplementation libs.hamcrest.library
 }
 repositories {
     mavenCentral()
