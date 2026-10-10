@@ -20,7 +20,7 @@ android {
         applicationId "com.defianttech.convertme"
         minSdk = 23
         targetSdk = 37
-        versionCode = 56
+        versionCode = 57
         versionName = "${(new Date()).format('yyyy-MM-dd')}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
