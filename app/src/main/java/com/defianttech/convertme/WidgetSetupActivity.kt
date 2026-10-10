@@ -96,12 +96,7 @@ class WidgetSetupActivity : AppCompatActivity() {
 
     public override fun onPause() {
         super.onPause()
-        try {
-            prefs.increment = java.lang.Float.parseFloat(binding.unitIncrementText.text.toString())
-        } catch (_: NumberFormatException) {
-            prefs.increment = 1f
-        }
-
+        prefs.increment = binding.unitIncrementText.text.toString().toDoubleOrNull()?.takeIf { it.isFinite() } ?: 1.0
         prefs.save(this)
     }
 

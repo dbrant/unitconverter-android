@@ -44,9 +44,9 @@ class WidgetProvider : AppWidgetProvider() {
                     Util.fromHtml(collections[prefs.currentCategory][prefs.currentFromIndex].name))
             remoteViews.setTextViewText(R.id.widget_unit_to,
                     Util.fromHtml(collections[prefs.currentCategory][prefs.currentToIndex].name))
-            remoteViews.setTextViewText(R.id.widget_unit_from_value, ConvertActivity.getFormattedValueStr(prefs.currentValue.toDouble()))
+            remoteViews.setTextViewText(R.id.widget_unit_from_value, ConvertActivity.getFormattedValueStr(prefs.currentValue))
             remoteViews.setTextViewText(R.id.widget_unit_to_value,
-                    ConvertActivity.getFormattedValueStr(UnitCollection.convert(context, prefs.currentCategory, prefs.currentFromIndex, prefs.currentToIndex, prefs.currentValue.toDouble())))
+                    ConvertActivity.getFormattedValueStr(UnitCollection.convert(context, prefs.currentCategory, prefs.currentFromIndex, prefs.currentToIndex, prefs.currentValue)))
 
             appWidgetManager.updateAppWidget(widgetId, remoteViews)
         }
@@ -61,13 +61,13 @@ class WidgetProvider : AppWidgetProvider() {
             intent.action!!.contains(CLICK_ACTION_PLUS) -> {
                 val widgetId = getWidgetId(intent.action!!)
                 val prefs = WidgetPrefs(context, widgetId)
-                prefs.currentValue += prefs.increment
+                prefs.currentValue = addDecimal(prefs.currentValue, prefs.increment)
                 prefs.save(context)
             }
             intent.action!!.contains(CLICK_ACTION_MINUS) -> {
                 val widgetId = getWidgetId(intent.action!!)
                 val prefs = WidgetPrefs(context, widgetId)
-                prefs.currentValue -= prefs.increment
+                prefs.currentValue = addDecimal(prefs.currentValue, -prefs.increment)
                 prefs.save(context)
             }
             intent.action!!.contains(CLICK_ACTION_EXCHANGE) -> {
@@ -79,6 +79,12 @@ class WidgetProvider : AppWidgetProvider() {
                 prefs.save(context)
             }
         }
+    }
+
+    /** Adds the values as decimals, so that repeated increments don't accumulate binary rounding
+     * errors (1.4 + 0.1 is 1.5, instead of 1.5000000000000002). */
+    private fun addDecimal(a: Double, b: Double): Double {
+        return (a.toBigDecimal() + b.toBigDecimal()).toDouble()
     }
 
     private fun getSelfPendingIntent(context: Context, widgetId: Int, action: String): PendingIntent {
