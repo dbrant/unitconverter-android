@@ -3,6 +3,7 @@ package com.defianttech.convertme
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import androidx.core.content.edit
 
 class WidgetPrefs(context: Context, private val widgetId: Int) {
     var currentCategory: Int
@@ -12,13 +13,13 @@ class WidgetPrefs(context: Context, private val widgetId: Int) {
     var increment: Float
 
     fun save(context: Context) {
-        val editor = ConvertActivity.getPrefs(context).edit()
-        editor.putInt("widget_category_$widgetId", currentCategory)
-        editor.putInt("widget_from_$widgetId", currentFromIndex)
-        editor.putInt("widget_to_$widgetId", currentToIndex)
-        editor.putFloat("widget_increment_$widgetId", increment)
-        editor.putFloat("widget_from_value_$widgetId", currentValue)
-        editor.apply()
+        ConvertActivity.getPrefs(context).edit {
+            putInt("widget_category_$widgetId", currentCategory)
+            putInt("widget_from_$widgetId", currentFromIndex)
+            putInt("widget_to_$widgetId", currentToIndex)
+            putFloat("widget_increment_$widgetId", increment)
+            putFloat("widget_from_value_$widgetId", currentValue)
+        }
         val updateIntent = Intent(context, WidgetProvider::class.java)
         updateIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         val ids = intArrayOf(widgetId)
