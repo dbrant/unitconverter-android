@@ -5,14 +5,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/window_background"
-    android:fitsSystemWindows="true">
-    
+    android:background="@color/window_background">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="?attr/actionBarSize">
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/toolbar"
+            android:elevation="4dp">
+
+            <include
+                android:id="@+id/toolbarContents"
+                layout="@layout/toolbar_category_button" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <ListView
             android:id="@+id/unitsList"
@@ -20,6 +31,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:choiceMode="singleChoice"
+            android:clipToPadding="false"
             android:divider="@null"
             android:fadeScrollbars="false"/>
 
@@ -57,18 +69,5 @@
         app:backgroundTint="@color/fab_color"
         app:tint="@android:color/white"
         android:contentDescription="@string/custom_units" />
-
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/main_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/toolbar"
-        android:elevation="4dp">
-
-        <include
-            android:id="@+id/toolbarContents"
-            layout="@layout/toolbar_category_button" />
-
-    </com.google.android.material.appbar.MaterialToolbar>
 
 </FrameLayout>

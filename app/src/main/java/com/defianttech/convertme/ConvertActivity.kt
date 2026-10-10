@@ -1,7 +1,7 @@
 package com.defianttech.convertme
 
 import android.content.*
-import android.graphics.Color
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Spanned
 import android.util.Log
@@ -10,13 +10,14 @@ import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemLongClickListener
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePaddingRelative
 import com.defianttech.convertme.NumberPadView.OnValueChangedListener
 import com.defianttech.convertme.databinding.CategoryMenuHeaderBinding
 import com.defianttech.convertme.databinding.ConvertmeBinding
@@ -56,16 +57,17 @@ class ConvertActivity : AppCompatActivity() {
     }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
+        Util.enableEdgeToEdge(this)
         super.onCreate(savedInstanceState)
         binding = ConvertmeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupWindowInsets()
 
         resetLists()
 
         setSupportActionBar(binding.mainToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        window.navigationBarColor = getColor(R.color.number_pad_background)
 
         binding.toolbarContents.categoryToolbarContainer.setOnClickListener { showCategoryPopup() }
         setupCategoryPopup()
@@ -137,6 +139,27 @@ class ConvertActivity : AppCompatActivity() {
 
     private fun launchCustomUnits() {
         customUnitsLauncher.launch(Intent(this, CustomUnitsActivity::class.java))
+    }
+
+    private fun setupWindowInsets() {
+        // In landscape, the number pad is at the end of the screen, instead of the bottom.
+        val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        Util.applyWindowInsets(binding.mainToolbar, start = true, top = true, end = true)
+        Util.applyWindowInsets(binding.numberPad, start = !isLandscape, end = true, bottom = true)
+        Util.applyWindowInsets(binding.fabEdit, start = true, end = true, bottom = true, asMargin = true)
+        binding.fabCustomUnits?.let {
+            Util.applyWindowInsets(it, start = true, end = true, bottom = true, asMargin = true)
+        }
+        // The number pad is hidden while editing units, which lets the list reach the bottom (or
+        // the end, in landscape) of the screen, so its insets depend on the number pad visibility.
+        ViewCompat.setOnApplyWindowInsetsListener(binding.unitsList) { view, windowInsets ->
+            val insets = Util.getRelativeInsets(view, windowInsets)
+            val numberPadVisible = binding.numberPad.isVisible
+            view.updatePaddingRelative(start = insets.left,
+                    end = if (isLandscape && numberPadVisible) 0 else insets.right,
+                    bottom = if (!isLandscape && numberPadVisible) 0 else insets.bottom)
+            windowInsets
+        }
     }
 
     private fun setupCategoryPopup() {
@@ -287,6 +310,7 @@ class ConvertActivity : AppCompatActivity() {
 
     private fun updateActionModeState() {
         binding.numberPad.isVisible = !editModeEnabled
+        ViewCompat.requestApplyInsets(binding.unitsList)
         if (editModeEnabled) {
             binding.fabCustomUnits?.show()
         } else {
@@ -304,8 +328,6 @@ class ConvertActivity : AppCompatActivity() {
     }
 
     private inner class EditUnitsActionModeCallback : ActionMode.Callback {
-        @ColorInt var statusBarColor = 0
-
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
             actionMode = mode
             actionMode!!.title = getString(R.string.show_hide_units)
@@ -315,8 +337,6 @@ class ConvertActivity : AppCompatActivity() {
         }
 
         override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-            statusBarColor = window.statusBarColor
-            window.statusBarColor = Color.BLACK
             return false
         }
 
@@ -329,7 +349,6 @@ class ConvertActivity : AppCompatActivity() {
         }
 
         override fun onDestroyActionMode(mode: ActionMode) {
-            window.statusBarColor = statusBarColor
             actionMode = null
             editModeEnabled = false
             updateActionModeState()

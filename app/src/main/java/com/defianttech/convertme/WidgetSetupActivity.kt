@@ -21,12 +21,15 @@ class WidgetSetupActivity : AppCompatActivity() {
     private lateinit var prefs: WidgetPrefs
 
     public override fun onCreate(savedInstanceState: Bundle?) {
+        Util.enableEdgeToEdge(this)
         super.onCreate(savedInstanceState)
         binding = WidgetSetupActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setTitle(R.string.configure_widget)
-        window.navigationBarColor = getColor(R.color.number_pad_background)
+        Util.applyWindowInsets(binding.toolbar, start = true, top = true, end = true)
+        // Resize the scrolling content when the keyboard is shown, so that focused fields scroll into view.
+        Util.applyWindowInsets(binding.content, start = true, end = true, bottom = true, asMargin = true)
 
         if (!intent.action.isNullOrEmpty() && intent.action!!.contains(WidgetProvider.CLICK_ACTION_SETTINGS)) {
             widgetId = WidgetProvider.getWidgetId(intent.action!!)

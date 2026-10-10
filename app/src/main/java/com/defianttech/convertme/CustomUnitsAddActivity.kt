@@ -23,11 +23,14 @@ class CustomUnitsAddActivity : AppCompatActivity() {
     private var editUnit: CustomUnits.CustomUnit? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
+        Util.enableEdgeToEdge(this)
         super.onCreate(savedInstanceState)
         binding = CustomUnitsAddActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        window.navigationBarColor = getColor(R.color.number_pad_background)
+        Util.applyWindowInsets(binding.toolbar, start = true, top = true, end = true)
+        // Resize the scrolling content when the keyboard is shown, so that focused fields scroll into view.
+        Util.applyWindowInsets(binding.content, start = true, end = true, bottom = true, asMargin = true)
 
         val editUnitId = intent.getIntExtra(ConvertActivity.INTENT_EXTRA_UNIT_ID, 0)
         if (editUnitId != 0) {

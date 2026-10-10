@@ -30,13 +30,15 @@ class CustomUnitsActivity : AppCompatActivity() {
     }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
+        Util.enableEdgeToEdge(this)
         super.onCreate(savedInstanceState)
         binding = CustomUnitsActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setTitle(R.string.custom_units)
-        window.navigationBarColor = getColor(R.color.number_pad_background)
+        Util.applyWindowInsets(binding.toolbar, start = true, top = true, end = true)
+        Util.applyWindowInsets(binding.content, start = true, end = true, bottom = true)
 
         resetList()
         binding.unitsRecyclerView.layoutManager = LinearLayoutManager(this)
