@@ -13,14 +13,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
+import androidx.appcompat.widget.ListPopupWindow
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.defianttech.convertme.NumberPadView.OnValueChangedListener
+import com.defianttech.convertme.databinding.CategoryMenuHeaderBinding
 import com.defianttech.convertme.databinding.ConvertmeBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.DecimalFormat
 import kotlin.math.abs
+import kotlin.math.max
 import androidx.core.content.edit
 
 /*
@@ -31,12 +34,16 @@ class ConvertActivity : AppCompatActivity() {
 
     private lateinit var collections: List<UnitCollection>
     private lateinit var allCategoryNames: List<String>
+    private var hiddenCategories = setOf<String>()
+    private val visibleCategoryNames get() = allCategoryNames.filter { it !in hiddenCategories }.ifEmpty { allCategoryNames }
 
     private var currentCategory = UnitCollection.DEFAULT_CATEGORY
     private var currentUnitIndex = UnitCollection.DEFAULT_FROM_INDEX
     private var currentValue = UnitCollection.DEFAULT_VALUE
 
-    private lateinit var categoryMenu: PopupMenu
+    private lateinit var categoryPopup: ListPopupWindow
+    private lateinit var categoryHeader: CategoryMenuHeaderBinding
+    private val categoryAdapter = CategoryListAdapter()
     private var listAdapter = UnitListAdapter()
     private var actionMode: ActionMode? = null
     private var editModeEnabled = false
@@ -60,23 +67,8 @@ class ConvertActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         window.navigationBarColor = getColor(R.color.number_pad_background)
 
-        binding.toolbarContents.categoryToolbarContainer.setOnClickListener { categoryMenu.show() }
-        categoryMenu = PopupMenu(this@ConvertActivity, binding.toolbarContents.categoryToolbarContainer)
-
-        for ((i, name) in allCategoryNames.withIndex()) {
-            categoryMenu.menu.add(0, i, 0, name)
-        }
-
-        categoryMenu.setOnMenuItemClickListener {
-            currentCategory = UnitCollection.collectionIndexByName(collections,
-                    allCategoryNames[it.itemId])
-            if (currentUnitIndex >= collections[currentCategory].length()) {
-                currentUnitIndex = 0
-            }
-            binding.toolbarContents.categoryText.text = it.title
-            listAdapter.notifyDataSetInvalidated()
-            true
-        }
+        binding.toolbarContents.categoryToolbarContainer.setOnClickListener { showCategoryPopup() }
+        setupCategoryPopup()
 
         binding.unitsList.adapter = listAdapter
         binding.unitsList.onItemClickListener = OnItemClickListener { _, _, position, _ ->
@@ -105,12 +97,7 @@ class ConvertActivity : AppCompatActivity() {
         }
 
         restoreSettings()
-
-        for (name in allCategoryNames) {
-            if (name == collections[currentCategory].names[0]) {
-                binding.toolbarContents.categoryText.text = name
-            }
-        }
+        updateCategoryText()
 
         binding.fabEdit.setOnClickListener {
             if (actionMode != null) {
@@ -152,6 +139,109 @@ class ConvertActivity : AppCompatActivity() {
         customUnitsLauncher.launch(Intent(this, CustomUnitsActivity::class.java))
     }
 
+    private fun setupCategoryPopup() {
+        categoryHeader = CategoryMenuHeaderBinding.inflate(layoutInflater)
+        categoryHeader.root.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT)
+        categoryHeader.categoryCustomizeButton.setOnClickListener { toggleCategoryEditMode() }
+
+        categoryPopup = ListPopupWindow(this)
+        categoryPopup.anchorView = binding.toolbarContents.categoryToolbarContainer
+        categoryPopup.isModal = true
+        categoryPopup.setAdapter(categoryAdapter)
+        categoryPopup.setPromptView(categoryHeader.root)
+        categoryPopup.promptPosition = ListPopupWindow.POSITION_PROMPT_ABOVE
+        categoryPopup.setOnItemClickListener { _, _, position, _ ->
+            val name = categoryAdapter.getItem(position)
+            if (categoryAdapter.editMode) {
+                if (!categoryAdapter.checkedNames.remove(name)) {
+                    categoryAdapter.checkedNames.add(name)
+                }
+                categoryAdapter.notifyDataSetChanged()
+            } else {
+                selectCategory(name)
+                categoryPopup.dismiss()
+            }
+        }
+    }
+
+    private fun showCategoryPopup() {
+        // Any unconfirmed changes from a previous customization are discarded.
+        setCategoryEditMode(false)
+        categoryPopup.setContentWidth(measureCategoryPopupWidth())
+        categoryPopup.show()
+    }
+
+    private fun toggleCategoryEditMode() {
+        if (categoryAdapter.editMode) {
+            if (categoryAdapter.checkedNames.isEmpty()) {
+                Toast.makeText(this, R.string.select_at_least_one_category, Toast.LENGTH_SHORT).show()
+                return
+            }
+            hiddenCategories = allCategoryNames.filter { it !in categoryAdapter.checkedNames }.toSet()
+            getPrefs(this).edit {
+                putStringSet(KEY_HIDDEN_CATEGORIES, hiddenCategories)
+            }
+            updateCategoryText()
+        } else {
+            categoryAdapter.checkedNames = visibleCategoryNames.toMutableSet()
+        }
+        setCategoryEditMode(!categoryAdapter.editMode)
+        // Showing again while already visible resizes the popup to fit the new list of items.
+        categoryPopup.show()
+    }
+
+    private fun setCategoryEditMode(enabled: Boolean) {
+        categoryAdapter.editMode = enabled
+        categoryHeader.categoryCustomizeIcon.setImageResource(if (enabled) R.drawable.ic_check_white_24dp else R.drawable.ic_settings_white_24dp)
+        categoryHeader.categoryCustomizeText.setText(if (enabled) R.string.done_button else R.string.customize_categories)
+        categoryAdapter.notifyDataSetChanged()
+    }
+
+    private fun measureCategoryPopupWidth(): Int {
+        // Measure with check boxes visible, so that the popup keeps the same width in both modes.
+        val spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        categoryHeader.root.measure(spec, spec)
+        var width = categoryHeader.root.measuredWidth
+        val itemView = layoutInflater.inflate(R.layout.category_listitem, FrameLayout(this), false)
+        itemView.findViewById<View>(R.id.categoryCheckBox).isVisible = true
+        val nameView = itemView.findViewById<TextView>(R.id.categoryName)
+        for (name in allCategoryNames) {
+            nameView.text = name
+            itemView.measure(spec, spec)
+            width = max(width, itemView.measuredWidth)
+        }
+        return width
+    }
+
+    private fun selectCategory(name: String) {
+        currentCategory = UnitCollection.collectionIndexByName(collections, name)
+        if (currentUnitIndex >= collections[currentCategory].length()) {
+            currentUnitIndex = 0
+        }
+        binding.toolbarContents.categoryText.text = name
+        listAdapter.notifyDataSetInvalidated()
+    }
+
+    /**
+     * Makes sure that the toolbar shows a visible name for the current category, and switches
+     * to the first visible category if the current one has been hidden entirely.
+     */
+    private fun updateCategoryText() {
+        val visibleNames = visibleCategoryNames
+        val currentNames = collections[currentCategory].names
+        val text = binding.toolbarContents.categoryText.text.toString()
+        if (text in currentNames && text in visibleNames) {
+            return
+        }
+        val name = currentNames.firstOrNull { it in visibleNames }
+        if (name != null) {
+            binding.toolbarContents.categoryText.text = name
+        } else {
+            selectCategory(visibleNames.first())
+        }
+    }
+
     private fun resetLists() {
         collections = UnitCollection.getInstance(this)
         allCategoryNames = UnitCollection.getAllCategoryNames(this)
@@ -174,6 +264,7 @@ class ConvertActivity : AppCompatActivity() {
     private fun restoreSettings() {
         try {
             val prefs = getPrefs(this)
+            hiddenCategories = prefs.getStringSet(KEY_HIDDEN_CATEGORIES, null).orEmpty().toSet()
             currentCategory = prefs.getInt(KEY_CURRENT_CATEGORY, UnitCollection.DEFAULT_CATEGORY)
             if (currentCategory >= collections.size) {
                 currentCategory = UnitCollection.DEFAULT_CATEGORY
@@ -320,6 +411,36 @@ class ConvertActivity : AppCompatActivity() {
         }
     }
 
+    private inner class CategoryListAdapter : BaseAdapter() {
+        var editMode = false
+        var checkedNames = mutableSetOf<String>()
+
+        // In edit mode, all categories are shown so that hidden ones can be checked again.
+        private val names get() = if (editMode) allCategoryNames else visibleCategoryNames
+
+        override fun getCount(): Int {
+            return names.size
+        }
+
+        override fun getItem(position: Int): String {
+            return names[position]
+        }
+
+        override fun getItemId(position: Int): Long {
+            return position.toLong()
+        }
+
+        override fun getView(position: Int, convView: View?, parent: ViewGroup): View {
+            val convertView = convView ?: layoutInflater.inflate(R.layout.category_listitem, parent, false)
+            val name = getItem(position)
+            convertView.findViewById<TextView>(R.id.categoryName).text = name
+            val chkVisible = convertView.findViewById<ImageView>(R.id.categoryCheckBox)
+            chkVisible.isVisible = editMode
+            chkVisible.setImageResource(if (name in checkedNames) R.drawable.ic_check_box_white_24dp else R.drawable.ic_check_box_outline_blank_white_24dp)
+            return convertView
+        }
+    }
+
     private fun doLongPressMenu(parentView: View, position: Int) {
         val menu = PopupMenu(this, parentView, Gravity.END or Gravity.CENTER_HORIZONTAL)
         menu.menuInflater.inflate(R.menu.menu_long_press, menu.menu)
@@ -365,6 +486,7 @@ class ConvertActivity : AppCompatActivity() {
         private const val KEY_CURRENT_CATEGORY = "currentCategory"
         private const val KEY_CURRENT_UNIT = "currentUnitIndex"
         private const val KEY_CURRENT_VALUE = "currentValue"
+        private const val KEY_HIDDEN_CATEGORIES = "hiddenCategories"
         const val RESULT_CODE_CUSTOM_UNITS_CHANGED = 1
         const val INTENT_EXTRA_UNIT_ID = "extra_unit_id"
         private val dfExp = DecimalFormat("#.#######E0")

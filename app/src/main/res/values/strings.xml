@@ -6,6 +6,8 @@
     <string name="show_hide_units">Show/hide units…</string>
     <string name="copy_value">Copy value</string>
     <string name="copy_row">Copy row</string>
+    <string name="customize_categories">Customize…</string>
+    <string name="select_at_least_one_category">Please select at least one category.</string>
 
     <string name="str_1">1</string>
     <string name="str_2">2</string>
