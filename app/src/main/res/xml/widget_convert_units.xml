@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="260dp"
     android:updatePeriodMillis="43200000"
-    android:minHeight="64dp"
+    android:minHeight="80dp"
     android:minResizeWidth="160dp"
     android:previewImage="@drawable/widget_preview"
     android:resizeMode="horizontal|vertical"
