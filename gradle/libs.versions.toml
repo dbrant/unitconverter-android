@@ -2,7 +2,7 @@
 constraintlayout = "2.2.2"
 gradle = "9.4.1"
 gradleToolchainsFoojayResolverConvention = "1.0.0"
-gson = "2.14.0"
+gson = "2.15.0"
 hamcrestLibrary = "3.0"
 junit = "4.13.2"
 kotlin = "2.4.21"
